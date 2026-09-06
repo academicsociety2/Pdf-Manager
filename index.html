@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Manager By Eto | منصةإدارة للملفات</title>
+    <link rel="stylesheet" href="dark.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@pdfsmaller/pdf-encrypt-lite@1.2.0/dist/pdf-encrypt-lite.umd.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.1.1/tesseract.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+        .skeleton { background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 0.5rem; }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; }
+        body.dark { background: url('https://cdn.pixabay.com/animation/2022/12/01/16/23/16-23-30-588_512.gif') no-repeat center center fixed !important; background-size: cover !important; }
+        .drop-zone { border: 2px dashed #3b82f6; transition: all 0.3s ease; }
+        .drop-zone.dragover { background-color: #eff6ff; border-color: #2563eb; transform: scale(1.02); }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .nav-link { transition: color 0.2s, border-bottom 0.2s; white-space: nowrap; }
+        .nav-link.active { color: #2563eb; border-bottom: 2px solid #2563eb; font-weight: 700; }
+        .tool-card { transition: transform 0.3s, box-shadow 0.3s; }
+        .tool-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
+        .crop-box { position: absolute; border: 2px dashed #ef4444; background: rgba(239, 68, 68, 0.2); pointer-events: none; }
+        .page-section:not(.hidden) { animation: fadeUp 0.4s ease-out forwards; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+<style>
+    html {
+        background-color: #f8fafc;
+    }
+
+    html.dark,
+    body.dark {
+        background-color: #080d18 !important;
+    }
+</style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-800 dark:text-slate-100 transition-colors duration-300">
+
+    <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';</script>
+
+   <nav class="bg-white dark:bg-slate-900 shadow-md sticky top-0 z-50 dark:border-b dark:border-slate-800 transition-colors duration-300">
+        <div class="max-w-screen-2xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-2 text-xl font-black text-blue-700 cursor-pointer" onclick="navigate('home')">
+                    <i class="fa-solid fa-layer-group"></i> PDF Manager
+                </div>
+                <div class="hidden lg:flex space-x-4 space-x-reverse overflow-x-auto text-sm font-semibold flex-grow justify-center px-4">
+                    <button onclick="navigate('home')" class="nav-link active px-2 py-4">الرئيسية</button>
+                    <button onclick="navigate('cleaner')" class="nav-link px-2 py-4">تلوين PDF</button>
+                    <button onclick="navigate('image-cleaner')" class="nav-link px-2 py-4">تنظيف صور</button>
+                    <button onclick="navigate('merge')" class="nav-link px-2 py-4">دمج</button>
+                    <button onclick="navigate('extract')" class="nav-link px-2 py-4">استخراج</button>
+                    <button onclick="navigate('editor')" class="nav-link px-2 py-4">تعديل وكروب</button>
+                    <button onclick="navigate('convert')" class="nav-link px-2 py-4">تحويل</button>
+                    <button onclick="navigate('text')" class="nav-link px-2 py-4">نصوص</button>
+                    <button onclick="navigate('compress')" class="nav-link px-2 py-4">ضغط</button>
+                    <button onclick="navigate('watermark')" class="nav-link px-2 py-4">علامة مائية</button>
+                    <button onclick="navigate('reorder')" class="nav-link px-2 py-4">ترتيب</button>
+                    <button onclick="navigate('protect')" class="nav-link px-2 py-4">حماية</button>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="dark-toggle-btn" class="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 focus:outline-none w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center transition">
+                        <i class="fa-solid fa-moon text-xl" id="dark-icon"></i>
+                    </button>
+                    <a href="notes.html" target="_blank" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2 rounded-xl font-bold text-sm shadow-md transition flex items-center gap-2">
+                        <i class="fa-solid fa-pen-to-square"></i> <span class="hidden sm:inline">نوتس المذاكرة</span>
+                    </a>
+                    <div class="lg:hidden flex items-center">
+                        <button id="mobile-menu-btn" class="text-gray-500 hover:text-blue-600 focus:outline-none"><i class="fa-solid fa-bars text-2xl"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden lg:hidden bg-white dark:bg-slate-900 border-t dark:border-slate-800 flex-col max-h-64 overflow-y-auto transition-colors duration-300">
+        </div>
+    </nav>
+
+    <main class="flex-grow w-full relative">
+        
+        <section id="page-home" class="page-section active block">
+            <div class="relative text-white py-16 px-6 text-center transition-colors duration-300">
+                <div class="absolute inset-0 opacity-100 bg-cover bg-center" style="background-image: url('https://cdn.pixabay.com/photo/2016/06/01/06/26/open-book-1428428_1280.jpg');"></div>
+                <div class="relative z-10 max-w-4xl mx-auto">
+                    <h1 class="inline-block text-4xl md:text-5xl font-black mb-4 px-5 py-3 rounded-2xl bg-black/45 backdrop-blur-md border border-white/15 shadow-2xl text-white">كل الي تحتاجه لملفاتك في مكان واحد</h1>
+                    <p class="inline-block text-lg font-semibold text-white px-4 py-2 rounded-xl bg-black/35 backdrop-blur-md border border-white/10 shadow-lg">بالتوفيق يارب</p>
+                </div>
+            </div>
+            <div class="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('cleaner')">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-palette"></i></div>
+                    <h3 class="text-lg font-bold mb-2">تلوين PDF وتظليل</h3>
+                    <p class="text-gray-500 text-xs">ثيمات لراحة العين، وتظليل الكلمات المهمة.</p>
+                </div>
+                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('image-cleaner')">
+                    <div class="w-12 h-12 bg-teal-100 text-teal-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-image"></i></div>
+                    <h3 class="text-lg font-bold mb-2">تنظيف صور المحاضرات</h3>
+                    <p class="text-gray-500 text-xs">معالجة الصور الملتقطة بالكاميرا وتبييضها.</p>
+                </div>
+                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('compress')">
+                    <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-compress"></i></div>
+                    <h3 class="text-lg font-bold mb-2">ضغط وتقليل الحجم</h3>
+                    <p class="text-gray-500 text-xs">تقليل مساحة الملفات دون خسارة ملحوظة للجودة.</p>
+                </div>
+                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('merge')">
+                    <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-layer-group"></i></div>
+                    <h3 class="text-lg font-bold mb-2">دمج الملفات</h3>
+                    <p class="text-gray-500 text-xs">تجميع عدة ملفات PDF في ملف واحد.</p>
+                </div>
+                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('extract')">
+                    <div class="w-12 h-12 bg-red-100 text-red-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-file-export"></i></div>
+                    <h3 class="text-lg font-bold mb-2">استخراج وحذف</h3>
+                    <p class="text-gray-500 text-xs">اختر صفحات معينة للاحتفاظ بها أو حذفها.</p>
+                </div>
+                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('editor')">
+                    <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-crop-simple"></i></div>
+                    <h3 class="text-lg font-bold mb-2">تعديل وقص</h3>
+                    <p class="text-gray-500 text-xs">تدوير الصفحات المقلوبة، وقص الحواف السوداء.</p>
+                </div>
+                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('convert')">
+                    <div class="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-images"></i></div>
+                    <h3 class="text-lg font-bold mb-2">تحويل صور <-> PDF</h3>
+                    <p class="text-gray-500 text-xs">بناء ملف من مجموعة صور، أو استخراج الصور.</p>
+                </div>
+                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('text')">
+                    <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-file-lines"></i></div>
+                    <h3 class="text-lg font-bold mb-2">نصوص وملخصات</h3>
+                    <p class="text-gray-500 text-xs">استخراج النص من الملفات، أو تحويل النص لـ PDF.</p>
+                </div>
+
+                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('watermark')">
+                    <div class="w-12 h-12 bg-cyan-100 text-cyan-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-copyright"></i></div>
+                    <h3 class="text-lg font-bold mb-2">علامة مائية</h3>
+                    <p class="text-gray-500 text-xs">أضف نصاً شفافاً لحماية حقوق ملفاتك الخاصة.</p>
+                </div>
+                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('reorder')">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-arrows-up-down"></i></div>
+                    <h3 class="text-lg font-bold mb-2">إعادة ترتيب</h3>
+                    <p class="text-gray-500 text-xs">اسحب وأفلت لترتيب صفحات الملف الواحد وحفظه.</p>
+                </div>
+                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('protect')">
+                    <div class="w-12 h-12 bg-fuchsia-100 text-fuchsia-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-lock"></i></div>
+                    <h3 class="text-lg font-bold mb-2">حماية الملف</h3>
+                    <p class="text-gray-500 text-xs">أضف كلمة مرور تشفير حقيقية لطلبها عند فتح الملف.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="page-cleaner" class="page-section hidden p-4 max-w-7xl mx-auto">
+            <div id="cleaner-upload" class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-8 max-w-4xl mx-auto mt-6">
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 text-blue-600 mb-4 shadow-sm">
+                        <i class="fa-solid fa-palette text-3xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-black mb-3 text-slate-800 dark:text-slate-100">تلوين، تظليل، وراحة تامة لعينيك</h2>
+                    <p class="text-gray-500 text-lg">الأداة الأهم والمفضلة للطلاب.. حول ملفاتك لثيمات مريحة للعين (الوضع الليلي، سيبيا) مع إمكانية تظليل النصوص المهمة وحفظ الملف.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-center">
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 dark:border-slate-600 border border-slate-100 transition hover:shadow-md">
+                        <i class="fa-solid fa-moon text-indigo-500 text-3xl mb-3"></i>
+                        <h4 class="font-bold text-slate-700 dark:text-slate-200 mb-1">الوضع الليلي والمريح</h4>
+                        <p class="text-xs text-gray-500">أكثر من ثيم جاهز للمذاكرة لساعات طويلة بدون إرهاق لعينيك.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 dark:border-slate-600 border border-slate-100 transition hover:shadow-md">
+                        <i class="fa-solid fa-highlighter text-amber-500 text-3xl mb-3"></i>
+                        <h4 class="font-bold text-slate-700 dark:text-slate-200 mb-1">تظليل </h4>
+                        <p class="text-xs text-gray-500">اضغط مرتين (Double Click) على أي كلمة لتظليلها باللون اللي تحبه.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 dark:border-slate-600 border border-slate-100 transition hover:shadow-md">
+                        <i class="fa-solid fa-print text-gray-500 text-3xl mb-3"></i>
+                        <h4 class="font-bold text-slate-700 dark:text-slate-200 mb-1">جاهز للطباعة</h4>
+                        <p class="text-xs text-gray-500">حول الخلفيات الملونة لأبيض وأسود عشان توفر حبر الطباعة.</p>
+                    </div>
+                </div>
+
+                <div class="drop-zone rounded-2xl p-10 cursor-pointer bg-blue-50/50 hover:bg-blue-50 border-2 border-dashed border-blue-300 text-center transition-all" onclick="document.getElementById('cleaner-file').click()">
+                    <i class="fa-solid fa-cloud-arrow-up text-5xl text-blue-500 mb-4 animate-bounce"></i>
+                    <h3 class="font-bold text-xl text-blue-900 mb-2">اضغط هنا لرفع ملف الـ PDF</h3>
+                    <p class="text-sm text-gray-500">أو اسحب وأسقط الملف هنا مباشرة للبدء</p>
+                    <input type="file" id="cleaner-file" class="hidden" accept=".pdf">
+                </div>
+            </div>
+
+            <div id="cleaner-workspace" class="hidden flex-col lg:flex-row gap-4 mt-4">
+                <div class="bg-white dark:bg-slate-900/80 rounded-xl shadow-lg p-4 w-full lg:w-1/3 flex flex-col h-[80vh] overflow-y-auto backdrop-blur-sm">
+                    <div class="bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600 p-2 rounded border text-sm font-bold truncate mb-4" id="cleaner-filename">الملف</div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">اختر ثيم جاهز:</label>
+                        <select id="cleaner-theme-select" class="w-full p-2 border rounded bg-white dark:bg-slate-800 dark:text-white dark:border-slate-700 text-sm">
+                            <option value="original">الأصلي</option>
+                            <option value="dark">وضع ليلي (داكن)</option>
+                            <option value="bw">أبيض وأسود (للطباعة)</option>
+                            <option value="sepia">سيبيا (مريح)</option>
+                            <option value="green">أخضر نعناعي (منعش)</option>
+                            <option value="rose">وردي فاتح (دافئ)</option>
+                            <option value="blue">أزرق سماوي (هادئ)</option>
+                            <option value="yellow">أصفر باستيل (مبهج)</option>
+                            <option value="gray">رمادي فاتح (محايد)</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4 bg-blue-50 p-3 rounded-lg border border-blue-100">
+                        <label class="block text-sm font-bold text-blue-800 mb-2">ثيم مخصص:</label>
+                        <div class="flex gap-2 mb-2">
+                            <input type="color" id="cleaner-custom-bg" value="#ffffff" class="w-1/2 h-8">
+                            <input type="color" id="cleaner-custom-text" value="#000000" class="w-1/2 h-8">
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" id="cleaner-custom-name" placeholder="اسم الثيم..." class="flex-grow p-1 border rounded text-sm">
+                            <button id="btn-add-theme" class="bg-blue-600 text-white px-2 rounded text-sm">تطبيق</button>
+                        </div>
+                    </div>
+
+
+                    <button id="cleaner-export" class="w-full mt-auto bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-download"></i> حفظ الملف
+                    </button>
+                </div>
+
+                <div class="w-full lg:w-2/3 bg-gray-200 rounded-xl shadow-inner p-2 flex flex-col relative h-[80vh]">
+                    <div class="flex justify-between items-center bg-white dark:bg-slate-900/90 p-2 rounded shadow-sm mb-2 z-10 flex-wrap gap-2">
+
+                        <div class="flex items-center gap-2">
+                            <button id="cleaner-zoom-out" class="px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded dark:text-gray-800"><i class="fa-solid fa-minus"></i></button>
+                            <span id="cleaner-zoom-val" class="text-xs font-bold w-10 text-center">100%</span>
+                            <button id="cleaner-zoom-in" class="px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded dark:text-gray-800"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button id="cleaner-prev" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded dark:text-gray-800"><i class="fa-solid fa-chevron-right"></i></button>
+                            <span class="font-bold text-sm">صفحة <span id="cleaner-curr">1</span> / <span id="cleaner-tot">1</span></span>
+                            <button id="cleaner-next" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded dark:text-gray-800"><i class="fa-solid fa-chevron-left"></i></button>
+                        </div>
+                    </div>
+                    <div id="cleaner-canvas-container" class="flex-grow overflow-auto flex justify-center items-start relative bg-gray-300 dark:bg-transparent rounded border border-gray-400 cursor-crosshair min-h-[50vh] lg:h-[80vh]">
+                        <canvas id="cleaner-canvas" class="shadow-lg bg-white dark:bg-transparent"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================== 3. تنظيف صور المحاضرات (Image Cleaner) ================== -->
+        <section id="page-image-cleaner" class="page-section hidden p-4 max-w-5xl mx-auto">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-6 text-center mt-6">
+                <h2 class="text-2xl font-bold mb-4 text-teal-600"><i class="fa-solid fa-image"></i> تنظيف صور المحاضرات</h2>
+                <input type="file" id="img-cleaner-file" class="hidden" accept="image/*">
+                <button onclick="document.getElementById('img-cleaner-file').click()" class="bg-teal-50 text-teal-700 border-2 border-teal-200 border-dashed w-full py-8 rounded-xl font-bold hover:bg-teal-100 transition flex flex-col items-center justify-center gap-3">
+                    <i class="fa-solid fa-image text-4xl animate-bounce"></i>
+                    <span>ارفع صورة المحاضرة</span>
+                </button>
+                
+                <div id="img-cleaner-workspace" class="hidden mt-6">
+                    <div class="flex flex-col md:flex-row gap-4 mb-4">
+                        <select id="img-theme" class="p-2 border rounded font-bold w-full md:w-1/3">
+                            <option value="original">الأصلية</option>
+                            <option value="bw">أبيض وأسود (تبييض)</option>
+                            <option value="sepia">سيبيا</option>
+                        </select>
+                        <button id="img-export" class="bg-teal-600 text-white px-4 py-2 rounded w-full md:w-1/3 font-bold"><i class="fa-solid fa-download"></i> تحميل الصورة</button>
+                    </div>
+                    <div class="overflow-auto border rounded bg-gray-100 p-2 max-h-[60vh] flex justify-center">
+                        <canvas id="img-canvas" class="max-w-full shadow"></canvas>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 pt-8 border-t border-gray-100 text-center">
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-teal-100 text-teal-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">تبييض ذكي</h4>
+                        <p class="text-xs text-gray-500">إزالة ظلال الكاميرا وتوضيح الكلام المكتوب.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-teal-100 text-teal-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-print"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">جاهز للطباعة</h4>
+                        <p class="text-xs text-gray-500">تحويل للونين الأبيض والأسود لتوفير حبر الطباعة.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-teal-100 text-teal-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-eye-low-vision"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">فلاتر مريحة</h4>
+                        <p class="text-xs text-gray-500">استخدم فلتر السيبيا لتقليل الإجهاد البصري للمذاكرة.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================== 4. ضغط PDF (Compress) ================== -->
+        <section id="page-compress" class="page-section hidden p-4 max-w-4xl mx-auto">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-8 mt-6">
+                <div class="text-center max-w-xl mx-auto mb-8">
+                    <div class="w-16 h-16 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-sm"><i class="fa-solid fa-compress"></i></div>
+                    <h2 class="text-2xl font-bold mb-2 text-slate-800 dark:text-slate-100">ضغط وتقليل حجم ملفات PDF</h2>
+                    <p class="text-gray-500 text-sm">قلل حجم الملف عبر إعادة تصيير الصفحات بجودة قابلة للتحكم، مع موازنة الحجم والوضوح.</p>
+                </div>
+
+                <input type="file" id="compress-file" class="hidden" accept=".pdf">
+                <div onclick="document.getElementById('compress-file').click()" class="drop-zone rounded-2xl p-8 text-center cursor-pointer bg-orange-50/50 hover:bg-orange-50 border-2 border-orange-200 transition mb-6">
+                    <i class="fa-solid fa-cloud-arrow-up text-4xl text-orange-500 mb-3 animate-bounce"></i>
+                    <h3 class="font-bold text-gray-700 text-lg mb-1">اضغط هنا لرفع ملف الـ PDF</h3>
+                    <p class="text-xs text-gray-400">أو اسحب وأسقط الملف مباشرة هنا</p>
+                </div>
+                
+                <div id="compress-options" class="hidden mt-6 bg-slate-50 dark:bg-slate-800/50 dark:border-slate-600 p-6 rounded-2xl border border-slate-100">
+                    <p id="compress-name" class="font-bold truncate mb-4 bg-white p-3 rounded-xl border text-sm text-slate-700 dark:text-slate-200 flex items-center gap-2"><i class="fa-solid fa-file-pdf text-orange-500"></i> <span></span></p>
+                    <label class="block font-bold mb-2 text-sm text-slate-700 dark:text-slate-200">اختر مستوى الضغط المناسب:</label>
+                    <select id="compress-level" class="w-full p-3 border rounded-xl bg-white mb-6 text-sm focus:ring-2 focus:ring-orange-500 outline-none">
+                        <option value="0.7">متوسط (ينصح به - توازن ممتاز بين الحجم والجودة)</option>
+                        <option value="0.4">عالي جداً (للحصول على أقل مساحة ممكنة)</option>
+                        <option value="0.9">خفيف (للحفاظ على أعلى جودة للصور)</option>
+                    </select>
+                    <button id="compress-btn" class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold text-base hover:bg-orange-600 shadow-lg shadow-orange-500/20 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-bolt"></i> بدء الضغط والتحميل الفوري
+                    </button>
+                </div>
+
+                <!-- قسم مميزات إضافية يملى الفراغ -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 pt-8 border-t border-gray-100 text-center">
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-laptop-code"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">إتمام محلي بالكامل</h4>
+                        <p class="text-xs text-gray-500">ملفاتك تتم معالجتها داخل متصفحك ولا يتم رفعها لأي سيرفر خارجي.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-gauge-high"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">سرعة عالية</h4>
+                        <p class="text-xs text-gray-500">معالجة الملفات في ثوانٍ معدودة مهما كان حجمها.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-face-smile"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">مجاني بالكامل</h4>
+                        <p class="text-xs text-gray-500">بدون حدود لعدد الملفات وبدون تسجيل حساب.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================== 5. دمج (Merge) ================== -->
+        <section id="page-merge" class="page-section hidden p-4 max-w-4xl mx-auto">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-8 mt-6">
+                <div class="text-center max-w-xl mx-auto mb-8">
+                    <div class="w-16 h-16 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-sm"><i class="fa-solid fa-layer-group"></i></div>
+                    <h2 class="text-2xl font-bold mb-2 text-slate-800 dark:text-slate-100">دمج ملفات PDF وترتيبها</h2>
+                    <p class="text-gray-500 text-sm">اجمع عدة ملفات PDF في ملف واحد بسهولة، مع إمكانية ترتيب الملفات ومعاينتها قبل الدمج النهائي.</p>
+                </div>
+
+                <div class="drop-zone rounded-2xl p-10 text-center cursor-pointer bg-green-100 hover:bg-green-200 border-2 border-dashed border-green-500 shadow-md transition-all mb-6" onclick="document.getElementById('merge-file-input').click()">
+                    <i class="fa-solid fa-file-circle-plus text-5xl text-green-600 mb-4 animate-bounce"></i>
+                    <h3 class="font-bold text-green-900 text-xl mb-2">اضغط هنا لرفع الملفات</h3>
+                    <p class="text-sm font-semibold text-green-700">يمكنك اختيار أكثر من ملف في نفس الوقت (PC, Mobile, iPad)</p>
+                    <input type="file" id="merge-file-input" class="hidden" accept=".pdf" multiple>
+                </div>
+
+                <!-- مساحة العمل والملفات المرفوعة -->
+                <div id="merge-workspace" class="hidden">
+                    <div class="flex justify-between items-center mb-3">
+                        <h4 class="font-bold text-slate-700 dark:text-slate-200"><i class="fa-solid fa-list-ol text-green-500"></i> الملفات المضافة (رتب بالأسهم):</h4>
+                        <button onclick="document.getElementById('merge-file-input').click()" class="bg-green-100 text-green-700 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-green-200 transition flex items-center gap-1"><i class="fa-solid fa-plus"></i> <span class="hidden sm:inline">إضافة المزيد</span></button>
+                    </div>
+                    
+                    <ul id="merge-file-list" class="space-y-2 mb-6 max-h-48 overflow-y-auto pr-2"></ul>
+                    
+                    <h4 class="font-bold text-slate-700 dark:text-slate-200 mb-3"><i class="fa-solid fa-eye text-green-500"></i> معاينة الترتيب:</h4>
+                    <div id="merge-preview-container" class="flex gap-4 overflow-x-auto pb-4 pt-2 px-2 bg-slate-50 dark:bg-slate-800/50 dark:border-slate-600 border border-slate-200 rounded-xl min-h-[160px] items-center">
+                    </div>
+
+                    <button id="merge-btn" class="w-full bg-gray-400 text-white font-bold py-3 rounded-xl mt-6 transition flex items-center justify-center gap-2" disabled>
+                        <i class="fa-solid fa-triangle-exclamation"></i> يرجى إضافة ملف آخر للدمج
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 pt-8 border-t border-gray-100 text-center">
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-arrow-up-z-a"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">ترتيب مرن</h4>
+                        <p class="text-xs text-gray-500">تحكم كامل في ترتيب الملفات وصعودها ونزولها قبل الدمج.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-lock"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">أمان تام</h4>
+                        <p class="text-xs text-gray-500">الدمج بيتم داخل متصفحك محلياً بدون رفع ملفاتك لأي سيرفر.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-eye"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">معاينة حية</h4>
+                        <p class="text-xs text-gray-500">شوف شكل الملفات بترتيبها قبل ما تدوس دمج عشان تتأكد.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================== 6. استخراج وحذف (Extract) ================== -->
+        <section id="page-extract" class="page-section hidden p-4 max-w-3xl mx-auto">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-8 mt-6 text-center">
+                <h2 class="text-2xl font-bold mb-4 text-red-600"><i class="fa-solid fa-file-export"></i> استخراج أو حذف صفحات</h2>
+                <input type="file" id="ext-file" class="hidden" accept=".pdf">
+                <button onclick="document.getElementById('ext-file').click()" class="bg-red-50 border-2 border-red-200 border-dashed text-red-600 w-full py-8 rounded-xl font-bold hover:bg-red-100 flex flex-col items-center justify-center gap-3 transition">
+                    <i class="fa-solid fa-file-pdf text-4xl animate-bounce"></i>
+                    <span>ارفع الملف</span>
+                </button>
+                
+                <div id="ext-workspace" class="hidden mt-6 text-right">
+                    <p id="ext-name" class="font-bold truncate mb-4 bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600 p-2 rounded border"></p>
+                    <div class="flex flex-col md:flex-row gap-3 mb-4 text-sm text-right">
+                        <div class="flex-1 bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600 p-3 rounded-xl border">
+                            <label class="block font-bold mb-2 text-gray-700">احتفظ بالصفحات من:</label>
+                            <input type="number" id="ext-from" min="1" class="w-full p-2 border rounded-lg bg-white text-center">
+                        </div>
+                        <div class="flex-1 bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600 p-3 rounded-xl border">
+                            <label class="block font-bold mb-2 text-gray-700">إلى صفحة:</label>
+                            <input type="number" id="ext-to" min="1" class="w-full p-2 border rounded-lg bg-white text-center">
+                        </div>
+                        <div class="flex-1 bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600 p-3 rounded-xl border">
+                            <label class="block font-bold mb-2 text-gray-700">استثناء (مثال: 2,4):</label>
+                            <input type="text" id="ext-exclude" placeholder="أرقام للحذف" class="w-full p-2 border rounded-lg bg-white text-center dir-ltr">
+                        </div>
+                    </div>
+
+                    <div class="mb-4 bg-red-50 p-3 rounded-xl border border-red-100 text-right">
+                        <label class="block font-bold mb-2 text-red-700 text-sm"><i class="fa-solid fa-hand-pointer"></i> أو اختر الصفحات للحذف يدوياً (اللون الأحمر = سيتم حذفه):</label>
+                        <div id="ext-page-grid" class="flex flex-wrap gap-2 max-h-48 overflow-y-auto p-2">
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button id="ext-btn-preview" class="w-full bg-blue-500 text-white py-3 rounded-xl font-bold text-lg hover:bg-blue-600 transition"><i class="fa-solid fa-eye"></i> عرض النتيجة (Preview)</button>
+                        <button id="ext-btn-download" class="w-full bg-green-500 text-white py-3 rounded-xl font-bold text-lg hover:bg-green-600 transition hidden"><i class="fa-solid fa-download"></i> تحميل الملف النهائي</button>
+                    </div>
+
+                    <div id="ext-preview-container" class="hidden mt-6 border-2 border-gray-300 rounded-xl overflow-hidden h-[50vh] bg-gray-100">
+                        <iframe id="ext-preview-frame" class="w-full h-full"></iframe>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 pt-8 border-t border-gray-100 text-center">
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-red-100 text-red-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-scissors"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">استخراج دقيق</h4>
+                        <p class="text-xs text-gray-500">حدد من صفحة كذا لصفحة كذا لاستخراجهم في ملف منفصل.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-red-100 text-red-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-ban"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">حذف الاستثناءات</h4>
+                        <p class="text-xs text-gray-500">اكتب أرقام صفحات معينة زي (2,5,7) لحذفهم من النص.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-red-100 text-red-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-hand-pointer"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">تحديد يدوي</h4>
+                        <p class="text-xs text-gray-500">اضغط على رقم أي صفحة بالماوس عشان تحذفها بسرعة.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================== 7. التعديل والقص (Editor) ================== -->
+        <section id="page-editor" class="page-section hidden p-4 max-w-5xl mx-auto">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-6 mt-6">
+                <h2 class="text-2xl font-bold mb-4 text-center text-purple-600"><i class="fa-solid fa-crop-simple"></i> تعديل وتدوير وقص الصفحات</h2>
+                <input type="file" id="edit-file" class="hidden" accept=".pdf">
+                <button onclick="document.getElementById('edit-file').click()" id="edit-upload-btn" class="bg-purple-50 border-2 border-purple-200 border-dashed text-purple-600 w-full py-8 rounded-xl font-bold hover:bg-purple-100 flex flex-col items-center justify-center gap-3 transition">
+                    <i class="fa-solid fa-crop-simple text-4xl animate-bounce"></i>
+                    <span>ارفع الملف للتعديل</span>
+                </button>
+
+                <div id="edit-workspace" class="hidden flex-col">
+                    <div class="flex flex-wrap gap-2 justify-between bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600 p-3 rounded-xl border mb-4 items-center">
+                        <div class="flex gap-2 items-center">
+                            <button id="edit-prev" class="px-3 py-1 bg-white border rounded"><i class="fa-solid fa-chevron-right"></i></button>
+                            <span class="font-bold text-sm">صفحة <span id="edit-curr">1</span></span>
+                            <button id="edit-next" class="px-3 py-1 bg-white border rounded"><i class="fa-solid fa-chevron-left"></i></button>
+                        </div>
+                        <div class="flex items-center gap-2 dark:text-gray-800">
+                            <button id="edit-zoom-out" class="px-2 py-1 bg-white hover:bg-gray-100 border rounded"><i class="fa-solid fa-minus"></i></button>
+                            <span id="edit-zoom-val" class="text-xs font-bold w-10 text-center dark:text-gray-200">100%</span>
+                            <button id="edit-zoom-in" class="px-2 py-1 bg-white hover:bg-gray-100 border rounded"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="edit-rotate" class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded font-bold text-sm hover:bg-indigo-200"><i class="fa-solid fa-rotate-right"></i> تدوير</button>
+                            <button id="edit-crop-start" class="bg-pink-100 text-pink-700 px-3 py-1 rounded font-bold text-sm hover:bg-pink-200"><i class="fa-solid fa-crop"></i> تحديد القص</button>
+                        </div>
+                        <button id="edit-export" class="bg-purple-600 text-white px-4 py-1 rounded font-bold text-sm hover:bg-purple-700">حفظ التعديلات</button>
+                    </div>
+                    <div id="edit-canvas-container" class="relative bg-gray-200 rounded border flex justify-center items-start overflow-auto h-[60vh]">
+                        <canvas id="edit-canvas" class="shadow bg-white transition-transform"></canvas>
+                        <div id="crop-overlay" class="crop-box hidden"></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2 text-center">ملاحظة: لقص الصفحة، اضغط "تحديد القص" ثم اسحب بالماوس فوق الجزء المراد الاحتفاظ به.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 pt-8 border-t border-gray-100 text-center">
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-rotate"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">تدوير الصفحات</h4>
+                        <p class="text-xs text-gray-500">لو صورت ورقة مقلوبة تقدر تعدلها وتلفها بسهولة.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-crop"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">قص الحواف</h4>
+                        <p class="text-xs text-gray-500">قص الهوامش السوداء أو الزيادات من الملف بضغطة سحب.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-floppy-disk"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">حفظ </h4>
+                        <p class="text-xs text-gray-500">تعديلاتك بتنزل على جهازك فوراً بدون استهلاك للإنترنت.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================== 8. تحويل (Convert) ================== -->
+        <section id="page-convert" class="page-section hidden p-4 max-w-4xl mx-auto">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-8 mt-6">
+                
+                <div class="text-center max-w-xl mx-auto mb-8">
+                    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-sm"><i class="fa-solid fa-right-left"></i></div>
+                    <h2 class="text-2xl font-bold mb-2 text-slate-800 dark:text-slate-100">تحويل بين الصور والـ PDF</h2>
+                    <p class="text-gray-500 text-sm">اجمع صورك في ملف PDF يسهل مشاركته، أو استخرج صفحات أي ملف كصور منفصلة وعالية الجودة.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-center">
+                    <div class="border-2 border-yellow-200 bg-yellow-50 p-6 rounded-xl transition hover:shadow-md">
+                        <h3 class="text-xl font-bold mb-4 text-yellow-700"><i class="fa-solid fa-file-pdf"></i> صور إلى PDF</h3>
+                        <input type="file" id="img-to-pdf-file" class="hidden" accept="image/*" multiple>
+                        <button onclick="document.getElementById('img-to-pdf-file').click()" class="bg-yellow-500 text-white w-full py-3 rounded-xl font-bold hover:bg-yellow-600 mb-2 transition shadow-sm">اختر مجموعة الصور</button>
+                        <button id="btn-img-to-pdf" class="w-full bg-white border-2 border-yellow-500 text-yellow-700 py-2 rounded-xl font-bold hidden transition hover:bg-yellow-100">تحميل الـ PDF</button>
+                    </div>
+
+                    <div class="border-2 border-blue-200 bg-blue-50 p-6 rounded-xl transition hover:shadow-md">
+                        <h3 class="text-xl font-bold mb-4 text-blue-700"><i class="fa-solid fa-images"></i> PDF إلى صور</h3>
+                        <input type="file" id="pdf-to-img-file" class="hidden" accept=".pdf">
+                        <button onclick="document.getElementById('pdf-to-img-file').click()" class="bg-blue-600 text-white w-full py-3 rounded-xl font-bold hover:bg-blue-700 transition shadow-sm">اختر ملف الـ PDF</button>
+                        <div id="pdf-to-img-results" class="mt-4 flex flex-col gap-2 max-h-40 overflow-auto pr-2"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 pt-8 border-t border-gray-100 text-center">
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-bolt"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">تحويل سريع</h4>
+                        <p class="text-xs text-gray-500">اجمع مئات الصور في ملف واحد في ثواني.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-image"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">دقة عالية</h4>
+                        <p class="text-xs text-gray-500">استخرج صفحات PDF كصور بجودة عالية قابلة للطباعة والمشاركة.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-shield"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">أمان 100%</h4>
+                        <p class="text-xs text-gray-500">شغلك كله على جهازك ومفيش أي حاجة بتترفع أونلاين.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================== 9. نصوص (Text) ================== -->
+        <section id="page-text" class="page-section hidden p-4 max-w-4xl mx-auto">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-6 mt-6">
+                <h2 class="text-2xl font-bold mb-4 text-center text-indigo-600"><i class="fa-solid fa-file-lines"></i> استخراج وإنشاء النصوص</h2>
+                
+                <div class="flex gap-2 mb-4 bg-gray-100 p-1 rounded-lg w-fit mx-auto">
+                    <button onclick="switchTextMode('extract')" id="btn-mode-extract" class="px-4 py-1 rounded bg-white font-bold shadow-sm">استخراج من PDF</button>
+                    <button onclick="switchTextMode('create')" id="btn-mode-create" class="px-4 py-1 rounded text-gray-500 font-bold hover:text-gray-800">تحويل نص لـ PDF</button>
+                </div>
+
+                <div id="text-extract-ui" class="text-center">
+                    <input type="file" id="text-pdf-file" class="hidden" accept=".pdf, image/*">
+                    <button onclick="document.getElementById('text-pdf-file').click()" class="bg-indigo-50 border border-indigo-200 text-indigo-600 px-6 py-2 rounded-lg font-bold mb-4">ارفع ملف PDF أو صورة</button>
+                </div>
+
+                <textarea id="text-area" class="w-full h-64 p-4 border-2 rounded-xl focus:border-indigo-400 focus:outline-none mb-4 resize-none bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600 text-sm leading-relaxed" placeholder="النص سيظهر هنا..."></textarea>
+                
+                <button id="text-export-btn" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hidden hover:bg-indigo-700">تحميل كـ PDF</button>
+            </div>
+        </section>
+
+        <!-- ================== 10. العلامة المائية (Watermark) ================== -->
+        <section id="page-watermark" class="page-section hidden p-4 max-w-4xl mx-auto">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 mt-6 text-center">
+                <h2 class="text-2xl font-bold mb-4 text-cyan-600"><i class="fa-solid fa-copyright"></i> إضافة علامة مائية</h2>
+                <input type="file" id="wm-file" class="hidden" accept=".pdf">
+                <button onclick="document.getElementById('wm-file').click()" class="bg-cyan-50 border-2 border-cyan-200 border-dashed text-cyan-600 w-full py-8 rounded-xl font-bold hover:bg-cyan-100 flex flex-col items-center justify-center gap-3 transition">
+                    <i class="fa-solid fa-file-pdf text-4xl animate-bounce"></i><span>ارفع الملف لإضافة العلامة</span>
+                </button>
+                <div id="wm-workspace" class="hidden mt-6 text-right">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+                    <div class="lg:col-span-1 grid grid-cols-1 gap-4">
+                        <div class="p-4 bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600 border rounded-xl">
+                            <label class="block font-bold mb-2">نص العلامة:</label>
+                            <input type="text" id="wm-text" class="w-full p-2 border rounded dark:text-gray-800" placeholder="مثال: سري للغاية / أ. محمد">
+                        </div>
+                        <div class="p-4 bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600 border rounded-xl">
+                            <label class="block font-bold mb-2">حجم الخط والشفافية:</label>
+                            <input type="range" id="wm-size" min="20" max="150" value="60" class="w-full mb-2">
+                            <input type="range" id="wm-opacity" min="0.1" max="1" step="0.1" value="0.3" class="w-full">
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2">
+                        <label class="block font-bold mb-2 text-slate-700 dark:text-slate-200">معاينة الصفحة:</label>
+                        <div id="wm-preview-stage" class="relative bg-slate-200 dark:bg-slate-900 border-2 border-cyan-200 dark:border-cyan-700 rounded-xl overflow-hidden min-h-[500px] flex justify-center items-start p-3">
+                            <canvas id="wm-preview-canvas" class="max-w-full h-auto shadow-xl bg-white"></canvas>
+                            <div id="wm-preview-watermark" class="absolute pointer-events-auto cursor-move select-none whitespace-nowrap font-black text-cyan-600/70" dir="rtl">
+                                PRIVATE
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-2 text-center">اسحب العلامة المائية بالماوس وحدد مكانها داخل الصفحة.</p>
+                    </div>
+                     </div>
+                    <button id="wm-export" class="w-full bg-cyan-600 text-white py-3 rounded-xl font-bold hover:bg-cyan-700"><i class="fa-solid fa-download"></i> حفظ الملف بالعلامة</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 pt-8 border-t border-gray-100 text-center">
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-cyan-100 text-cyan-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-copyright"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">حماية المحتوى</h4>
+                        <p class="text-xs text-gray-500">أضف اسمك أو أي نص على صفحات الملف لحماية حقوقك.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-cyan-100 text-cyan-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-sliders"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">تحكم كامل</h4>
+                        <p class="text-xs text-gray-500">تحكم في حجم العلامة المائية ودرجة شفافيتها بسهولة.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-cyan-200 dark:bg-cyan-900/40 text-cyan-700 dark:text-cyan-300 rounded-xl flex items-center justify-center text-xl mx-auto mb-3 shadow-sm"><i class="fa-solid fa-user-shield"></i></div>
+                        <h4 class="font-bold text-sm text-slate-800 dark:text-white mb-1">خصوصية تامة</h4>
+                        <p class="text-xs text-slate-600 dark:text-slate-300">يتم تعديل الملف على جهازك بدون رفعه لأي سيرفر خارجي.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+      
+        <section id="page-reorder" class="page-section hidden p-4 max-w-5xl mx-auto">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-8 mt-6 text-center">
+                <h2 class="text-2xl font-bold mb-4 text-emerald-600"><i class="fa-solid fa-arrow-down-up-across-line"></i> إعادة ترتيب الصفحات</h2>
+                <input type="file" id="ro-file" class="hidden" accept=".pdf">
+                <button onclick="document.getElementById('ro-file').click()" id="ro-upload-btn" class="bg-emerald-50 border-2 border-emerald-200 border-dashed text-emerald-600 w-full py-8 rounded-xl font-bold hover:bg-emerald-100 flex flex-col items-center justify-center gap-3 transition">
+                    <i class="fa-solid fa-file-pdf text-4xl animate-bounce"></i><span>ارفع الملف للترتيب</span>
+                </button>
+                <div id="ro-workspace" class="hidden mt-6">
+                    <p class="text-sm text-gray-500 mb-4">اسحب وأفلت الصفحات أدناه لإعادة ترتيبها (Drag & Drop)</p>
+                    <div id="ro-grid" class="flex flex-wrap gap-4 p-4 bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600 border rounded-xl min-h-[300px] justify-center items-center"></div>
+                    <button id="ro-export" class="w-full bg-emerald-600 text-white py-3 rounded-xl font-bold mt-4 hover:bg-emerald-700"><i class="fa-solid fa-download"></i> حفظ الترتيب الجديد</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 pt-8 border-t border-gray-100 text-center">
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-arrows-up-down"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">ترتيب مرن</h4>
+                        <p class="text-xs text-gray-500">غيّر ترتيب الصفحات بسهولة بالسحب والإفلات.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-eye"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">معاينة مباشرة</h4>
+                        <p class="text-xs text-gray-500">شاهد الصفحات وترتيبها قبل حفظ الملف النهائي.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-shield"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">أمان تام</h4>
+                        <p class="text-xs text-gray-500">ملفاتك تتم معالجتها على جهازك بدون رفعها لأي سيرفر.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================== 13. حماية (Protect) ================== -->
+        <section id="page-protect" class="page-section hidden p-4 max-w-3xl mx-auto">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-8 mt-6 text-center">
+                <h2 class="text-2xl font-bold mb-4 text-fuchsia-600"><i class="fa-solid fa-lock"></i> تشفير وحماية برقم سري</h2>
+                <input type="file" id="pr-file" class="hidden" accept=".pdf">
+                <button onclick="document.getElementById('pr-file').click()" class="bg-fuchsia-50 border-2 border-fuchsia-200 border-dashed text-fuchsia-600 w-full py-8 rounded-xl font-bold hover:bg-fuchsia-100 flex flex-col items-center justify-center gap-3 transition">
+                    <i class="fa-solid fa-file-pdf text-4xl animate-bounce"></i><span>ارفع الملف للحماية</span>
+                </button>
+                    <div id="pr-workspace" class="hidden mt-6">
+                    <input type="password" id="pr-pass" class="w-full p-3 border-2 border-fuchsia-200 rounded-xl mb-4 text-center font-bold dark:text-gray-800" placeholder="أدخل كلمة المرور السرية للملف">
+                    <button id="pr-export" class="w-full bg-fuchsia-600 text-white py-3 rounded-xl font-bold hover:bg-fuchsia-700"><i class="fa-solid fa-lock"></i> تشفير وتحميل</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 pt-8 border-t border-gray-100 text-center">
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-fuchsia-100 text-fuchsia-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-shield"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">حماية قوية</h4>
+                        <p class="text-xs text-gray-500">أضف كلمة مرور لحماية ملف PDF الخاص بك.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-fuchsia-100 text-fuchsia-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-user-shield"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">خصوصية</h4>
+                        <p class="text-xs text-gray-500">ملفك لا يحتاج إلى الرفع على خدمة خارجية.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-fuchsia-100 text-fuchsia-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-key"></i></div>
+                        <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">كلمة مرور</h4>
+                        <p class="text-xs text-gray-500">اختر كلمة مرور خاصة بك قبل حفظ الملف.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 dark:bg-slate-700 text-white px-5 py-3 rounded-xl shadow-2xl transition-all duration-300 opacity-0 pointer-events-none z-[110] flex items-center gap-2">
+            <i id="toast-icon" class="fa-solid fa-circle-check text-green-400"></i>
+            <span id="toast-msg" class="text-sm font-bold"></span>
+        </div>
+
+        <div id="global-loading" class="fixed inset-0 bg-white/90 dark:bg-slate-900/90 flex flex-col justify-center items-center z-[100] hidden backdrop-blur-sm">
+            <i class="fa-solid fa-spinner fa-spin text-5xl text-blue-600 mb-4"></i>
+            <span id="global-loading-txt" class="font-bold text-xl text-gray-700 mb-4">جاري المعالجة...</span>
+            <div id="progress-container" class="w-64 bg-gray-200 rounded-full h-2.5 mb-2 hidden">
+                <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-100" style="width: 0%"></div>
+            </div>
+            <span id="progress-text" class="text-sm font-bold text-blue-600 hidden">0%</span>
+        </div>
+        
+        <button id="back-to-home-btn" onclick="navigate('home')" class="fixed bottom-6 left-6 bg-slate-800 hover:bg-blue-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-xl transition-all hover:scale-110 z-[60] hidden group">
+            <i class="fa-solid fa-house"></i>
+            <span class="absolute right-full mr-3 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">الرئيسية</span>
+        </button>
+
+    </main>
+
+    <footer class="bg-white dark:bg-slate-900 border-t dark:border-slate-800 mt-auto py-4 text-center text-gray-500 dark:text-gray-400 text-xs md:text-sm transition-colors duration-300">
+        <p>Dev By <a href="https://engmohammedsaad.github.io/Eto.io/" target="_blank" class="text-blue-600 dark:text-blue-400 font-extrabold underline hover:text-blue-800 dark:hover:text-blue-300 transition-colors">Mohammed Eto</a> &copy; 2026. جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast'), msg = document.getElementById('toast-msg'), icon = document.getElementById('toast-icon');
+            msg.textContent = message;
+            icon.className = type === 'success' ? 'fa-solid fa-circle-check text-green-400' : 'fa-solid fa-triangle-exclamation text-red-400';
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => toast.classList.add('opacity-0', 'pointer-events-none'), 3000);
+        }
+
+        const body = document.body;
+        const darkIcon = document.getElementById('dark-icon');
+        document.getElementById('dark-toggle-btn').onclick = () => {
+            body.classList.toggle('dark');
+            darkIcon.className = body.classList.contains('dark') ? 'fa-solid fa-sun text-xl text-yellow-400' : 'fa-solid fa-moon text-xl';
+        };
+        function navigate(pageId) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById('page-' + pageId).classList.remove('hidden');
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.querySelectorAll(`button[onclick="navigate('${pageId}')"]`).forEach(btn => btn.classList.add('active'));
+            document.getElementById('mobile-menu').classList.add('hidden');
+            const backBtn = document.getElementById('back-to-home-btn');
+            if (backBtn) { if (pageId === 'home') backBtn.classList.add('hidden'); else backBtn.classList.remove('hidden'); }
+        }
+
+        const desktopLinks = document.querySelector('.lg\\:flex.space-x-4').innerHTML;
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenu.innerHTML = desktopLinks.replace(/px-2 py-4/g, 'block w-full text-right px-4 py-3 border-b hover:bg-gray-50 text-gray-700 dark:hover:bg-slate-800 dark:text-gray-200');
+        document.getElementById('mobile-menu-btn').onclick = () => mobileMenu.classList.toggle('hidden');
+
+        function showLoad(txt) { 
+            document.getElementById('global-loading-txt').textContent = txt; 
+            document.getElementById('global-loading').classList.remove('hidden');
+            document.getElementById('progress-container').classList.add('hidden');
+            document.getElementById('progress-text').classList.add('hidden');
+            document.getElementById('progress-bar').style.width = '0%';
+        }
+        function hideLoad() { document.getElementById('global-loading').classList.add('hidden'); }
+        async function updateProgress(percent, txt) {
+            document.getElementById('progress-container').classList.remove('hidden');
+            document.getElementById('progress-text').classList.remove('hidden');
+            document.getElementById('progress-bar').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = percent + '% ' + (txt ? '- ' + txt : '');
+            await new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 0)));
+        }
+
+        function hexToRgb(hex) { let r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex); return r ? { r: parseInt(r[1], 16), g: parseInt(r[2], 16), b: parseInt(r[3], 16) } : {r:0, g:0, b:0}; }
+        let cPdf = null, cPage = 1, cTheme = 'original', cCustom = {bg:'#fff', text:'#000'}, cZoom = 1.0;
+        const cCan = document.getElementById('cleaner-canvas'), cCtx = cCan.getContext('2d', { willReadFrequently: true });
+        const oCan = document.createElement('canvas'), oCtx = oCan.getContext('2d', { willReadFrequently: true });
+        let highlights = {};
+
+        document.getElementById('cleaner-zoom-in').onclick = () => { cZoom += 0.2; document.getElementById('cleaner-zoom-val').textContent = Math.round(cZoom*100)+'%'; renderCPage(); };
+        document.getElementById('cleaner-zoom-out').onclick = () => { if(cZoom>0.4){ cZoom -= 0.2; document.getElementById('cleaner-zoom-val').textContent = Math.round(cZoom*100)+'%'; renderCPage(); } };
+
+        document.getElementById('cleaner-file').onchange = async (e) => {
+            if(!e.target.files.length) return;
+            document.getElementById('cleaner-filename').textContent = e.target.files[0].name;
+            document.getElementById('cleaner-upload').classList.add('hidden');
+            document.getElementById('cleaner-workspace').classList.remove('hidden');
+            document.getElementById('cleaner-workspace').classList.add('flex');
+            showLoad('جاري فتح الملف...');
+            try {
+                const bytes = await e.target.files[0].arrayBuffer();
+                cPdf = await pdfjsLib.getDocument(new Uint8Array(bytes)).promise;
+                document.getElementById('cleaner-tot').textContent = cPdf.numPages;
+                highlights = {}; cPage = 1; await renderCPage(); showToast('تم الفتح بنجاح');
+            } catch(er) { showToast("خطأ في القراءة", "error"); }
+            hideLoad();
+        };
+
+        async function renderCPage() {
+            const page = await cPdf.getPage(cPage);
+            const vp = page.getViewport({ scale: 2.0 * cZoom });
+            oCan.width = cCan.width = vp.width; oCan.height = cCan.height = vp.height;
+            await page.render({ canvasContext: oCtx, viewport: vp }).promise;
+            document.getElementById('cleaner-curr').textContent = cPage;
+            applyCTheme();
+        }
+
+        document.getElementById('cleaner-prev').onclick = () => { if(cPage > 1){ cPage--; renderCPage(); } };
+        document.getElementById('cleaner-next').onclick = () => { if(cPage < cPdf.numPages){ cPage++; renderCPage(); } };
+        document.getElementById('cleaner-theme-select').onchange = (e) => { 
+            cTheme = e.target.value; 
+            showLoad('جاري تطبيق الثيم...');
+            setTimeout(() => { applyCTheme(); hideLoad(); }, 50);
+        };
+        document.getElementById('btn-add-theme').onclick = () => {
+            cCustom.bg = document.getElementById('cleaner-custom-bg').value;
+            cCustom.text = document.getElementById('cleaner-custom-text').value;
+            let n = document.getElementById('cleaner-custom-name').value || 'مخصص';
+            let sel = document.getElementById('cleaner-theme-select');
+            sel.add(new Option(n, 'custom')); sel.value = 'custom'; cTheme = 'custom'; 
+            showLoad('جاري تطبيق الثيم...');
+            setTimeout(() => { applyCTheme(); hideLoad(); showToast('تم تطبيق الثيم المخصص'); }, 50);
+        };
+
+        function processPixels(imgData, themeId) {
+            const d = imgData.data;
+            if(themeId === 'bw') {
+                for (let i = 0; i < d.length; i += 4) { const avg = (d[i]+d[i+1]+d[i+2])/3; const v = avg < 128 ? 0 : 255; d[i]=d[i+1]=d[i+2]=v; }
+                return imgData;
+            }
+            let bg, txt;
+            if(themeId === 'dark') { bg = hexToRgb('#0f172a'); txt = hexToRgb('#e2e8f0'); }
+            else if(themeId === 'sepia') { bg = hexToRgb('#fdf6e3'); txt = hexToRgb('#657b83'); }
+            else if(themeId === 'green') { bg = hexToRgb('#e0f8e8'); txt = hexToRgb('#114a22'); }
+            else if(themeId === 'rose') { bg = hexToRgb('#ffe4e6'); txt = hexToRgb('#881337'); }
+            else if(themeId === 'blue') { bg = hexToRgb('#e0f2fe'); txt = hexToRgb('#0c4a6e'); }
+            else if(themeId === 'yellow') { bg = hexToRgb('#fef9c3'); txt = hexToRgb('#713f12'); }
+            else if(themeId === 'gray') { bg = hexToRgb('#f1f5f9'); txt = hexToRgb('#0f172a'); }
+            else if(themeId === 'custom') { bg = hexToRgb(cCustom.bg); txt = hexToRgb(cCustom.text); }
+            else return imgData; 
+            
+            for (let i = 0; i < d.length; i += 4) {
+                const luma = (0.299 * d[i] + 0.587 * d[i+1] + 0.114 * d[i+2]) / 255;
+                d[i] = txt.r + (bg.r - txt.r) * luma; d[i+1] = txt.g + (bg.g - txt.g) * luma; d[i+2] = txt.b + (bg.b - txt.b) * luma;
+            }
+            return imgData;
+        }
+        function applyCTheme() {
+            const imgData = oCtx.getImageData(0, 0, oCan.width, oCan.height);
+            cCtx.putImageData(processPixels(imgData, cTheme), 0, 0);
+            drawHighlights();
+        }
+        cCan.ondblclick = (e) => {
+            const rect = cCan.getBoundingClientRect();
+            const scaleX = cCan.width / rect.width; const scaleY = cCan.height / rect.height;
+            const x = (e.clientX - rect.left) * scaleX; const y = (e.clientY - rect.top) * scaleY;
+            if(!highlights[cPage]) highlights[cPage] = [];
+            const baseScale = 2.0;
+            const currentScale = 2.0 * cZoom;
+            const factor = baseScale / currentScale;
+
+            highlights[cPage].push({
+                x: (x - 75) * factor,
+                y: (y - 20) * factor,
+                w: 150 * factor,
+                h: 40 * factor,
+                color: '#ffeb3b'
+            });
+            drawHighlights();
+        };
+        function drawHighlights() {
+            if(!highlights[cPage]) return;
+            highlights[cPage].forEach(h => { cCtx.fillStyle = h.color; cCtx.globalAlpha = 0.4; cCtx.fillRect(h.x, h.y, h.w, h.h); cCtx.globalAlpha = 1.0; });
+        }
+
+        document.getElementById('cleaner-export').onclick = async () => {
+            showLoad('جاري تصدير الـ PDF...');
+            setTimeout(async () => {
+                try {
+                    const { jsPDF } = window.jspdf; let pdfExport = null;
+                    for (let i = 1; i <= cPdf.numPages; i++) {
+                        await updateProgress(Math.round((i / cPdf.numPages) * 100), `صفحة ${i}`);
+                        const p = await cPdf.getPage(i); const vp = p.getViewport({ scale: 2.0 });
+                        oCan.width = vp.width; oCan.height = vp.height;
+                        await p.render({ canvasContext: oCtx, viewport: vp }).promise;
+                        let imgData = oCtx.getImageData(0, 0, oCan.width, oCan.height);
+                        cCtx.canvas.width = oCan.width; cCtx.canvas.height = oCan.height;
+                        cCtx.putImageData(processPixels(imgData, cTheme), 0, 0);
+                        cPage = i; drawHighlights();                         
+                        const format = vp.width > vp.height ? 'l' : 'p';
+                        if (i === 1) pdfExport = new jsPDF(format, 'px', [vp.width, vp.height]);
+                        else pdfExport.addPage([vp.width, vp.height], format);
+                        pdfExport.addImage(cCtx.canvas.toDataURL('image/jpeg', 0.85), 'JPEG', 0, 0, vp.width, vp.height);
+                    }
+                    pdfExport.save('Cleaned_File.pdf');
+                    cPage = 1; applyCTheme(); showToast('تم التصدير بنجاح');
+                } catch(e) { showToast('خطأ في التصدير', 'error'); }
+                hideLoad();
+            }, 50);
+        };
+        const iCan = document.getElementById('img-canvas'), iCtx = iCan.getContext('2d', { willReadFrequently: true });
+        let rawImg = new Image();
+        document.getElementById('img-cleaner-file').onchange = (e) => {
+            if(!e.target.files.length) return;
+            const r = new FileReader();
+            r.onload = (ev) => {
+                rawImg.onload = () => {
+                    document.getElementById('img-cleaner-workspace').classList.remove('hidden');
+                    iCan.width = rawImg.width; iCan.height = rawImg.height; applyImgTheme();
+                };
+                rawImg.src = ev.target.result;
+            };
+            r.readAsDataURL(e.target.files[0]); showToast('تم الرفع');
+        };
+        document.getElementById('img-theme').onchange = applyImgTheme;
+        function applyImgTheme() {
+            iCtx.drawImage(rawImg, 0, 0); const theme = document.getElementById('img-theme').value;
+            if(theme === 'original') return;
+            const imgData = iCtx.getImageData(0, 0, iCan.width, iCan.height);
+            iCtx.putImageData(processPixels(imgData, theme), 0, 0);
+        }
+        document.getElementById('img-export').onclick = () => {
+            const link = document.createElement('a'); link.download = 'Cleaned_Image.jpg'; link.href = iCan.toDataURL('image/jpeg', 0.9); link.click();
+            showToast('تم تحميل الصورة');
+        };
+        let compPdfBytes = null;
+        document.getElementById('compress-file').onchange = async (e) => {
+            if(!e.target.files.length) return;
+            document.getElementById('compress-name').textContent = e.target.files[0].name;
+            document.getElementById('compress-options').classList.remove('hidden');
+            compPdfBytes = await e.target.files[0].arrayBuffer(); showToast('ملف جاهز للضغط');
+        };
+        document.getElementById('compress-btn').onclick = async () => {
+            showLoad('جاري الضغط...');
+            setTimeout(async () => {
+                try {
+                    const pdf = await pdfjsLib.getDocument(new Uint8Array(compPdfBytes)).promise;
+                    const { jsPDF } = window.jspdf;
+                    const qual = parseFloat(document.getElementById('compress-level').value);
+                    let outPdf = null; const tCan = document.createElement('canvas'), tCtx = tCan.getContext('2d');
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        await updateProgress(Math.round((i / pdf.numPages) * 100), `ضغط صفحة ${i}`);
+                        const p = await pdf.getPage(i); const originalVp = p.getViewport({ scale: 1.0 });
+                        let renderScale = qual >= 0.9 ? 1.0 : (qual >= 0.7 ? 0.7 : 0.4);
+                        const vp = p.getViewport({ scale: renderScale });
+                        tCan.width = vp.width; tCan.height = vp.height;
+                        await p.render({ canvasContext: tCtx, viewport: vp }).promise;
+                        const format = originalVp.width > originalVp.height ? 'l' : 'p';
+                        if (i === 1) outPdf = new jsPDF(format, 'px', [originalVp.width, originalVp.height]);
+                        else outPdf.addPage([originalVp.width, originalVp.height], format);
+                        outPdf.addImage(tCan.toDataURL('image/jpeg', qual), 'JPEG', 0, 0, originalVp.width, originalVp.height);
+                    }
+                    outPdf.save('Compressed.pdf'); showToast('تم الضغط بنجاح');
+                } catch(e) { showToast('خطأ أثناء الضغط', 'error'); }
+                hideLoad();
+            }, 100);
+        };
+        let mergeFiles = [], currentMergeRenderId = 0, sortableInstance = null;
+        const mInput = document.getElementById('merge-file-input'), mList = document.getElementById('merge-file-list'), mBtn = document.getElementById('merge-btn'), mWorkspace = document.getElementById('merge-workspace'), mPreview = document.getElementById('merge-preview-container');
+
+        mInput.onchange = async function() {
+            const newFiles = Array.from(this.files).filter(f => f.type === 'application/pdf');
+            if(newFiles.length > 0) { mergeFiles = mergeFiles.concat(newFiles); mWorkspace.classList.remove('hidden'); await renderMergeList(); showToast('تمت الإضافة للمكتبة'); }
+            this.value = ''; 
+        };
+
+        async function renderMergeList() {
+            const renderId = ++currentMergeRenderId;
+            mList.innerHTML = ''; mPreview.innerHTML = '';
+            if(mergeFiles.length === 0) { mWorkspace.classList.add('hidden'); return; }
+            mBtn.disabled = mergeFiles.length < 2;
+            mBtn.className = mergeFiles.length < 2 ? "w-full bg-gray-400 text-white font-bold py-3 rounded-xl mt-6 transition flex items-center justify-center gap-2" : "w-full bg-green-500 hover:bg-green-600 shadow-lg shadow-green-500/20 text-white font-bold py-3 rounded-xl mt-6 transition flex items-center justify-center gap-2";
+            mBtn.innerHTML = mergeFiles.length < 2 ? '<i class="fa-solid fa-triangle-exclamation"></i> يرجى إضافة ملف آخر' : '<i class="fa-solid fa-object-group"></i> دمج وتحميل الملف النهائي';
+
+            for(let i = 0; i < mergeFiles.length; i++) {
+                if (renderId !== currentMergeRenderId) return;
+                const f = mergeFiles[i];
+                const li = document.createElement('li'); 
+                li.className = "flex justify-between items-center bg-white p-3 rounded-xl border border-gray-200 shadow-sm transition hover:shadow-md cursor-move merge-drag-item";
+                li.setAttribute('data-id', i);
+                
+                li.innerHTML = `
+                    <div class="flex gap-3 items-center w-full">
+                        <div class="text-gray-400 hover:text-green-600"><i class="fa-solid fa-grip-vertical"></i></div>
+                        <div class="flex items-center gap-2 overflow-hidden">
+                            <span class="bg-green-100 text-green-700 font-bold px-2 py-1 rounded text-xs badge-num">${i + 1}</span>
+                            <span class="font-bold text-sm text-slate-700 dark:text-slate-200 truncate max-w-[150px] sm:max-w-xs">${f.name}</span>
+                        </div>
+                    </div>
+                    <button class="del-btn text-red-500 hover:bg-red-50 p-2 rounded-lg transition ml-2"><i class="fa-solid fa-trash"></i></button>
+                `;
+                mList.appendChild(li);
+                li.querySelector('.del-btn').onclick = async () => { mergeFiles.splice(i, 1); await renderMergeList(); };
+                const previewItem = document.createElement('div');
+                previewItem.className = "flex-shrink-0 flex flex-col items-center gap-2 bg-white p-2 rounded-lg border shadow-sm w-28 relative";
+                const canvasContainer = document.createElement('div');
+                canvasContainer.className = "w-full h-32 bg-gray-100 rounded flex items-center justify-center overflow-hidden skeleton";
+                previewItem.innerHTML = `<div class="absolute top-1 right-1 bg-green-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-md z-10">${i + 1}</div><span class="text-[10px] font-bold text-gray-600 truncate w-full text-center mt-auto">${f.name}</span>`;
+                previewItem.insertBefore(canvasContainer, previewItem.firstChild);
+                mPreview.appendChild(previewItem);
+                
+                try {
+                    const buf = await f.arrayBuffer();
+                    if (renderId !== currentMergeRenderId) return;
+                    const pdf = await pdfjsLib.getDocument(new Uint8Array(buf.slice(0))).promise;
+                    if (renderId !== currentMergeRenderId) return;
+                    const page = await pdf.getPage(1); const vp = page.getViewport({ scale: 0.5 });
+                    const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
+                    canvas.width = vp.width; canvas.height = vp.height; canvas.className = "w-full h-full object-contain";
+                    await page.render({ canvasContext: ctx, viewport: vp }).promise;
+                    if (renderId !== currentMergeRenderId) return;
+                    canvasContainer.classList.remove('skeleton');
+                    canvasContainer.appendChild(canvas);
+                } catch(e) { canvasContainer.classList.remove('skeleton'); canvasContainer.innerHTML = '<i class="fa-solid fa-file-pdf text-red-400 text-3xl"></i>'; }
+            }
+
+            if(sortableInstance) sortableInstance.destroy();
+            sortableInstance = new Sortable(mList, {
+                animation: 150,
+                onEnd: async function (evt) {
+                    const itemEl = mergeFiles.splice(evt.oldIndex, 1)[0];
+                    mergeFiles.splice(evt.newIndex, 0, itemEl);
+                    await renderMergeList();
+                }
+            });
+        }
+
+        mBtn.onclick = async () => {
+            if(mergeFiles.length < 2) return;
+            showLoad('جاري دمج الملفات...');
+            try {
+                const { PDFDocument } = PDFLib; const mergedPdf = await PDFDocument.create();
+                for (let i = 0; i < mergeFiles.length; i++) {
+                    await updateProgress(Math.round(((i + 1) / mergeFiles.length) * 100), `ملف ${i + 1}`);
+                    const buf = await mergeFiles[i].arrayBuffer(); 
+                    const pdf = await PDFDocument.load(buf);
+                    const pages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+                    pages.forEach(p => mergedPdf.addPage(p));
+                }
+                const bytes = await mergedPdf.save();
+                const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([bytes], {type: 'application/pdf'})); 
+                a.download = 'Merged_By_Eto.pdf'; a.click(); showToast('اكتمل الدمج!');
+            } catch (e) { showToast("خطأ أثناء الدمج", "error"); }
+            hideLoad();
+        };
+        let extBytes = null, extNumPages = 0, finalExtBytes = null, pagesToDelete = new Set();
+        document.getElementById('ext-file').onchange = async (e) => {
+            if(!e.target.files.length) return;
+            showLoad('جاري التحليل...');
+            extBytes = await e.target.files[0].arrayBuffer();
+            const pdf = await pdfjsLib.getDocument(new Uint8Array(extBytes.slice(0))).promise;
+            extNumPages = pdf.numPages;
+            document.getElementById('ext-name').textContent = `${e.target.files[0].name} (${extNumPages} صفحة)`;
+            document.getElementById('ext-from').value = 1; document.getElementById('ext-to').value = extNumPages; document.getElementById('ext-exclude').value = '';
+            pagesToDelete.clear(); renderExtGrid();
+            document.getElementById('ext-workspace').classList.remove('hidden'); document.getElementById('ext-btn-download').classList.add('hidden'); document.getElementById('ext-preview-container').classList.add('hidden'); document.getElementById('ext-btn-preview').classList.remove('hidden');
+            hideLoad(); showToast('الملف جاهز للاستخراج');
+        };
+
+        function renderExtGrid() {
+            const grid = document.getElementById('ext-page-grid'); grid.innerHTML = '';
+            for(let i = 1; i <= extNumPages; i++) {
+                const btn = document.createElement('button'); btn.textContent = i;
+                btn.className = pagesToDelete.has(i) ? 'w-10 h-10 rounded bg-red-500 text-white font-bold shadow-sm transition' : 'w-10 h-10 rounded bg-white border border-gray-300 text-gray-700 font-bold hover:bg-gray-100 shadow-sm transition';
+                btn.onclick = () => { if(pagesToDelete.has(i)) pagesToDelete.delete(i); else pagesToDelete.add(i); renderExtGrid(); };
+                grid.appendChild(btn);
+            }
+        }
+        function applyRangeLogic() {
+            const from = parseInt(document.getElementById('ext-from').value) || 1, to = parseInt(document.getElementById('ext-to').value) || extNumPages;
+            const excludes = document.getElementById('ext-exclude').value.split(',').map(n => parseInt(n.trim())).filter(n => !isNaN(n));
+            pagesToDelete.clear();
+            for(let i = 1; i <= extNumPages; i++) { if (i < from || i > to || excludes.includes(i)) pagesToDelete.add(i); }
+            renderExtGrid();
+        }
+        document.getElementById('ext-from').oninput = applyRangeLogic; document.getElementById('ext-to').oninput = applyRangeLogic; document.getElementById('ext-exclude').oninput = applyRangeLogic;
+
+        document.getElementById('ext-btn-preview').onclick = async () => {
+            showLoad('تجهيز المعاينة...');
+            try {
+                const { PDFDocument } = PDFLib; const srcDoc = await PDFDocument.load(extBytes); const outDoc = await PDFDocument.create();
+                let indices = [];
+                for(let i = 0; i < extNumPages; i++) { if(!pagesToDelete.has(i + 1)) indices.push(i); }
+                if(indices.length === 0) { hideLoad(); return showToast('لقد حذفت جميع الصفحات!', 'error'); }
+                const copied = await outDoc.copyPages(srcDoc, indices); copied.forEach(p => outDoc.addPage(p));
+                finalExtBytes = await outDoc.save();
+                document.getElementById('ext-preview-frame').src = URL.createObjectURL(new Blob([finalExtBytes], {type: 'application/pdf'}));
+                document.getElementById('ext-preview-container').classList.remove('hidden'); document.getElementById('ext-btn-download').classList.remove('hidden'); showToast('المعاينة جاهزة');
+            } catch(e) { showToast('خطأ أثناء المعالجة', 'error'); }
+            hideLoad();
+        };
+
+        document.getElementById('ext-btn-download').onclick = () => {
+            if(!finalExtBytes) return;
+            let fn = prompt("اسم الملف:", "support_eto.pdf"); if (!fn) return; if (!fn.toLowerCase().endsWith('.pdf')) fn += ".pdf";
+            const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([finalExtBytes], {type: 'application/pdf'})); a.download = fn; a.click();
+        };
+        let edBytes = null, edPdf = null, edPage = 1, edRotations = {}, edCrops = {}, edZoom = 1.0;
+        const edCan = document.getElementById('edit-canvas'), edCtx = edCan.getContext('2d'), cropBox = document.getElementById('crop-overlay');
+        let isDrawing = false, startX, startY;
+
+        document.getElementById('edit-zoom-in').onclick = () => { edZoom += 0.2; document.getElementById('edit-zoom-val').textContent = Math.round(edZoom*100)+'%'; renderEdPage(); };
+        document.getElementById('edit-zoom-out').onclick = () => { if(edZoom>0.4){ edZoom -= 0.2; document.getElementById('edit-zoom-val').textContent = Math.round(edZoom*100)+'%'; renderEdPage(); } };
+
+        document.getElementById('edit-file').onchange = async (e) => {
+            if(!e.target.files.length) return;
+            document.getElementById('edit-upload-btn').classList.add('hidden'); document.getElementById('edit-workspace').classList.remove('hidden'); document.getElementById('edit-workspace').classList.add('flex');
+            showLoad('جاري الفتح...');
+            edBytes = await e.target.files[0].arrayBuffer(); edPdf = await pdfjsLib.getDocument(new Uint8Array(edBytes.slice(0))).promise;
+            edPage = 1; edRotations = {}; edCrops = {}; await renderEdPage(); hideLoad(); showToast('جاهز للتعديل');
+        };
+
+        async function renderEdPage() {
+            const page = await edPdf.getPage(edPage);
+            const vp = page.getViewport({ scale: 1.5 * edZoom, rotation: edRotations[edPage] || 0 });
+            edCan.width = vp.width; edCan.height = vp.height; await page.render({ canvasContext: edCtx, viewport: vp }).promise;
+            document.getElementById('edit-curr').textContent = edPage; cropBox.classList.add('hidden');
+        }
+
+        document.getElementById('edit-prev').onclick = () => { if(edPage > 1){ edPage--; renderEdPage(); } };
+        document.getElementById('edit-next').onclick = () => { if(edPage < edPdf.numPages){ edPage++; renderEdPage(); } };
+        document.getElementById('edit-rotate').onclick = () => { edRotations[edPage] = ((edRotations[edPage] || 0) + 90) % 360; renderEdPage(); };
+        
+        document.getElementById('edit-crop-start').onclick = () => { cropBox.classList.remove('hidden'); cropBox.style.width = '0'; cropBox.style.height = '0'; showToast('حدد مكان القص بالماوس'); };
+        document.getElementById('edit-canvas-container').onmousedown = (e) => {
+            if(cropBox.classList.contains('hidden')) return;
+            isDrawing = true; const rect = edCan.getBoundingClientRect(); startX = e.clientX - rect.left; startY = e.clientY - rect.top;
+            cropBox.style.left = startX + 'px'; cropBox.style.top = startY + 'px';
+        };
+        document.getElementById('edit-canvas-container').onmousemove = (e) => {
+            if(!isDrawing) return;
+            const rect = edCan.getBoundingClientRect(); const currX = e.clientX - rect.left, currY = e.clientY - rect.top;
+            const w = currX - startX, h = currY - startY;
+            cropBox.style.width = Math.abs(w) + 'px'; cropBox.style.height = Math.abs(h) + 'px';
+            cropBox.style.left = (w < 0 ? currX : startX) + 'px'; cropBox.style.top = (h < 0 ? currY : startY) + 'px';
+        };
+        document.getElementById('edit-canvas-container').onmouseup = () => {
+            if(!isDrawing) return; isDrawing = false;
+            const w = parseFloat(cropBox.style.width), h = parseFloat(cropBox.style.height);
+            if(w > 10 && h > 10) {
+                const l = parseFloat(cropBox.style.left), t = parseFloat(cropBox.style.top);
+                edCrops[edPage] = { rx: l/edCan.width, ry: t/edCan.height, rw: w/edCan.width, rh: h/edCan.height };
+                showToast('تم تحديد القص للصفحة الحالية');
+            }
+        };
+
+        document.getElementById('edit-export').onclick = async () => {
+            showLoad('حفظ التعديلات...');
+            try {
+                const { PDFDocument, degrees } = PDFLib; const doc = await PDFDocument.load(edBytes); const pages = doc.getPages();
+                for (let i = 0; i < pages.length; i++) {
+                    const pgNum = i + 1;
+                    if(edRotations[pgNum]) pages[i].setRotation(degrees(edRotations[pgNum]));
+                    if(edCrops[pgNum]) {
+                        const { width, height } = pages[i].getSize(); const c = edCrops[pgNum];
+                        pages[i].setCropBox(c.rx * width, height - (c.ry * height) - (c.rh * height), c.rw * width, c.rh * height);
+                    }
+                }
+                const bytes = await doc.save();
+                const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([bytes])); a.download = 'Edited.pdf'; a.click(); showToast('تم الحفظ');
+            } catch(e) { showToast('حدث خطأ', 'error'); }
+            hideLoad();
+        };
+        let cImgs = [];
+        document.getElementById('img-to-pdf-file').onchange = (e) => { cImgs = Array.from(e.target.files); if(cImgs.length) { document.getElementById('btn-img-to-pdf').classList.remove('hidden'); document.getElementById('btn-img-to-pdf').textContent = `تحميل PDF (${cImgs.length} صور)`; } };
+        document.getElementById('btn-img-to-pdf').onclick = async () => {
+            showLoad('جاري التحويل...');
+            setTimeout(async () => {
+                const { jsPDF } = window.jspdf; let doc = new jsPDF();
+                for (let idx = 0; idx < cImgs.length; idx++) {
+                    await updateProgress(Math.round(((idx + 1) / cImgs.length) * 100), `تحويل ${idx + 1}`);
+                    if(idx > 0) doc.addPage();
+                    const dataUrl = await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(cImgs[idx]);
+                    });
+
+                    const format = cImgs[idx].type === 'image/png' ? 'PNG' : 'JPEG';
+                    doc.addImage(dataUrl, format, 0, 0, 210, 297);
+                }
+                doc.save('Converted.pdf'); hideLoad(); showToast('تم التحويل');
+            }, 100);
+        };
+        
+        document.getElementById('pdf-to-img-file').onchange = async (e) => {
+            if(!e.target.files.length) return; showLoad('استخراج الصور...');
+            const buf = await e.target.files[0].arrayBuffer(); const pdf = await pdfjsLib.getDocument(new Uint8Array(buf)).promise;
+            const resDiv = document.getElementById('pdf-to-img-results'); resDiv.innerHTML = '';
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const btn = document.createElement('button'); btn.className = "bg-white border text-blue-700 py-1 rounded hover:bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600"; btn.textContent = `تحميل صفحة ${i}`;
+                btn.onclick = async () => {
+                    const p = await pdf.getPage(i);
+                    const vp = p.getViewport({ scale: 2.0 });
+                    const c = document.createElement('canvas');
+                    const ctx = c.getContext('2d');
+
+                    c.width = vp.width;
+                    c.height = vp.height;
+
+                    await p.render({
+                        canvasContext: ctx,
+                        viewport: vp
+                    }).promise;
+
+                    const a = document.createElement('a');
+                    a.href = c.toDataURL('image/jpeg', 0.92);
+                    a.download = `Page_${i}.jpg`;
+                    a.click();
+
+                    showToast(`تم تحميل صفحة ${i}`);
+                };
+                resDiv.appendChild(btn);
+            }
+            hideLoad(); showToast('تم الاستخراج جاهز للتحميل');
+        };
+
+        function switchTextMode(mode) {
+            document.getElementById('btn-mode-extract').className = mode === 'extract' ? 'px-4 py-1 rounded bg-white font-bold shadow-sm' : 'px-4 py-1 rounded text-gray-500 font-bold hover:text-gray-800';
+            document.getElementById('btn-mode-create').className = mode === 'create' ? 'px-4 py-1 rounded bg-white font-bold shadow-sm' : 'px-4 py-1 rounded text-gray-500 font-bold hover:text-gray-800';
+            document.getElementById('text-extract-ui').classList.toggle('hidden', mode === 'create');
+            document.getElementById('text-export-btn').classList.toggle('hidden', mode === 'extract');
+            document.getElementById('text-area').value = '';
+        }
+        document.getElementById('text-pdf-file').onchange = async (e) => {
+            if(!e.target.files.length) return; const file = e.target.files[0]; showLoad('قراءة النص OCR...');
+            try {
+                let fullText = ""; const worker = await Tesseract.createWorker(); await worker.loadLanguage('ara'); await worker.initialize('ara');
+                if (file.type.startsWith('image/')) {
+                    await updateProgress(50, 'تحليل الصورة...');
+                    const imageUrl = URL.createObjectURL(file);
+
+                    try {
+                        const { data: { text } } = await worker.recognize(imageUrl);
+                        fullText = text;
+                    } finally {
+                        URL.revokeObjectURL(imageUrl);
+                    }
+                } else if (file.type === 'application/pdf') {
+                    const pdf = await pdfjsLib.getDocument(new Uint8Array(await file.arrayBuffer())).promise;
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        await updateProgress(Math.round((i / pdf.numPages) * 100), `صفحة ${i}`);
+                        const p = await pdf.getPage(i); const vp = p.getViewport({ scale: 4.0 });
+                        const c = document.createElement('canvas'), ctx = c.getContext('2d'); c.width = vp.width; c.height = vp.height;
+                        await p.render({ canvasContext: ctx, viewport: vp }).promise;
+                        const { data: { text } } = await worker.recognize(c); if (text.trim() !== "") fullText += text + "\n\n";
+                    }
+                }
+                await worker.terminate(); document.getElementById('text-area').value = fullText; showToast('اكتملت القراءة');
+            } catch(err) { showToast('خطأ في استخراج النص', 'error'); }
+            hideLoad();
+        };
+        document.getElementById('text-export-btn').onclick = () => {
+            showLoad('جاري إنشاء ملف PDF...');
+
+            setTimeout(() => {
+                try {
+                    const text = document.getElementById('text-area').value.trim();
+
+                    if (!text) {
+                        hideLoad();
+                        showToast('اكتب النص أولاً', 'error');
+                        return;
+                    }
+
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF('p', 'pt', 'a4');
+
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const pageHeight = doc.internal.pageSize.getHeight();
+                    const margin = 40;
+                    const lineHeight = 30;
+                    const maxWidth = pageWidth - (margin * 2);
+
+                    doc.setFont('Helvetica');
+                    doc.setFontSize(14);
+
+                    const paragraphs = text.split('\n');
+
+                    let y = margin;
+
+                    paragraphs.forEach(paragraph => {
+                        const lines = doc.splitTextToSize(paragraph || ' ', maxWidth);
+
+                        lines.forEach(line => {
+                            if (y > pageHeight - margin) {
+                                doc.addPage();
+                                y = margin;
+                            }
+
+                            doc.text(line, pageWidth - margin, y, {
+                                align: 'right'
+                            });
+
+                            y += lineHeight;
+                        });
+
+                        y += 8;
+                    });
+
+                    doc.save('Document.pdf');
+                    hideLoad();
+                    showToast('تم تحميل الملف');
+                } catch (e) {
+                    console.error(e);
+                    hideLoad();
+                    showToast('حدث خطأ أثناء إنشاء PDF', 'error');
+                }
+            }, 100);
+        };
+        let wmBytes = null;
+        let wmPdf = null;
+        let wmPreviewPage = null;
+        let wmPreviewScale = 1;
+        let wmPosition = { x: 0.5, y: 0.5 };
+        let wmDragging = false;
+        let wmDragOffset = { x: 0, y: 0 };
+
+        const wmFileInput = document.getElementById('wm-file');
+        const wmWorkspace = document.getElementById('wm-workspace');
+        const wmPreviewCanvas = document.getElementById('wm-preview-canvas');
+        const wmPreviewStage = document.getElementById('wm-preview-stage');
+        const wmPreviewWatermark = document.getElementById('wm-preview-watermark');
+
+        function updateWatermarkPreview() {
+            if (!wmPreviewWatermark) return;
+
+            const text = document.getElementById('wm-text').value || 'PRIVATE';
+            const size = parseInt(document.getElementById('wm-size').value) || 60;
+            const opacity = parseFloat(document.getElementById('wm-opacity').value) || 0.3;
+
+            wmPreviewWatermark.textContent = text;
+            wmPreviewWatermark.style.fontFamily = "'Cairo', sans-serif";
+            wmPreviewWatermark.style.fontSize = Math.max(14, size * wmPreviewScale) + 'px';
+            wmPreviewWatermark.style.opacity = opacity;
+            wmPreviewWatermark.style.transform = 'translate(-50%, -50%) rotate(45deg)';
+            wmPreviewWatermark.style.left = (wmPosition.x * 100) + '%';
+            wmPreviewWatermark.style.top = (wmPosition.y * 100) + '%';
+        }
+
+        async function renderWatermarkPreview() {
+            if (!wmPreviewPage || !wmPreviewCanvas) return;
+
+            const rect = wmPreviewStage.getBoundingClientRect();
+            const baseViewport = wmPreviewPage.getViewport({ scale: 1 });
+            const maxWidth = Math.max(260, rect.width - 24);
+            const maxHeight = Math.max(400, rect.height - 24);
+
+            const scaleX = maxWidth / baseViewport.width;
+            const scaleY = maxHeight / baseViewport.height;
+            wmPreviewScale = Math.min(scaleX, scaleY, 1.2);
+
+            const viewport = wmPreviewPage.getViewport({ scale: wmPreviewScale });
+
+            wmPreviewCanvas.width = viewport.width;
+            wmPreviewCanvas.height = viewport.height;
+            wmPreviewCanvas.style.width = viewport.width + 'px';
+            wmPreviewCanvas.style.height = viewport.height + 'px';
+
+            const ctx = wmPreviewCanvas.getContext('2d');
+
+            await wmPreviewPage.render({
+                canvasContext: ctx,
+                viewport
+            }).promise;
+
+            updateWatermarkPreview();
+        }
+
+        async function createArabicWatermarkCanvas(text, size, opacity, rotation = 45) {
+            await document.fonts.ready;
+
+            const canvas = document.createElement('canvas');
+            const scale = 3;
+            const fontSize = Math.max(20, size) * scale;
+            const padding = 40 * scale;
+
+            const measureCtx = canvas.getContext('2d');
+            measureCtx.font = `900 ${fontSize}px Cairo, Arial, sans-serif`;
+
+            const metrics = measureCtx.measureText(text);
+            const textWidth = Math.ceil(metrics.width) + padding * 2;
+            const textHeight = Math.ceil(fontSize * 1.5) + padding * 2;
+
+            canvas.width = textWidth;
+            canvas.height = textHeight;
+
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.font = `900 ${fontSize}px Cairo, Arial, sans-serif`;
+            ctx.fillStyle = `rgba(80,80,80,${opacity})`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.direction = 'rtl';
+
+            ctx.save();
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(rotation * Math.PI / 180);
+            ctx.fillText(text, 0, 0);
+            ctx.restore();
+
+            return canvas;
+        }
+
+        wmFileInput.onchange = async (e) => {
+            if (!e.target.files.length) return;
+
+            try {
+                showLoad('جاري تجهيز المعاينة...');
+
+                wmBytes = await e.target.files[0].arrayBuffer();
+
+                wmPdf = await pdfjsLib.getDocument(
+                    new Uint8Array(wmBytes.slice(0))
+                ).promise;
+
+                wmPreviewPage = await wmPdf.getPage(1);
+                wmPosition = { x: 0.5, y: 0.5 };
+
+                wmWorkspace.classList.remove('hidden');
+
+                await renderWatermarkPreview();
+
+                showToast('تم رفع الملف، حدد مكان العلامة بالماوس');
+            } catch (e) {
+                console.error(e);
+                showToast('تعذر فتح ملف PDF', 'error');
+            }
+
+            hideLoad();
+        };
+
+        document.getElementById('wm-text').oninput = updateWatermarkPreview;
+        document.getElementById('wm-size').oninput = updateWatermarkPreview;
+        document.getElementById('wm-opacity').oninput = updateWatermarkPreview;
+
+        window.addEventListener('resize', () => {
+            if (wmPreviewPage) renderWatermarkPreview();
+        });
+
+        wmPreviewStage.addEventListener('mousedown', (e) => {
+            if (!wmPreviewWatermark || !wmPreviewPage) return;
+
+            const watermarkRect = wmPreviewWatermark.getBoundingClientRect();
+
+            if (
+                e.clientX < watermarkRect.left ||
+                e.clientX > watermarkRect.right ||
+                e.clientY < watermarkRect.top ||
+                e.clientY > watermarkRect.bottom
+            ) {
+                return;
+            }
+
+            wmDragging = true;
+
+            wmDragOffset.x = e.clientX - watermarkRect.left - watermarkRect.width / 2;
+            wmDragOffset.y = e.clientY - watermarkRect.top - watermarkRect.height / 2;
+
+            e.preventDefault();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!wmDragging) return;
+
+            const stageRect = wmPreviewStage.getBoundingClientRect();
+
+            wmPosition.x = Math.max(
+                0.05,
+                Math.min(
+                    0.95,
+                    (e.clientX - stageRect.left - wmDragOffset.x) / stageRect.width
+                )
+            );
+
+            wmPosition.y = Math.max(
+                0.05,
+                Math.min(
+                    0.95,
+                    (e.clientY - stageRect.top - wmDragOffset.y) / stageRect.height
+                )
+            );
+
+            updateWatermarkPreview();
+        });
+
+        window.addEventListener('mouseup', () => {
+            wmDragging = false;
+        });
+
+        document.getElementById('wm-export').onclick = async () => {
+            if (!wmBytes) return;
+
+            showLoad('إضافة العلامة المائية...');
+
+            try {
+                const { PDFDocument } = PDFLib;
+
+                const doc = await PDFDocument.load(wmBytes);
+
+                const text = document.getElementById('wm-text').value || 'PRIVATE';
+                const size = parseInt(document.getElementById('wm-size').value) || 60;
+                const opacity = parseFloat(document.getElementById('wm-opacity').value) || 0.3;
+
+                const watermarkCanvas = await createArabicWatermarkCanvas(
+                    text,
+                    size,
+                    opacity,
+                    45
+                );
+
+                const watermarkPng = await doc.embedPng(
+                    watermarkCanvas.toDataURL('image/png')
+                );
+
+                doc.getPages().forEach(page => {
+                    const { width, height } = page.getSize();
+
+                    const drawWidth = watermarkCanvas.width / 3;
+                    const drawHeight = watermarkCanvas.height / 3;
+
+                    const x = (width * wmPosition.x) - (drawWidth / 2);
+                    const y = (height * (1 - wmPosition.y)) - (drawHeight / 2);
+
+                    page.drawImage(watermarkPng, {
+                        x,
+                        y,
+                        width: drawWidth,
+                        height: drawHeight,
+                        opacity: 1
+                    });
+                });
+
+                const bytes = await doc.save();
+
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(
+                    new Blob([bytes], { type: 'application/pdf' })
+                );
+                a.download = 'Watermarked.pdf';
+                a.click();
+
+                showToast('تم إضافة العلامة المائية بنجاح');
+            } catch (e) {
+                console.error(e);
+                showToast('حدث خطأ أثناء إضافة العلامة المائية', 'error');
+            }
+
+            hideLoad();
+        };
+        let roBytes = null, roPdf = null;
+        document.getElementById('ro-file').onchange = async (e) => {
+            showLoad('تجهيز الصفحات...'); roBytes = await e.target.files[0].arrayBuffer();
+            roPdf = await pdfjsLib.getDocument(new Uint8Array(roBytes.slice(0))).promise;
+            const grid = document.getElementById('ro-grid'); grid.innerHTML = '';
+            for(let i=1; i<=roPdf.numPages; i++) {
+                const p = await roPdf.getPage(i); const vp = p.getViewport({ scale: 0.3 });
+                const c = document.createElement('canvas'); const ctx = c.getContext('2d'); c.width = vp.width; c.height = vp.height;
+                await p.render({ canvasContext: ctx, viewport: vp }).promise;
+                const div = document.createElement('div'); div.className = "p-2 bg-white border shadow-sm cursor-move relative rounded"; div.setAttribute('data-idx', i-1);
+                div.innerHTML = `<div class="absolute top-1 right-1 bg-emerald-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">${i}</div>`;
+                c.className = "h-32 object-contain"; div.appendChild(c); grid.appendChild(div);
+            }
+            new Sortable(grid, {
+                animation: 150,
+                onEnd: () => {
+                    Array.from(grid.children).forEach((el, index) => {
+                        const badge = el.querySelector('.absolute');
+                        if (badge) badge.textContent = index + 1;
+                    });
+                }
+            });
+
+            document.getElementById('ro-workspace').classList.remove('hidden');
+            hideLoad();
+            showToast('رتب الصفحات بالسحب والإفلات');
+        };
+        document.getElementById('ro-export').onclick = async () => {
+            showLoad('جاري الحفظ...');
+            try {
+                const { PDFDocument } = PDFLib; const srcDoc = await PDFDocument.load(roBytes); const outDoc = await PDFDocument.create();
+                const newOrder = Array.from(document.getElementById('ro-grid').children).map(el => parseInt(el.getAttribute('data-idx')));
+                const copied = await outDoc.copyPages(srcDoc, newOrder); copied.forEach(p => outDoc.addPage(p));
+                const bytes = await outDoc.save(); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([bytes])); a.download = 'Reordered.pdf'; a.click(); showToast('تم الحفظ بالترتيب الجديد');
+            } catch(e) { showToast('حدث خطأ', 'error'); } hideLoad();
+        };
+
+        let prFile = null;
+        const prFileInput = document.getElementById('pr-file');
+        const prWorkspace = document.getElementById('pr-workspace');
+        
+        if (prFileInput) {
+            prFileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    prFile = e.target.files[0];
+                    prWorkspace.classList.remove('hidden');
+                    showToast('تم رفع الملف بنجاح، أدخل الباسورد الآن');
+                }
+            });
+        }
+
+        const prExportBtn = document.getElementById('pr-export');
+        if (prExportBtn) {
+            prExportBtn.addEventListener('click', async () => {
+                const pass = document.getElementById('pr-pass').value;
+                if (!pass || pass.trim() === '') {
+                    showToast('الرجاء إدخال الباسورد أولاً!', 'error');
+                    return;
+                }
+                if (!prFile) return;
+
+                showLoad('جاري تشفير الملف بباسورد حقيقي...');
+                try {
+                    const arrayBuffer = await prFile.arrayBuffer();
+                    const bytes = new Uint8Array(arrayBuffer);
+                    
+                    const Encryptor = window.PDFEncryptLite;
+
+                    if (Encryptor && typeof Encryptor.encryptPDF === 'function') {
+                        const encryptedData = await Encryptor.encryptPDF(bytes, pass);
+                        const blob = new Blob([encryptedData], { type: 'application/pdf' });
+                            const link = document.createElement('a');
+                            link.href = URL.createObjectURL(blob);
+                            link.download = `Locked_${prFile.name}`;
+                            link.click();
+                            showToast('تم التشفير! جرب تفتحه دلوقتي هيطلب باسورد');
+                    } else {
+                        showToast('خطأ: مكتبة التشفير غير متاحة', 'error');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showToast('حدث خطأ أثناء تشفير الملف', 'error');
+                }
+                hideLoad();
+            });
+        }
+
+
+    </script>
+</body>
+</html>
