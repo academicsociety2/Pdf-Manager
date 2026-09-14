@@ -3977,7 +3977,7 @@ function wirePomodoro(){pomoLoadSettings();pomoPopulateSoundSelect();pomoApplySe
   document.addEventListener('keydown',pomoKeyHandler);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wirePomodoro);else wirePomodoro();
-const SUMMARIES_API_URL = 'https://script.google.com/macros/s/AKfycbxflfmZKKmaZnb2DqU0_yJAdOn2bU4cJxC6JutWVdy_9s55ozNh6OmBJY1NgZ2qbqM/exec';
+const SUMMARIES_API_URL = 'https://script.google.com/macros/s/AKfycbxPiIsoi_e_fdecUh_zg5TbGIZOhl5b8FXx5TP9cVr2Ysy0558oOlP-sADjc1o3f-SaYQ/exec';
 const SUMMARY_YEARS = ['الصف الأول الثانوي','الصف الثاني الثانوي','الصف الثالث الثانوي'];
 let sumCurrentYear = SUMMARY_YEARS[0];
 let sumAllApproved = [];
@@ -4026,20 +4026,52 @@ function renderSummariesList(){
   });
 }
 
-async function fetchApprovedSummaries(){
+function fetchApprovedSummaries(){
   const loadingEl=document.getElementById('summaries-loading');
+
   if(!SUMMARIES_API_URL || SUMMARIES_API_URL.includes('PASTE_')){
     if(loadingEl) loadingEl.innerHTML='<p class="text-xs text-red-400">لسه محطتش رابط السيرفر (SUMMARIES_API_URL) في الكود.</p>';
     return;
   }
-  try{
-    if(loadingEl) loadingEl.classList.remove('hidden');
-    const res=await fetch(`${SUMMARIES_API_URL}?action=list`);
-    const data=await res.json();
-    sumAllApproved=(data&&data.items)?data.items:[];
-    renderSummariesList();
-  }catch(err){ console.error(err); showToast('مشكلة في جلب الملخصات، حاول تاني لاحقاً','error'); }
-  finally{ if(loadingEl) loadingEl.classList.add('hidden'); }
+
+  if(loadingEl) loadingEl.classList.remove('hidden');
+
+  const callbackName='etoSummariesCallback_' + Date.now();
+
+  window[callbackName]=function(data){
+    try{
+      sumAllApproved=(data&&data.items)?data.items:[];
+      renderSummariesList();
+    }catch(err){
+      console.error(err);
+      showToast('مشكلة في عرض الملخصات','error');
+    }finally{
+      if(loadingEl) loadingEl.classList.add('hidden');
+
+      const script=document.getElementById(callbackName);
+      if(script) script.remove();
+
+      delete window[callbackName];
+    }
+  };
+
+  const script=document.createElement('script');
+  script.id=callbackName;
+  script.src=`${SUMMARIES_API_URL}?action=list&callback=${callbackName}`;
+  script.onerror=function(){
+    console.error('Failed to load summaries API');
+
+    if(loadingEl) loadingEl.classList.add('hidden');
+
+    showToast('مشكلة في جلب الملخصات، حاول تاني لاحقاً','error');
+
+    const oldScript=document.getElementById(callbackName);
+    if(oldScript) oldScript.remove();
+
+    delete window[callbackName];
+  };
+
+  document.body.appendChild(script);
 }
 
 function fileToBase64(file){
@@ -4048,6 +4080,39 @@ function fileToBase64(file){
     reader.onload=()=>resolve(reader.result.split(',')[1]);
     reader.onerror=reject;
     reader.readAsDataURL(file);
+  });
+}
+
+function submitSummaryWithoutCors(payload){
+  return new Promise((resolve)=>{
+    const form=document.createElement('form');
+
+    form.method='POST';
+    form.action=SUMMARIES_API_URL;
+    form.target='etoSummaryUploadFrame';
+    form.style.display='none';
+
+    const iframe=document.createElement('iframe');
+    iframe.name='etoSummaryUploadFrame';
+    iframe.style.display='none';
+
+    document.body.appendChild(iframe);
+
+    const input=document.createElement('input');
+    input.type='hidden';
+    input.name='payload';
+    input.value=JSON.stringify(payload);
+
+    form.appendChild(input);
+    document.body.appendChild(form);
+
+    form.submit();
+
+    setTimeout(()=>{
+      form.remove();
+      iframe.remove();
+      resolve();
+    },2500);
   });
 }
 
@@ -4066,8 +4131,8 @@ async function submitSummary(){
     showLoad('بنرفع الملف...');
     const base64=await fileToBase64(sumSelectedFile);
     const payload={ action:'upload', name, phone, year, subject, lesson, fileName:sumSelectedFile.name, mimeType:sumSelectedFile.type||'application/octet-stream', fileData:base64 };
-    const res=await fetch(SUMMARIES_API_URL,{ method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload) });
-    const data=await res.json();
+    await submitSummaryWithoutCors(payload);
+    const data={success:true};
     if(data&&data.success){
       showToast('اتبعت! هيظهر بعد ما الأدمن يوافق عليه ✅');
       document.getElementById('sum-name').value='';
