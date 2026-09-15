@@ -1757,7 +1757,9 @@
         <div class="exam-hero">
             <div class="exam-hero-orb exam-hero-orb-1"></div>
             <div class="exam-hero-orb exam-hero-orb-2"></div>
-            <div class="exam-hero-icon"><i class="fa-solid fa-file-pen"></i></div>
+            <div class="exam-hero-icon w-14 h-14 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-sm border border-red-200 dark:bg-red-950/40 dark:border-red-900">
+                <i class="fa-solid fa-book-open"></i>
+            </div>
             <div>
                 <span class="exam-badge"><i class="fa-solid fa-bolt"></i> بنك الامتحانات</span>
                 <h2>امتحانات الطلاب</h2>
@@ -4570,7 +4572,7 @@ function syncStageDatalist(){
   const list=document.getElementById('education-stage-list');
   if(!list)return;
   list.innerHTML='';
-  const values=[...SUMMARY_GROUPS.map(g=>g.year+' — '+g.track),LEGACY_BACCALAUREATE+' — عام',LEGACY_BACCALAUREATE+' — لغات'];
+  const values=SUMMARY_GROUPS.map(g=>g.year+' — '+g.track);
   values.forEach(v=>{const o=document.createElement('option');o.value=v;list.appendChild(o);});
 }
 function normalizeStageText(v){return (v||'').replace(/\s+/g,' ').trim().toLowerCase().replace(/^اولى|^اول/,'الأولى').replace(/^ثانية|^تانية|^ثانى/,'الثانية').replace(/^ثالثة|^تالتة|^ثالث/,'الثالثة');}
