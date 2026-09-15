@@ -31,6 +31,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@pdfsmaller/pdf-encrypt-lite@1.2.0/dist/pdf-encrypt-lite.umd.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.1.1/tesseract.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
     
     <script>
         tailwind.config = {
@@ -434,19 +435,23 @@
                     <button onclick="navigate('cleaner')" class="nav-link px-2 py-4">تلوين PDF</button>
                     <button onclick="navigate('image-cleaner')" class="nav-link px-2 py-4">تنظيف صور</button>
                     <button onclick="navigate('merge')" class="nav-link px-2 py-4">دمج</button>
+                    <button onclick="navigate('compare')" class="nav-link px-2 py-4">مقارنة</button>
                     <button onclick="navigate('extract')" class="nav-link px-2 py-4">استخراج</button>
                     <button onclick="navigate('editor')" class="nav-link px-2 py-4">تعديل</button>
                     <button onclick="navigate('convert')" class="nav-link px-2 py-4">تحويل</button>
                     <button onclick="navigate('text')" class="nav-link px-2 py-4">نصوص</button>
+                    <button onclick="navigate('reader')" class="nav-link px-2 py-4">قارئ صوتي</button>
                     <button onclick="navigate('compress')" class="nav-link px-2 py-4">ضغط</button>
                     <button onclick="navigate('watermark')" class="nav-link px-2 py-4">علامة مائية</button>
                     <button onclick="navigate('reorder')" class="nav-link px-2 py-4">ترتيب</button>
                     <button onclick="navigate('protect')" class="nav-link px-2 py-4">حماية</button>
+                    <button onclick="navigate('esign')" class="nav-link px-2 py-4">توقيع</button>
                     <button onclick="navigate('teacher')" class="nav-link px-2 py-4">شيت </button>
                     <button onclick="navigate('summaries')" class="nav-link px-2 py-4">ملخصات</button>
                     <button onclick="navigate('templates')" class="nav-link px-2 py-4">القوالب</button>
                     <button onclick="navigate('schedule')" class="nav-link px-2 py-4">جدولي</button>
                     <button onclick="navigate('pomodoro')" class="nav-link px-2 py-4">تايمر </button>
+                    <button onclick="navigate('library')" class="nav-link px-2 py-4">مكتبتي</button>
                 </div>
                     <div class="flex items-center gap-3">
                         <button id="app-download-btn" class="hidden bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-4 py-2 rounded-xl font-bold text-sm shadow-md transition items-center gap-2">
@@ -499,6 +504,11 @@
                     <h3 class="text-lg font-bold mb-2">دمج الملفات</h3>
                     <p class="text-gray-500 text-xs">تجميع عدة ملفات PDF في ملف واحد.</p>
                 </div>
+                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('compare')">
+                    <div class="w-12 h-12 bg-violet-100 text-violet-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-code-compare"></i></div>
+                    <h3 class="text-lg font-bold mb-2">مقارنة نسختين PDF</h3>
+                    <p class="text-gray-500 text-xs">ارفع ملفين واتفرج على الفرق بينهم صفحة بصفحة.</p>
+                </div>
                 <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('extract')">
                     <div class="w-12 h-12 bg-red-100 text-red-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-file-export"></i></div>
                     <h3 class="text-lg font-bold mb-2">استخراج وحذف</h3>
@@ -520,6 +530,11 @@
                     <p class="text-gray-500 text-xs">استخراج النص من الملفات، أو تحويل النص لـ PDF.</p>
                 </div>
 
+                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('reader')">
+                    <div class="w-12 h-12 bg-pink-100 text-pink-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-headphones-simple"></i></div>
+                    <h3 class="text-lg font-bold mb-2">قارئ صوتي</h3>
+                    <p class="text-gray-500 text-xs">اسمع ملف الـ PDF بصوت ولد أو بنت، عربي أو إنجليزي.</p>
+                </div>
                 <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('watermark')">
                     <div class="w-12 h-12 bg-cyan-100 text-cyan-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-copyright"></i></div>
                     <h3 class="text-lg font-bold mb-2">علامة مائية</h3>
@@ -534,6 +549,11 @@
                     <div class="w-12 h-12 bg-fuchsia-100 text-fuchsia-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-lock"></i></div>
                     <h3 class="text-lg font-bold mb-2">حماية الملف</h3>
                     <p class="text-gray-500 text-xs">أضف كلمة مرور تشفير حقيقية لطلبها عند فتح الملف.</p>
+                </div>
+                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('esign')">
+                    <div class="w-12 h-12 bg-sky-100 text-sky-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-signature"></i></div>
+                    <h3 class="text-lg font-bold mb-2">توقيع إلكتروني</h3>
+                    <p class="text-gray-500 text-xs">وقّع على الفورمز والعقود من غير طباعة ولا سكانر.</p>
                 </div>
                 <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('teacher')">
                     <div class="w-12 h-12 bg-rose-100 text-rose-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-chalkboard-user"></i></div>
@@ -550,10 +570,20 @@
                     <h3 class="text-lg font-bold mb-2">جدولي</h3>
                     <p class="text-gray-500 text-xs">اعمل جدول مذاكرة أسبوعي، رتّب المواد والمهام واطبعه كـPDF.</p>
                 </div>
+                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('summaries')">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-book-open"></i></div>
+                    <h3 class="text-lg font-bold mb-2">ملخصات الطلاب</h3>
+                    <p class="text-gray-500 text-xs">شارك ملخصك مع زمايلك، أو حمّل ملخصات معتمدة من المادة.</p>
+                </div>
                 <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('pomodoro')">
                     <div class="w-12 h-12 bg-rose-100 text-rose-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-mug-hot"></i></div>
                     <h3 class="text-lg font-bold mb-2">تايمر</h3>
                     <p class="text-gray-500 text-xs">قسّم مذاكرتك لجلسات تركيز واستراحات مظبوطة، مع تنبيه صوتي.</p>
+                </div>
+                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('library')">
+                    <div class="w-12 h-12 bg-lime-100 text-lime-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-box-archive"></i></div>
+                    <h3 class="text-lg font-bold mb-2">مكتبتي</h3>
+                    <p class="text-gray-500 text-xs">أرشيف شخصي لملفاتك، منظم بالمادة والترم، محفوظ على جهازك.</p>
                 </div>
             </div>
         </section>
@@ -803,7 +833,39 @@
             </div>
         </section>
 
-        <!-- ================== 6. استخراج وحذف (Extract) ================== -->
+        <!-- ================== 5.5 مقارنة نسختين PDF (Compare) ================== -->
+        <section id="page-compare" class="page-section hidden p-4 max-w-5xl mx-auto">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-6 mt-6">
+                <h2 class="text-2xl font-bold mb-2 text-center text-violet-600"><i class="fa-solid fa-code-compare"></i> مقارنة نسختين PDF</h2>
+                <p class="text-center text-gray-500 text-xs mb-6">ارفع نسختين من نفس الملف، وهنوريك الاختلافات في كل صفحة باللون الأحمر.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div class="border-2 border-violet-200 bg-violet-50 dark:bg-slate-800/50 p-4 rounded-xl text-center">
+                        <p class="font-bold text-violet-700 text-sm mb-2">النسخة الأولى (A)</p>
+                        <input type="file" id="cmp-file-a" class="hidden" accept=".pdf">
+                        <button onclick="document.getElementById('cmp-file-a').click()" class="bg-violet-600 text-white w-full py-2 rounded-lg font-bold hover:bg-violet-700 text-sm">اختر ملف</button>
+                        <p id="cmp-file-a-label" class="text-xs text-gray-500 mt-2 truncate">مفيش ملف مختار</p>
+                    </div>
+                    <div class="border-2 border-violet-200 bg-violet-50 dark:bg-slate-800/50 p-4 rounded-xl text-center">
+                        <p class="font-bold text-violet-700 text-sm mb-2">النسخة الثانية (B)</p>
+                        <input type="file" id="cmp-file-b" class="hidden" accept=".pdf">
+                        <button onclick="document.getElementById('cmp-file-b').click()" class="bg-violet-600 text-white w-full py-2 rounded-lg font-bold hover:bg-violet-700 text-sm">اختر ملف</button>
+                        <p id="cmp-file-b-label" class="text-xs text-gray-500 mt-2 truncate">مفيش ملف مختار</p>
+                    </div>
+                </div>
+
+                <div class="text-center mb-4">
+                    <button id="cmp-run-btn" class="bg-violet-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-violet-700 disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+                        <i class="fa-solid fa-magnifying-glass-chart"></i> قارن الملفين
+                    </button>
+                </div>
+
+                <div id="cmp-summary" class="text-center text-sm font-bold mb-4 hidden"></div>
+                <div id="cmp-results" class="space-y-6"></div>
+            </div>
+        </section>
+
+
         <section id="page-extract" class="page-section hidden p-4 max-w-3xl mx-auto">
             <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-8 mt-6 text-center">
                 <h2 class="text-2xl font-bold mb-4 text-red-600"><i class="fa-solid fa-file-export"></i> استخراج أو حذف صفحات</h2>
@@ -953,6 +1015,13 @@
                         <button onclick="document.getElementById('pdf-to-img-file').click()" class="bg-blue-600 text-white w-full py-3 rounded-xl font-bold hover:bg-blue-700 transition shadow-sm">اختر ملف الـ PDF</button>
                         <div id="pdf-to-img-results" class="mt-4 flex flex-col gap-2 max-h-40 overflow-auto pr-2"></div>
                     </div>
+
+                    <div class="border-2 border-orange-200 bg-orange-50 p-6 rounded-xl transition hover:shadow-md md:col-span-2">
+                        <h3 class="text-xl font-bold mb-4 text-orange-700"><i class="fa-solid fa-file-powerpoint"></i> PDF إلى PowerPoint</h3>
+                        <p class="text-xs text-orange-600/80 mb-3">كل صفحة في الـ PDF هتتحول لسلايد صورة كاملة في ملف PPTX.</p>
+                        <input type="file" id="pdf-to-ppt-file" class="hidden" accept=".pdf">
+                        <button onclick="document.getElementById('pdf-to-ppt-file').click()" class="bg-orange-500 text-white w-full max-w-xs mx-auto py-3 rounded-xl font-bold hover:bg-orange-600 transition shadow-sm block">اختر ملف الـ PDF</button>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 pt-8 border-t border-gray-100 text-center">
@@ -993,6 +1062,77 @@
                 <textarea id="text-area" class="w-full h-64 p-4 border-2 rounded-xl focus:border-indigo-400 focus:outline-none mb-4 resize-none bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600 text-sm leading-relaxed" placeholder="النص سيظهر هنا..."></textarea>
                 
                 <button id="text-export-btn" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hidden hover:bg-indigo-700">تحميل كـ PDF</button>
+            </div>
+        </section>
+
+        <!-- ================== 9.5 القارئ الصوتي (Text-to-Speech Reader) ================== -->
+        <section id="page-reader" class="page-section hidden p-4 max-w-4xl mx-auto">
+            <div class="relative rounded-2xl overflow-hidden mb-6 mt-6 text-white text-center py-10 px-6" style="background: linear-gradient(135deg,#db2777 0%,#9d174d 55%,#4c0519 100%);">
+                <i class="fa-solid fa-headphones-simple text-4xl mb-3 opacity-90"></i>
+                <h2 class="text-2xl md:text-3xl font-black mb-2">القارئ الصوتي</h2>
+                <p class="text-pink-100 text-sm max-w-md mx-auto">ارفع ملف PDF أو صورة، أو الصق نص، واسمعه بصوت ولد أو بنت، عربي أو إنجليزي.</p>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-6 mb-4">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-bold text-gray-700 dark:text-gray-200 text-sm flex items-center gap-2"><i class="fa-solid fa-file-import text-pink-500"></i> مصدر النص</h3>
+                    <span id="reader-char-count" class="text-xs text-gray-400">0 حرف</span>
+                </div>
+                <div class="drop-zone rounded-xl p-4 text-center mb-3 cursor-pointer" onclick="document.getElementById('reader-pdf-file').click()">
+                    <input type="file" id="reader-pdf-file" class="hidden" accept=".pdf, image/*">
+                    <i class="fa-solid fa-cloud-arrow-up text-2xl text-blue-500 mb-1"></i>
+                    <p class="text-sm font-bold text-gray-600 dark:text-gray-300">اضغط أو اسحب ملف PDF / صورة هنا</p>
+                </div>
+                <textarea id="reader-text-area" oninput="document.getElementById('reader-char-count').textContent = this.value.length + ' حرف'" class="w-full h-48 p-4 border-2 rounded-xl focus:border-pink-400 focus:outline-none resize-none bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600 text-sm leading-relaxed" placeholder="اكتب أو الصق النص هنا، أو ارفع ملف فوق..."></textarea>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-6 mb-4">
+                <h3 class="font-bold text-gray-700 dark:text-gray-200 text-sm mb-3 flex items-center gap-2"><i class="fa-solid fa-microphone-lines text-pink-500"></i> اختر الصوت</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="reader-voice-options">
+                    <button type="button" onclick="selectReaderVoice('ar','male',this)" class="reader-voice-btn border-2 border-pink-600 bg-pink-600 text-white rounded-xl p-4 text-center font-bold text-sm transition" data-selected="true">
+                        <i class="fa-solid fa-child text-xl block mb-1"></i> ولد (عربي)
+                    </button>
+                    <button type="button" onclick="selectReaderVoice('ar','female',this)" class="reader-voice-btn border-2 border-pink-200 dark:border-slate-600 rounded-xl p-4 text-center font-bold text-sm transition hover:border-pink-400">
+                        <i class="fa-solid fa-child-dress text-xl block mb-1"></i> بنت (عربي)
+                    </button>
+                    <button type="button" onclick="selectReaderVoice('en','male',this)" class="reader-voice-btn border-2 border-pink-200 dark:border-slate-600 rounded-xl p-4 text-center font-bold text-sm transition hover:border-pink-400">
+                        <i class="fa-solid fa-child text-xl block mb-1"></i> ولد (English)
+                    </button>
+                    <button type="button" onclick="selectReaderVoice('en','female',this)" class="reader-voice-btn border-2 border-pink-200 dark:border-slate-600 rounded-xl p-4 text-center font-bold text-sm transition hover:border-pink-400">
+                        <i class="fa-solid fa-child-dress text-xl block mb-1"></i> بنت (English)
+                    </button>
+                </div>
+                <div class="mt-4">
+                    <label class="block text-xs font-bold mb-1 text-gray-500 dark:text-gray-400"><i class="fa-solid fa-sliders text-pink-500"></i> اختيار الصوت بدقة (الأصوات المتاحة فعلياً على جهازك)</label>
+                    <select id="reader-voice-select" class="w-full p-2 border rounded-lg dark:text-gray-800 bg-white text-sm">
+                        <option value="">تلقائي (حسب الاختيار فوق)</option>
+                    </select>
+                    <p class="text-[11px] text-gray-400 mt-1 leading-relaxed"><i class="fa-solid fa-circle-info"></i> القراءة بتشتغل بأصوات المتصفح/الموبايل نفسه، مفيش صوت "مصري" مضمون على كل الأجهزة. لو جهازك فيه صوت عربي بلهجة مصرية مثبت (بيحصل غالباً على الآيفون/آيباد لو ضفت لغة "العربية - مصر" من إعدادات النطق)، هيظهر هنا وتقدر تختاره يدوي.</p>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-6 mb-4">
+                <div class="grid grid-cols-2 gap-6 mb-5">
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 flex items-center justify-between mb-1"><span><i class="fa-solid fa-gauge-high text-pink-500"></i> سرعة القراءة</span><span id="reader-rate-val">1.0x</span></label>
+                        <input type="range" id="reader-rate" min="0.5" max="2" step="0.1" value="1" class="w-full accent-pink-600" oninput="document.getElementById('reader-rate-val').textContent = parseFloat(this.value).toFixed(1)+'x'">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 flex items-center justify-between mb-1"><span><i class="fa-solid fa-wave-square text-pink-500"></i> طبقة الصوت</span><span id="reader-pitch-val">1.0</span></label>
+                        <input type="range" id="reader-pitch" min="0.5" max="2" step="0.1" value="1" class="w-full accent-pink-600" oninput="document.getElementById('reader-pitch-val').textContent = parseFloat(this.value).toFixed(1)">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-center gap-3 mb-3">
+                    <div id="reader-status-dot" class="w-2.5 h-2.5 rounded-full bg-gray-300"></div>
+                    <span id="reader-status-text" class="text-xs font-bold text-gray-400">جاهز</span>
+                </div>
+                <div class="flex flex-wrap gap-3 justify-center">
+                    <button id="reader-play-btn" disabled class="bg-pink-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-700 shadow-lg shadow-pink-600/20 disabled:opacity-50 disabled:cursor-wait"><i class="fa-solid fa-play"></i> تشغيل</button>
+                    <button id="reader-pause-btn" class="bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-200 px-6 py-3 rounded-xl font-bold hover:bg-gray-200 dark:hover:bg-slate-600"><i class="fa-solid fa-pause"></i> إيقاف مؤقت</button>
+                    <button id="reader-stop-btn" class="bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-200 px-6 py-3 rounded-xl font-bold hover:bg-gray-200 dark:hover:bg-slate-600"><i class="fa-solid fa-stop"></i> إيقاف</button>
+                </div>
+                <p class="text-center text-gray-400 text-xs mt-4">الصوت بيعتمد على المتصفح والجهاز، فممكن تلاقي اختلاف بسيط في الصوت المتاح بين جهاز وجهاز.</p>
             </div>
         </section>
 
@@ -1124,6 +1264,61 @@
                         <div class="w-12 h-12 bg-fuchsia-100 text-fuchsia-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3"><i class="fa-solid fa-key"></i></div>
                         <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200 mb-1">كلمة مرور</h4>
                         <p class="text-xs text-gray-500">اختر كلمة مرور خاصة بك قبل حفظ الملف.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ================== 12.5 توقيع إلكتروني (E-Sign) ================== -->
+        <section id="page-esign" class="page-section hidden p-4 max-w-4xl mx-auto">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-6 mt-6">
+                <h2 class="text-2xl font-bold mb-2 text-center text-sky-600"><i class="fa-solid fa-signature"></i> توقيع إلكتروني</h2>
+                <p class="text-center text-gray-500 text-xs mb-6">ارفع الفورم أو العقد، ارسم توقيعك أو اكتبه، وحطه في مكانه، وحمّل الملف موقّع.</p>
+
+                <div id="esign-upload-ui" class="text-center mb-4">
+                    <input type="file" id="esign-file" class="hidden" accept=".pdf">
+                    <button onclick="document.getElementById('esign-file').click()" class="bg-sky-50 border border-sky-200 text-sky-600 px-6 py-2 rounded-lg font-bold">ارفع ملف PDF</button>
+                </div>
+
+                <div id="esign-workspace" class="hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                        <div class="lg:col-span-2 bg-gray-100 dark:bg-slate-900/50 rounded-xl p-2 flex flex-col items-center">
+                            <div class="flex items-center gap-2 mb-2">
+                                <button id="esign-prev-page" class="w-8 h-8 rounded-lg bg-white shadow text-sm"><i class="fa-solid fa-chevron-right"></i></button>
+                                <span id="esign-page-indicator" class="text-xs font-bold text-gray-600">صفحة 1</span>
+                                <button id="esign-next-page" class="w-8 h-8 rounded-lg bg-white shadow text-sm"><i class="fa-solid fa-chevron-left"></i></button>
+                            </div>
+                            <div id="esign-page-stage" class="relative inline-block border shadow-sm bg-white touch-none">
+                                <canvas id="esign-page-canvas"></canvas>
+                                <div id="esign-sig-preview" class="absolute hidden cursor-move select-none" style="touch-action:none;"></div>
+                            </div>
+                            <p class="text-[11px] text-gray-400 mt-2">اسحب التوقيع لمكانه المناسب فوق الصفحة.</p>
+                        </div>
+
+                        <div class="lg:col-span-1 space-y-4">
+                            <div class="border rounded-xl p-3 dark:border-slate-600">
+                                <div class="flex gap-2 mb-2 bg-gray-100 dark:bg-slate-700 p-1 rounded-lg">
+                                    <button onclick="switchEsignMode('draw')" id="esign-mode-draw" class="flex-1 px-2 py-1 rounded bg-white dark:bg-slate-800 font-bold text-xs shadow-sm">ارسم</button>
+                                    <button onclick="switchEsignMode('type')" id="esign-mode-type" class="flex-1 px-2 py-1 rounded text-gray-500 font-bold text-xs">اكتب</button>
+                                </div>
+                                <div id="esign-draw-ui">
+                                    <canvas id="esign-sig-canvas" class="border rounded-lg w-full bg-white touch-none" height="140"></canvas>
+                                    <button id="esign-clear-sig" class="w-full mt-2 bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-200 text-xs font-bold py-1.5 rounded-lg">مسح</button>
+                                </div>
+                                <div id="esign-type-ui" class="hidden">
+                                    <input type="text" id="esign-type-text" placeholder="اكتب اسمك هنا" class="w-full p-2 border rounded-lg text-sm dark:text-gray-800">
+                                    <select id="esign-type-font" class="w-full p-2 border rounded-lg text-sm mt-2 dark:text-gray-800">
+                                        <option value="'Brush Script MT', cursive" style="font-family:'Brush Script MT',cursive;">توقيع مائل</option>
+                                        <option value="'Cairo', sans-serif" style="font-family:'Cairo',sans-serif;">خط عادي</option>
+                                    </select>
+                                </div>
+                                <button id="esign-place-btn" class="w-full mt-3 bg-sky-600 text-white text-sm font-bold py-2 rounded-lg hover:bg-sky-700">ضيف التوقيع على الصفحة</button>
+                            </div>
+                            <div class="border rounded-xl p-3 dark:border-slate-600" id="esign-size-box" style="display:none;">
+                                <label class="text-xs font-bold text-gray-500 block mb-1">حجم التوقيع</label>
+                                <input type="range" id="esign-sig-size" min="60" max="320" value="150" class="w-full">
+                            </div>
+                            <button id="esign-download-btn" class="w-full bg-slate-800 text-white py-3 rounded-xl font-bold hover:bg-slate-900"><i class="fa-solid fa-download"></i> تحميل الملف الموقّع</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1535,78 +1730,155 @@
         </section>
 
         <section id="page-summaries" class="page-section hidden p-4 max-w-6xl mx-auto">
-            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-8 mt-6 text-center">
-                <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-sm"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-                <h2 class="text-2xl font-bold mb-2 text-slate-800 dark:text-slate-100">ملخصات الطلاب — تحت التطوير 🚧</h2>
-                <p class="text-gray-500 text-sm max-w-md mx-auto">الصفحة دي لسه بيتم الشغل عليها وهترجع تشتغل قريباً إن شاء الله، استنونا.</p>
-            </div>
-
-            <div class="hidden">
-                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-8 mt-6">
-                <div class="text-center max-w-xl mx-auto mb-8">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-8 mt-6">
+                <div class="text-center max-w-xl mx-auto mb-6">
                     <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-sm"><i class="fa-solid fa-layer-group"></i></div>
                     <h2 class="text-2xl font-bold mb-2 text-slate-800 dark:text-slate-100">ملخصات الطلاب</h2>
-                    <p class="text-gray-500 text-sm">ارفع ملخصك وهيتم مراجعته الأول، وهيظهر هنا لكل الطلبة بعد الموافقة عليه.</p>
+                    <p class="text-gray-500 text-sm">تصفح الملخصات المعتمدة، أو ابعت ملخصك عشان يظهر هنا لكل الطلبة بعد المراجعة.</p>
                 </div>
 
-                <div id="summaries-year-tabs" class="flex flex-wrap justify-center gap-2 mb-8"></div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                    <div class="lg:col-span-2">
-                        <div class="p-5 bg-gray-50 dark:bg-slate-800/50 dark:border-slate-600 border rounded-xl">
-                            <h3 class="font-bold mb-4 text-gray-700 dark:text-gray-200 flex items-center gap-2"><i class="fa-solid fa-cloud-arrow-up text-indigo-500"></i> ارفع ملخص جديد</h3>
-                            <div class="space-y-3">
-                                <div>
-                                    <label class="block text-xs font-bold mb-1 text-gray-600 dark:text-gray-300">الاسم بالكامل</label>
-                                    <input type="text" id="sum-name" class="w-full p-2 border rounded-lg dark:text-gray-800 bg-white text-sm" placeholder="اسمك">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold mb-1 text-gray-600 dark:text-gray-300">رقم الموبايل</label>
-                                    <input type="tel" id="sum-phone" class="w-full p-2 border rounded-lg dark:text-gray-800 bg-white text-sm" placeholder="01xxxxxxxxx">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold mb-1 text-gray-600 dark:text-gray-300">السنة الدراسية</label>
-                                    <select id="sum-year" class="w-full p-2 border rounded-lg dark:text-gray-800 bg-white text-sm"></select>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold mb-1 text-gray-600 dark:text-gray-300">المادة</label>
-                                    <input type="text" id="sum-subject" class="w-full p-2 border rounded-lg dark:text-gray-800 bg-white text-sm" placeholder="مثال: كيمياء">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold mb-1 text-gray-600 dark:text-gray-300">اسم الدرس / الملخص</label>
-                                    <input type="text" id="sum-lesson" class="w-full p-2 border rounded-lg dark:text-gray-800 bg-white text-sm" placeholder="مثال: الباب الأول - الموائع">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold mb-1 text-gray-600 dark:text-gray-300">الملف (PDF / صورة / Word)</label>
-                                    <div id="sum-drop" class="drop-zone rounded-xl p-4 text-center cursor-pointer hover:bg-indigo-50 transition">
-                                        <i class="fa-solid fa-file-arrow-up text-2xl text-indigo-400 mb-1"></i>
-                                        <p id="sum-file-label" class="text-xs font-bold text-gray-600">اضغط أو اسحب الملف هنا</p>
-                                        <input type="file" id="sum-file-input" class="hidden" accept=".pdf,.doc,.docx,image/*">
-                                    </div>
-                                </div>
-                                <button id="sum-submit-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-lg text-sm font-bold transition flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-paper-plane"></i> إرسال للمراجعة
-                                </button>
-                                <p class="text-[11px] text-gray-400 text-center leading-relaxed"><i class="fa-solid fa-circle-info"></i> هيتم مراجعة الملف من الأدمن الأول، وهيظهر هنا بعد الموافقة عليه.</p>
-                            </div>
-                        </div>
+                <div class="flex flex-col sm:flex-row gap-3 mb-5">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute top-1/2 -translate-y-1/2 right-3.5 text-gray-400 text-sm"></i>
+                        <input type="text" id="summaries-search" class="w-full p-2.5 pr-10 border rounded-lg dark:text-gray-800 bg-white text-sm" placeholder="دور بالمادة أو اسم الدرس...">
                     </div>
-
-                    <div class="lg:col-span-3">
-                        <div id="summaries-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
-                        <div id="summaries-empty" class="text-center text-gray-400 py-16 hidden">
-                            <i class="fa-solid fa-box-open text-5xl mb-3 opacity-50"></i>
-                            <p class="font-bold">مفيش ملخصات معتمدة للسنة دي لسه</p>
-                        </div>
-                        <div id="summaries-loading" class="text-center text-gray-400 py-16">
-                            <i class="fa-solid fa-spinner fa-spin text-3xl mb-2"></i>
-                            <p class="text-sm">بنجيب الملخصات...</p>
-                        </div>
-                    </div>
+                    <button id="summaries-open-add-btn" type="button" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 whitespace-nowrap"><i class="fa-solid fa-plus"></i> إضافة ملخص جديد</button>
                 </div>
-            </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-bold mb-1.5 text-gray-500 dark:text-gray-400"><i class="fa-solid fa-layer-group"></i> اختار المرحلة الدراسية</label>
+                    <select id="summaries-year-select" class="w-full p-2.5 border rounded-lg dark:text-gray-800 bg-white text-sm font-bold"></select>
+                </div>
+                <div id="summaries-track-tabs" class="flex flex-wrap justify-center gap-2 mb-8"></div>
+
+                <div id="summaries-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+                <div id="summaries-empty" class="text-center text-gray-400 py-16 hidden">
+                    <i class="fa-solid fa-box-open text-5xl mb-3 opacity-50"></i>
+                    <p class="font-bold">مفيش ملخصات مطابقة لبحثك/فلترك دلوقتي</p>
+                </div>
+                <div id="summaries-loading" class="text-center text-gray-400 py-16">
+                    <i class="fa-solid fa-spinner fa-spin text-3xl mb-2"></i>
+                    <p class="text-sm">بنجيب الملخصات...</p>
+                </div>
             </div>
         </section>
+
+        <!-- Modal: إضافة ملخص جديد -->
+        <div id="summary-add-modal" class="fixed inset-0 bg-black/60 z-[9998] hidden items-center justify-center p-4">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto p-6 relative">
+                <button id="summary-add-close-btn" type="button" class="absolute left-4 top-4 text-gray-400 hover:text-gray-600 text-xl"><i class="fa-solid fa-xmark"></i></button>
+                <h3 class="font-bold mb-4 text-gray-700 dark:text-gray-200 flex items-center gap-2"><i class="fa-brands fa-whatsapp text-green-500"></i> ابعت ملخص جديد</h3>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold mb-1 text-gray-600 dark:text-gray-300">الاسم بالكامل</label>
+                        <input type="text" id="sum-name" class="w-full p-2 border rounded-lg dark:text-gray-800 bg-white text-sm" placeholder="اسمك">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold mb-1 text-gray-600 dark:text-gray-300">رقم الموبايل</label>
+                        <input type="tel" id="sum-phone" class="w-full p-2 border rounded-lg dark:text-gray-800 bg-white text-sm" placeholder="01xxxxxxxxx">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold mb-1 text-gray-600 dark:text-gray-300">المرحلة الدراسية</label>
+                        <select id="sum-year" class="w-full p-2 border rounded-lg dark:text-gray-800 bg-white text-sm"></select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold mb-1 text-gray-600 dark:text-gray-300">نوع الدراسة</label>
+                        <select id="sum-track" class="w-full p-2 border rounded-lg dark:text-gray-800 bg-white text-sm">
+                            <option value="عام">عام</option>
+                            <option value="لغات">لغات</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold mb-1 text-gray-600 dark:text-gray-300">المادة</label>
+                        <input type="text" id="sum-subject" class="w-full p-2 border rounded-lg dark:text-gray-800 bg-white text-sm" placeholder="مثال: كيمياء">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold mb-1 text-gray-600 dark:text-gray-300">اسم الدرس / الملخص</label>
+                        <input type="text" id="sum-lesson" class="w-full p-2 border rounded-lg dark:text-gray-800 bg-white text-sm" placeholder="مثال: الباب الأول - الموائع">
+                    </div>
+                    <label class="flex items-start gap-2 text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed">
+                        <input type="checkbox" id="sum-terms" class="mt-0.5">
+                        <span>الملف ده من شغلي وصحيح ومطابق للمادة والدرس المكتوبين، ومش هينشر لو فيه حقوق ملكية لحد تاني، وموافق إنه يترفض لو مخالف الشروط.</span>
+                    </label>
+                    <button id="sum-submit-btn" class="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg text-sm font-bold transition flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp"></i> إرسال عبر واتساب
+                    </button>
+                    <p class="text-[11px] text-gray-400 text-center leading-relaxed"><i class="fa-solid fa-circle-info"></i> هيفتحلك واتساب ببياناتك جاهزة، ابعت الرسالة وارفق ملف الملخص في نفس المحادثة. هيتم مراجعته وهيظهر هنا بعد الموافقة.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal: معاينة الملف داخل الموقع -->
+        <div id="summary-preview-modal" class="fixed inset-0 bg-black/70 z-[9998] hidden items-center justify-center p-2 sm:p-4">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-3xl h-[92vh] flex flex-col overflow-hidden">
+                <div class="flex items-center justify-between p-3 border-b dark:border-slate-600 gap-2">
+                    <p id="summary-preview-title" class="font-bold text-sm text-gray-700 dark:text-gray-200 truncate"></p>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <a id="summary-preview-download" href="#" target="_blank" rel="noopener" class="text-xs bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg"><i class="fa-solid fa-download"></i></a>
+                        <button id="summary-preview-close-btn" type="button" class="text-gray-400 hover:text-gray-600 text-xl px-1"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                </div>
+                <div id="summary-preview-body" class="flex-1 overflow-auto bg-gray-100 dark:bg-slate-900 flex items-center justify-center relative">
+                    <div id="summary-preview-loading" class="absolute inset-0 flex items-center justify-center text-gray-400"><i class="fa-solid fa-spinner fa-spin text-3xl"></i></div>
+                    <canvas id="summary-preview-canvas" class="shadow-lg"></canvas>
+                    <iframe id="summary-preview-iframe" class="w-full h-full hidden border-0" allow="autoplay"></iframe>
+                </div>
+                <div id="summary-preview-nav" class="flex items-center justify-center gap-4 p-3 border-t dark:border-slate-600">
+                    <button id="summary-preview-prev" type="button" class="bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-200 px-4 py-1.5 rounded-lg text-sm font-bold"><i class="fa-solid fa-chevron-right"></i></button>
+                    <span id="summary-preview-page" class="text-xs text-gray-500 dark:text-gray-400 font-bold">-- / --</span>
+                    <button id="summary-preview-next" type="button" class="bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-200 px-4 py-1.5 rounded-lg text-sm font-bold"><i class="fa-solid fa-chevron-left"></i></button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal: تقييم الملف بعد التحميل -->
+        <div id="summary-rate-modal" class="fixed inset-0 bg-black/60 z-[9999] hidden items-center justify-center p-4">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-xs p-6 text-center">
+                <i class="fa-solid fa-star text-amber-400 text-3xl mb-2"></i>
+                <p class="font-bold text-sm text-gray-700 dark:text-gray-200 mb-1">عجبك الملف؟</p>
+                <p class="text-xs text-gray-400 mb-4">قيّمه عشان يفيد طلبة تانيين</p>
+                <div id="summary-rate-stars" class="flex justify-center gap-2 text-2xl mb-4"></div>
+                <button id="summary-rate-skip" type="button" class="text-xs text-gray-400 hover:text-gray-600">مش دلوقتي</button>
+            </div>
+        </div>
+
+        <!-- ================== مكتبتي / الأرشيف الشخصي (Library) ================== -->
+        <section id="page-library" class="page-section hidden p-4 max-w-6xl mx-auto">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-6 mt-6">
+                <h2 class="text-2xl font-bold mb-2 text-center text-lime-600"><i class="fa-solid fa-box-archive"></i> مكتبتي</h2>
+                <p class="text-center text-gray-500 text-xs mb-6">أرشيف شخصي لملفاتك، متصنف بالمادة والترم. محفوظ على جهازك ده بس (مش على السيرفر).</p>
+
+                <div class="border-2 border-dashed border-lime-300 rounded-xl p-6 text-center mb-6 cursor-pointer" id="lib-drop-zone">
+                    <input type="file" id="lib-file-input" class="hidden" multiple accept=".pdf,.doc,.docx,image/*">
+                    <i class="fa-solid fa-cloud-arrow-up text-2xl text-lime-500 mb-1"></i>
+                    <p class="text-sm font-bold text-gray-600 dark:text-gray-300">اضغط أو اسحب أي ملف هنا عشان تحفظه في مكتبتك</p>
+                </div>
+
+                <div class="flex flex-wrap gap-2 justify-center mb-6" id="lib-filter-tabs"></div>
+
+                <div id="lib-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                <div id="lib-empty" class="text-center text-gray-400 py-16">
+                    <i class="fa-solid fa-folder-open text-5xl mb-3 opacity-50"></i>
+                    <p class="font-bold">مكتبتك فاضية لسه، ضيف أول ملف</p>
+                </div>
+            </div>
+
+            <div id="lib-tag-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[120] hidden items-center justify-center p-4">
+                <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-sm p-6">
+                    <h3 class="font-bold text-lg mb-4 text-center">بيانات الملف</h3>
+                    <label class="block text-xs font-bold mb-1 text-gray-600 dark:text-gray-300">المادة</label>
+                    <input type="text" id="lib-tag-subject" class="w-full p-2 border rounded-lg dark:text-gray-800 bg-white text-sm mb-3" placeholder="مثال: فيزياء">
+                    <label class="block text-xs font-bold mb-1 text-gray-600 dark:text-gray-300">الترم / السنة</label>
+                    <input type="text" id="lib-tag-term" class="w-full p-2 border rounded-lg dark:text-gray-800 bg-white text-sm mb-4" placeholder="مثال: ترم أول 2026">
+                    <div class="flex gap-2">
+                        <button id="lib-tag-cancel" class="flex-1 bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-200 py-2 rounded-lg font-bold text-sm">إلغاء</button>
+                        <button id="lib-tag-save" class="flex-1 bg-lime-600 text-white py-2 rounded-lg font-bold text-sm">حفظ</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
 
         
         <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 dark:bg-slate-700 text-white px-5 py-3 rounded-xl shadow-2xl transition-all duration-300 opacity-0 pointer-events-none z-[110] flex items-center gap-2">
@@ -3109,6 +3381,241 @@
                 }
             }, 100);
         };
+        // ================== القارئ الصوتي (Text-to-Speech Reader) ==================
+        let readerLang = 'ar';
+        let readerGender = 'male';
+        let readerVoicesCache = [];
+        let readerUtterance = null;
+        let readerManualVoiceURI = '';
+        let readerWatchdog = null;
+
+        function setReaderStatus(state) {
+            const dot = document.getElementById('reader-status-dot');
+            const text = document.getElementById('reader-status-text');
+            if (!dot || !text) return;
+            dot.classList.remove('bg-gray-300', 'bg-green-500', 'bg-amber-500', 'animate-pulse');
+            if (state === 'playing') { dot.classList.add('bg-green-500', 'animate-pulse'); text.textContent = 'بيقرأ دلوقتي...'; }
+            else if (state === 'paused') { dot.classList.add('bg-amber-500'); text.textContent = 'متوقف مؤقتاً'; }
+            else { dot.classList.add('bg-gray-300'); text.textContent = 'جاهز'; }
+        }
+
+        function loadReaderVoices() {
+            readerVoicesCache = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+            renderReaderVoiceSelect();
+            const playBtn = document.getElementById('reader-play-btn');
+            if (playBtn) playBtn.disabled = false;
+        }
+        function renderReaderVoiceSelect() {
+            const sel = document.getElementById('reader-voice-select');
+            if (!sel) return;
+            const prevValue = sel.value;
+            sel.innerHTML = '<option value="">تلقائي (حسب الاختيار فوق)</option>';
+            const arVoices = readerVoicesCache.filter(v => v.lang && v.lang.toLowerCase().startsWith('ar'));
+            const otherVoices = readerVoicesCache.filter(v => !v.lang || !v.lang.toLowerCase().startsWith('ar'));
+            const addGroup = (label, voices) => {
+                if (!voices.length) return;
+                const group = document.createElement('optgroup');
+                group.label = label;
+                voices.forEach(v => {
+                    const opt = document.createElement('option');
+                    opt.value = v.voiceURI;
+                    const isEgypt = /eg/i.test(v.lang || '') || /egypt|مصر/i.test(v.name || '');
+                    opt.textContent = v.name + ' (' + v.lang + ')' + (isEgypt ? ' 🇪🇬' : '');
+                    group.appendChild(opt);
+                });
+                sel.appendChild(group);
+            };
+            addGroup('عربي', arVoices);
+            addGroup('لغات تانية', otherVoices);
+            if (prevValue && readerVoicesCache.some(v => v.voiceURI === prevValue)) sel.value = prevValue;
+        }
+        if (window.speechSynthesis) {
+            loadReaderVoices();
+            window.speechSynthesis.onvoiceschanged = loadReaderVoices;
+            setTimeout(() => { const b = document.getElementById('reader-play-btn'); if (b) b.disabled = false; }, 3000);
+        } else {
+            document.addEventListener('DOMContentLoaded', () => { const b = document.getElementById('reader-play-btn'); if (b) b.disabled = false; });
+        }
+        (function wireReaderVoiceSelect(){
+            const sel = document.getElementById('reader-voice-select');
+            if (sel) sel.addEventListener('change', () => { readerManualVoiceURI = sel.value; });
+        })();
+
+        function selectReaderVoice(lang, gender, btn) {
+            readerLang = lang;
+            readerGender = gender;
+            document.querySelectorAll('.reader-voice-btn').forEach(b => {
+                b.classList.remove('bg-pink-600', 'text-white', 'border-pink-600');
+                b.classList.add('border-pink-200');
+                b.removeAttribute('data-selected');
+            });
+            if (btn) {
+                btn.classList.add('bg-pink-600', 'text-white', 'border-pink-600');
+                btn.classList.remove('border-pink-200');
+                btn.setAttribute('data-selected', 'true');
+            }
+        }
+
+        function pickReaderVoice(lang, gender) {
+            if (!readerVoicesCache.length) loadReaderVoices();
+            const langVoices = readerVoicesCache.filter(v => v.lang && v.lang.toLowerCase().startsWith(lang));
+            if (!langVoices.length) return null;
+
+            const maleHints = ['male', 'man', 'majed', 'tarik', 'hamed', 'david', 'mark', 'daniel', 'fred', 'alex', 'george', 'yousef'];
+            const femaleHints = ['female', 'woman', 'hoda', 'laila', 'zeina', 'salma', 'zira', 'susan', 'samantha', 'victoria', 'amira', 'fatima'];
+            const hints = gender === 'male' ? maleHints : femaleHints;
+            const otherHints = gender === 'male' ? femaleHints : maleHints;
+
+            let match = langVoices.find(v => hints.some(h => v.name.toLowerCase().includes(h)));
+            if (match) return match;
+
+            const neutralVoices = langVoices.filter(v => !otherHints.some(h => v.name.toLowerCase().includes(h)));
+            const pool = neutralVoices.length ? neutralVoices : langVoices;
+
+            if (pool.length > 1) {
+                return gender === 'male' ? pool[0] : pool[pool.length - 1];
+            }
+            return pool[0];
+        }
+
+        document.getElementById('reader-pdf-file').onchange = async (e) => {
+            if (!e.target.files.length) return;
+            const file = e.target.files[0];
+            showLoad('استخراج النص...');
+            try {
+                let fullText = "";
+                if (file.type === 'application/pdf') {
+                    const pdf = await pdfjsLib.getDocument(new Uint8Array(await file.arrayBuffer())).promise;
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        await updateProgress(Math.round((i / pdf.numPages) * 100), `صفحة ${i}`);
+                        const page = await pdf.getPage(i);
+                        const content = await page.getTextContent();
+                        const pageText = content.items.map(it => it.str).join(' ').trim();
+                        if (pageText) fullText += pageText + "\n\n";
+                    }
+                    if (!fullText.trim()) {
+                        showLoad('الملف صورة، جاري القراءة بالـ OCR...');
+                        const worker = await Tesseract.createWorker();
+                        await worker.loadLanguage('ara+eng');
+                        await worker.initialize('ara+eng');
+                        for (let i = 1; i <= pdf.numPages; i++) {
+                            await updateProgress(Math.round((i / pdf.numPages) * 100), `OCR صفحة ${i}`);
+                            const p = await pdf.getPage(i); const vp = p.getViewport({ scale: 4.0 });
+                            const c = document.createElement('canvas'), ctx = c.getContext('2d'); c.width = vp.width; c.height = vp.height;
+                            await p.render({ canvasContext: ctx, viewport: vp }).promise;
+                            const { data: { text } } = await worker.recognize(c);
+                            if (text.trim() !== "") fullText += text + "\n\n";
+                        }
+                        await worker.terminate();
+                    }
+                } else if (file.type.startsWith('image/')) {
+                    const worker = await Tesseract.createWorker();
+                    await worker.loadLanguage('ara+eng');
+                    await worker.initialize('ara+eng');
+                    await updateProgress(50, 'تحليل الصورة...');
+                    const imageUrl = URL.createObjectURL(file);
+                    try {
+                        const { data: { text } } = await worker.recognize(imageUrl);
+                        fullText = text;
+                    } finally {
+                        URL.revokeObjectURL(imageUrl);
+                    }
+                    await worker.terminate();
+                }
+                document.getElementById('reader-text-area').value = fullText.trim();
+                showToast('اكتملت القراءة');
+            } catch (err) {
+                console.error(err);
+                showToast('خطأ في استخراج النص', 'error');
+            }
+            hideLoad();
+        };
+
+        function startReaderWatchdog() {
+            // Chrome/Edge (desktop و أندرويد) فيهم باج معروف: الصوت بيتقطع أو بيرمي onerror
+            // في النصوص الطويلة لو الصفحة فضلت شغالة أكتر من ~14 ثانية من غير pause/resume.
+            // الحل: نعمل pause/resume كل شوية عشان "نصحّي" المحرك.
+            stopReaderWatchdog();
+            readerWatchdog = setInterval(() => {
+                if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+                    window.speechSynthesis.pause();
+                    window.speechSynthesis.resume();
+                }
+            }, 12000);
+        }
+        function stopReaderWatchdog() {
+            if (readerWatchdog) { clearInterval(readerWatchdog); readerWatchdog = null; }
+        }
+
+        function speakReaderText(text, isRetry) {
+            const utter = new SpeechSynthesisUtterance(text);
+            let voice = null;
+            if (readerManualVoiceURI) voice = readerVoicesCache.find(v => v.voiceURI === readerManualVoiceURI) || null;
+            if (!voice) voice = pickReaderVoice(readerLang, readerGender);
+            utter.lang = voice ? voice.lang : (readerLang === 'ar' ? 'ar-SA' : 'en-US');
+            if (voice) utter.voice = voice;
+
+            const basePitch = parseFloat(document.getElementById('reader-pitch').value) || 1;
+            const genderPitchAdjust = (!readerManualVoiceURI && (!voice || !(voice.name || '').toLowerCase().match(/male|female|man|woman/)))
+                ? (readerGender === 'male' ? -0.15 : 0.15) : 0;
+            utter.pitch = Math.min(2, Math.max(0, basePitch + genderPitchAdjust));
+            utter.rate = parseFloat(document.getElementById('reader-rate').value) || 1;
+
+            utter.onerror = (ev) => {
+                console.error('speechSynthesis error:', ev.error);
+                stopReaderWatchdog();
+                // بعض المتصفحات بترمي "interrupted"/"canceled" لما بنعمل cancel() عمداً - مش خطأ حقيقي، تجاهله
+                if (ev.error === 'interrupted' || ev.error === 'canceled') { setReaderStatus('ready'); return; }
+                // أول مرة يحصل خطأ، جرب تاني مرة واحدة تلقائي قبل ما تزعج المستخدم برسالة
+                if (!isRetry) { speakReaderText(text, true); return; }
+                showToast('حصلت مشكلة في تشغيل الصوت، جرب تاني أو غيّر الصوت من "اختيار الصوت بدقة"', 'error');
+                setReaderStatus('ready');
+            };
+            utter.onstart = () => { setReaderStatus('playing'); startReaderWatchdog(); };
+            utter.onend = () => { stopReaderWatchdog(); setReaderStatus('ready'); };
+            readerUtterance = utter;
+            window.speechSynthesis.speak(utter);
+        }
+
+        document.getElementById('reader-play-btn').onclick = () => {
+            if (!window.speechSynthesis) { showToast('المتصفح ده مش بيدعم القراءة الصوتية', 'error'); return; }
+            const text = document.getElementById('reader-text-area').value.trim();
+            if (!text) { showToast('محتاج نص أو ملف الأول', 'error'); return; }
+
+            if (window.speechSynthesis.paused && readerUtterance) {
+                window.speechSynthesis.resume();
+                setReaderStatus('playing');
+                startReaderWatchdog();
+                return;
+            }
+            window.speechSynthesis.cancel();
+            stopReaderWatchdog();
+            speakReaderText(text, false);
+        };
+        document.getElementById('reader-pause-btn').onclick = () => {
+            if (window.speechSynthesis && window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+                window.speechSynthesis.pause();
+                stopReaderWatchdog();
+                setReaderStatus('paused');
+            }
+        };
+        document.getElementById('reader-stop-btn').onclick = () => {
+            if (window.speechSynthesis) window.speechSynthesis.cancel();
+            stopReaderWatchdog();
+            setReaderStatus('ready');
+        };
+        (function wireReaderDropZone(){
+            const dz = document.querySelector('#page-reader .drop-zone');
+            const input = document.getElementById('reader-pdf-file');
+            if (!dz || !input) return;
+            dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+            dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+            dz.addEventListener('drop', e => {
+                e.preventDefault(); dz.classList.remove('dragover');
+                if (e.dataTransfer.files[0]) { input.files = e.dataTransfer.files; input.dispatchEvent(new Event('change')); }
+            });
+        })();
+
         let wmBytes = null;
         let wmPdf = null;
         let wmPreviewPage = null;
@@ -3996,22 +4503,65 @@ function wirePomodoro(){pomoLoadSettings();pomoPopulateSoundSelect();pomoApplySe
   document.addEventListener('keydown',pomoKeyHandler);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wirePomodoro);else wirePomodoro();
-const SUMMARIES_API_URL = 'https://script.google.com/macros/s/AKfycbwBG0F2X_3yT5iqSrMbsubeWwk0_Snr6sH3osw9e2AVqyBIxsYESo0A6yuHwgbcR4Fbvw/exec';
-const SUMMARY_YEARS = ['الصف الأول الثانوي','الصف الثاني الثانوي','الصف الثالث الثانوي'];
-let sumCurrentYear = SUMMARY_YEARS[0];
+// ================== ملخصات الطلاب (GitHub Releases + WhatsApp) ==================
+// ADMIN: الرقم اتظبط، والرابط بقى بيقرا ملف Data/summaries.json من نفس الريبو (مفيش داعي لـ jsdelivr أو توكن).
+// لو عايز تغيّر المكان، غيّر السطر ده بس.
+const SUMMARIES_ADMIN_WHATSAPP = '201096925903'; // رقمك بصيغة دولية من غير + أو 00 (مثال: مصر 20 + الرقم من غير الصفر)
+const SUMMARIES_DATA_URL = 'Data/summaries.json';
+
+/* بيانات مشروع Firebase بتاعك (Realtime Database) - عشان التقييمات تتجمع من كل الزوار مش من جهاز كل واحد لوحده.
+   ملحوظة مهمة: لازم تتأكد من databaseURL بالظبط من صفحة Realtime Database في الكونسول (فوق شمال)
+   - ممكن يكون https://eto-edu-default-rtdb.firebaseio.com أو https://eto-edu-default-rtdb.<region>.firebasedatabase.app
+   حسب المنطقة اللي اخترتها وقت إنشاء الداتابيز. بدّل السطر لو مختلف عن اللي حطيته تحت.
+   وكمان لازم تغيّر الـ Rules بتاعة الداتابيز (حاليًا false/false يعني حتى القراءة ممنوعة) - شوف التعليمات في آخر الرسالة. */
+const SUMMARIES_FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAvehyyCZVacKFZAg3lGRY3NZ7cAz7FWfU",
+  authDomain: "eto-edu.firebaseapp.com",
+  databaseURL: "https://eto-edu-default-rtdb.firebaseio.com",
+  projectId: "eto-edu",
+  storageBucket: "eto-edu.firebasestorage.app",
+  messagingSenderId: "144894599719",
+  appId: "1:144894599719:web:7a49f0710c0afd9a7e6402"
+};
+
+const SUMMARY_YEARS = [
+  'الصف الأول الابتدائي','الصف الثاني الابتدائي','الصف الثالث الابتدائي',
+  'الصف الرابع الابتدائي','الصف الخامس الابتدائي','الصف السادس الابتدائي',
+  'الصف الأول الإعدادي','الصف الثاني الإعدادي','الصف الثالث الإعدادي',
+  'الصف الأول الثانوي','الصف الثاني الثانوي','الصف الثالث الثانوي',
+  'بكالوريا'
+];
+const SUMMARY_TRACKS = ['الكل','عام','لغات'];
+let sumCurrentYear = 'الكل';
+let sumCurrentTrack = 'الكل';
+let sumSearchQuery = '';
 let sumAllApproved = [];
-let sumSelectedFile = null;
+let sumRatingsCache = {};
+let sumFirebaseDB = null;
 
 function escapeHtml(str){ const d=document.createElement('div'); d.textContent=str||''; return d.innerHTML; }
 
-function renderSummaryYearTabs(){
-  const wrap=document.getElementById('summaries-year-tabs'); if(!wrap) return;
+function sumYearOptions(){ return ['الكل', ...SUMMARY_YEARS]; }
+
+function sumPopulateYearFilterSelect(){
+  const sel=document.getElementById('summaries-year-select'); if(!sel) return;
+  sel.innerHTML='';
+  sumYearOptions().forEach(y=>{
+    const opt=document.createElement('option');
+    opt.value=y; opt.textContent = y==='الكل' ? 'كل المراحل' : y;
+    sel.appendChild(opt);
+  });
+  sel.value = sumCurrentYear;
+}
+
+function renderSummaryTrackTabs(){
+  const wrap=document.getElementById('summaries-track-tabs'); if(!wrap) return;
   wrap.innerHTML='';
-  SUMMARY_YEARS.forEach(y=>{
+  SUMMARY_TRACKS.forEach(t=>{
     const btn=document.createElement('button');
-    btn.textContent=y;
-    btn.className='px-4 py-2 rounded-full text-sm font-bold border transition '+(y===sumCurrentYear?'bg-indigo-600 text-white border-indigo-600':'bg-white text-gray-600 border-gray-200 hover:bg-gray-50 dark:bg-slate-800 dark:text-gray-300 dark:border-slate-600');
-    btn.onclick=()=>{sumCurrentYear=y;renderSummaryYearTabs();renderSummariesList();};
+    btn.innerHTML=(t==='لغات'?'<i class="fa-solid fa-language"></i> ':'')+t;
+    btn.className='px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold border transition '+(t===sumCurrentTrack?'bg-pink-600 text-white border-pink-600':'bg-white text-gray-600 border-gray-200 hover:bg-gray-50 dark:bg-slate-800 dark:text-gray-300 dark:border-slate-600');
+    btn.onclick=()=>{sumCurrentTrack=t;renderSummaryTrackTabs();renderSummariesList();};
     wrap.appendChild(btn);
   });
 }
@@ -4022,170 +4572,685 @@ function populateSummaryYearSelect(){
   SUMMARY_YEARS.forEach(y=>{ const opt=document.createElement('option'); opt.value=y; opt.textContent=y; sel.appendChild(opt); });
 }
 
+function isPdfUrl(url){ return /\.pdf(\?|#|$)/i.test(url||''); }
+
+function sumFormatDate(iso){
+  if(!iso) return '';
+  try{ const d=new Date(iso); if(isNaN(d)) return ''; return d.toLocaleDateString('ar-EG',{year:'numeric',month:'long',day:'numeric'}); }catch(e){ return ''; }
+}
+
+function sumRatingKey(it){
+  const raw = it.url || (it.year+'|'+it.subject+'|'+it.lesson);
+  return raw.replace(/[.#$\[\]\/:]/g, '_'); // مفاتيح Firebase مينفعش فيها الرموز دي
+}
+
+function sumInitFirebase(){
+  if(!SUMMARIES_FIREBASE_CONFIG) return; // مفيش إعدادات Firebase - التقييم هيفضل محلي بس
+  const s1=document.createElement('script');
+  s1.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
+  s1.onload=()=>{
+    const s2=document.createElement('script');
+    s2.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js';
+    s2.onload=()=>{
+      try{
+        firebase.initializeApp(SUMMARIES_FIREBASE_CONFIG);
+        sumFirebaseDB = firebase.database();
+        sumLoadAllRatings();
+      }catch(err){ console.error(err); }
+    };
+    document.head.appendChild(s2);
+  };
+  document.head.appendChild(s1);
+}
+
+async function sumLoadAllRatings(){
+  if(!sumFirebaseDB) return;
+  try{
+    const snap = await sumFirebaseDB.ref('ratings').once('value');
+    sumRatingsCache = snap.val() || {};
+    renderSummariesList();
+  }catch(err){ console.error(err); }
+}
+
+async function sumSubmitRating(it, value){
+  const key = sumRatingKey(it);
+  localStorage.setItem('sumRated:'+key, '1');
+  if(sumFirebaseDB){
+    try{
+      const ref = sumFirebaseDB.ref('ratings/'+key);
+      const result = await ref.transaction(cur => {
+        cur = cur || { sum: 0, count: 0 };
+        cur.sum += value; cur.count += 1;
+        return cur;
+      });
+      sumRatingsCache[key] = result.snapshot.val();
+    }catch(err){ console.error(err); }
+  } else {
+    // مفيش Firebase متظبط، فالتقييم بيتجمّع محلي بس لحد ما تحط بيانات Firebase فوق
+    const cur = sumRatingsCache[key] || { sum: 0, count: 0 };
+    cur.sum += value; cur.count += 1;
+    sumRatingsCache[key] = cur;
+  }
+  renderSummariesList();
+}
+
+function sumRatingDisplay(it){
+  const r = sumRatingsCache[sumRatingKey(it)];
+  if(!r || !r.count) return '<span class="text-[10px] text-gray-300">لسه مفيش تقييم</span>';
+  const avg = r.sum / r.count;
+  let stars = '';
+  for(let i=1;i<=5;i++){ stars += `<i class="fa-solid fa-star text-[11px] ${i<=Math.round(avg)?'text-amber-400':'text-gray-200'}"></i>`; }
+  return `<span class="flex items-center gap-1">${stars}<span class="text-[10px] text-gray-400 mr-1">(${r.count})</span></span>`;
+}
+
+function sumMaybePromptRate(it){
+  if(localStorage.getItem('sumRated:'+sumRatingKey(it))) return;
+  setTimeout(()=>sumOpenRateModal(it), 1200);
+}
+
+function sumOpenRateModal(it){
+  const modal=document.getElementById('summary-rate-modal'); if(!modal) return;
+  const starsWrap=document.getElementById('summary-rate-stars'); if(!starsWrap) return;
+  starsWrap.innerHTML='';
+  for(let i=1;i<=5;i++){
+    const b=document.createElement('button');
+    b.type='button'; b.className='text-gray-300 hover:text-amber-400 transition';
+    b.innerHTML='<i class="fa-solid fa-star"></i>';
+    b.onclick=()=>{
+      sumSubmitRating(it, i);
+      modal.classList.add('hidden'); modal.classList.remove('flex');
+      showToast('شكرًا لتقييمك! 🌟');
+    };
+    starsWrap.appendChild(b);
+  }
+  modal.classList.remove('hidden'); modal.classList.add('flex');
+}
+function sumCloseRateModal(){
+  const modal=document.getElementById('summary-rate-modal'); if(!modal) return;
+  modal.classList.add('hidden'); modal.classList.remove('flex');
+}
+
 function renderSummariesList(){
   const listEl=document.getElementById('summaries-list'); const emptyEl=document.getElementById('summaries-empty');
   if(!listEl) return;
-  const items=sumAllApproved.filter(it=>it.year===sumCurrentYear);
+  const q = sumSearchQuery.trim().toLowerCase();
+  const items = sumAllApproved.filter(it=>{
+    if(sumCurrentYear!=='الكل' && it.year!==sumCurrentYear) return false;
+    if(sumCurrentTrack!=='الكل' && (it.track||'عام')!==sumCurrentTrack) return false;
+    if(q && !((it.subject||'').toLowerCase().includes(q) || (it.lesson||'').toLowerCase().includes(q))) return false;
+    return true;
+  });
   listEl.innerHTML='';
   if(emptyEl) emptyEl.classList.toggle('hidden', items.length>0);
   items.forEach(it=>{
     const card=document.createElement('div');
-    card.className='p-4 bg-gray-50 dark:bg-slate-800/50 border dark:border-slate-600 rounded-xl hover:shadow-md transition';
+    card.className='bg-white dark:bg-slate-800/50 border dark:border-slate-600 rounded-xl overflow-hidden hover:shadow-lg transition flex flex-col';
+    const dateStr = sumFormatDate(it.date);
+    const canPreview = isPdfUrl(it.url) || !!it.driveUrl;
+    const previewBtn = canPreview ? `<button data-act="preview" class="preview-summary-btn flex-1 inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2 rounded-lg transition"><i class="fa-solid fa-eye"></i> معاينة</button>` : '';
+    const cover = it.image
+      ? `<img src="${escapeHtml(it.image)}" loading="lazy" class="w-full h-32 object-cover bg-gray-100 dark:bg-slate-900" alt="">`
+      : `<div class="w-full h-32 bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-3xl"><i class="fa-solid fa-file-lines"></i></div>`;
     card.innerHTML=`
-      <div class="flex items-start gap-3">
-        <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center shrink-0"><i class="fa-solid fa-file-lines"></i></div>
-        <div class="min-w-0">
-          <p class="font-bold text-sm text-gray-800 dark:text-gray-100 truncate">${escapeHtml(it.lesson||'ملخص')}</p>
-          <p class="text-xs text-gray-500">${escapeHtml(it.subject||'')}</p>
+      ${cover}
+      <div class="p-3.5 flex flex-col flex-1">
+        <div class="flex items-start gap-2 mb-1.5">
+          <div class="min-w-0 flex-1">
+            <p class="font-bold text-sm text-gray-800 dark:text-gray-100 truncate">${escapeHtml(it.lesson||'ملخص')}</p>
+            <p class="text-xs text-gray-500 truncate">${escapeHtml(it.subject||'')} • ${escapeHtml(it.year||'')}</p>
+          </div>
+          <span class="text-[10px] bg-pink-50 text-pink-600 px-2 py-0.5 rounded-full font-bold shrink-0">${escapeHtml(it.track||'عام')}</span>
+        </div>
+        <div class="flex items-center justify-between gap-2 mb-2.5" data-rating-row>
+          <div data-rating></div>
+          ${dateStr ? `<span class="text-[10px] text-gray-400 shrink-0"><i class="fa-solid fa-calendar-day"></i> ${escapeHtml(dateStr)}</span>` : ''}
+        </div>
+        <div class="mt-auto flex gap-2">
+          ${previewBtn}
+          <a href="${escapeHtml(it.url||it.driveUrl||'#')}" target="_blank" rel="noopener" class="download-summary-btn flex-1 inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold py-2 rounded-lg transition"><i class="fa-solid fa-download"></i> تحميل</a>
         </div>
       </div>
-      <a href="${it.fileUrl}" target="_blank" rel="noopener" class="mt-3 w-full inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold py-2 rounded-lg transition"><i class="fa-solid fa-download"></i> تحميل / معاينة</a>
     `;
+    const ratingEl = card.querySelector('[data-rating]');
+    if(ratingEl) ratingEl.innerHTML = sumRatingDisplay(it);
+    const pBtn = card.querySelector('.preview-summary-btn');
+    if(pBtn) pBtn.onclick = () => openSummaryPreview(it);
+    const dBtn = card.querySelector('.download-summary-btn');
+    if(dBtn) dBtn.addEventListener('click', () => sumMaybePromptRate(it));
     listEl.appendChild(card);
   });
 }
 
-function fetchApprovedSummaries(){
+async function fetchApprovedSummaries(){
   const loadingEl=document.getElementById('summaries-loading');
-
-  if(!SUMMARIES_API_URL || SUMMARIES_API_URL.includes('PASTE_')){
-    if(loadingEl) loadingEl.innerHTML='<p class="text-xs text-red-400">لسه محطتش رابط السيرفر (SUMMARIES_API_URL) في الكود.</p>';
-    return;
-  }
-
   if(loadingEl) loadingEl.classList.remove('hidden');
 
-  const callbackName='etoSummariesCallback_' + Date.now();
-
-  window[callbackName]=function(data){
-    try{
-      sumAllApproved=(data&&data.items)?data.items:[];
-      renderSummariesList();
-    }catch(err){
-      console.error(err);
-      showToast('مشكلة في عرض الملخصات','error');
-    }finally{
-      if(loadingEl) loadingEl.classList.add('hidden');
-
-      const script=document.getElementById(callbackName);
-      if(script) script.remove();
-
-      delete window[callbackName];
-    }
-  };
-
-  const script=document.createElement('script');
-  script.id=callbackName;
-  script.src=`${SUMMARIES_API_URL}?action=list&callback=${callbackName}`;
-  script.onerror=function(){
-    console.error('Failed to load summaries API');
-
-    if(loadingEl) loadingEl.classList.add('hidden');
-
+  try{
+    const res = await fetch(SUMMARIES_DATA_URL, { cache: 'no-store' });
+    if(res.status===404){ sumAllApproved=[]; renderSummariesList(); return; } // لسه مفيش ملف Data/summaries.json - ده طبيعي أول مرة
+    if(!res.ok) throw new Error('bad status ' + res.status);
+    const data = await res.json();
+    sumAllApproved = Array.isArray(data) ? data : (data.items || []);
+    renderSummariesList();
+    sumLoadAllRatings();
+  }catch(err){
+    console.error(err);
     showToast('مشكلة في جلب الملخصات، حاول تاني لاحقاً','error');
-
-    const oldScript=document.getElementById(callbackName);
-    if(oldScript) oldScript.remove();
-
-    delete window[callbackName];
-  };
-
-  document.body.appendChild(script);
+  }finally{
+    if(loadingEl) loadingEl.classList.add('hidden');
+  }
 }
 
-function fileToBase64(file){
-  return new Promise((resolve,reject)=>{
-    const reader=new FileReader();
-    reader.onload=()=>resolve(reader.result.split(',')[1]);
-    reader.onerror=reject;
-    reader.readAsDataURL(file);
-  });
-}
-
-function submitSummaryWithoutCors(payload){
-  return new Promise((resolve)=>{
-    const form=document.createElement('form');
-
-    form.method='POST';
-    form.action=SUMMARIES_API_URL;
-    form.target='etoSummaryUploadFrame';
-    form.style.display='none';
-
-    const iframe=document.createElement('iframe');
-    iframe.name='etoSummaryUploadFrame';
-    iframe.style.display='none';
-
-    document.body.appendChild(iframe);
-
-    const input=document.createElement('input');
-    input.type='hidden';
-    input.name='payload';
-    input.value=JSON.stringify(payload);
-
-    form.appendChild(input);
-    document.body.appendChild(form);
-
-    form.submit();
-
-    setTimeout(()=>{
-      form.remove();
-      iframe.remove();
-      resolve();
-    },2500);
-  });
-}
-
-async function submitSummary(){
+function submitSummary(){
   const name=document.getElementById('sum-name').value.trim();
   const phone=document.getElementById('sum-phone').value.trim();
   const year=document.getElementById('sum-year').value;
+  const track=document.getElementById('sum-track').value;
   const subject=document.getElementById('sum-subject').value.trim();
   const lesson=document.getElementById('sum-lesson').value.trim();
+  const terms=document.getElementById('sum-terms').checked;
 
-  if(!name||!phone||!subject||!lesson||!sumSelectedFile){ showToast('من فضلك املأ كل البيانات واختار الملف','error'); return; }
-  if(!SUMMARIES_API_URL||SUMMARIES_API_URL.includes('PASTE_')){ showToast('لسه محطتش رابط السيرفر في الكود (SUMMARIES_API_URL)','error'); return; }
-  if(sumSelectedFile.size>15*1024*1024){ showToast('الملف كبير أوي، حاول ملف أصغر من 15 ميجا','error'); return; }
+  if(!name||!phone||!subject||!lesson){ showToast('من فضلك املأ كل البيانات الأول','error'); return; }
+  if(!terms){ showToast('لازم توافق على الشروط الأول','error'); return; }
+  if(!SUMMARIES_ADMIN_WHATSAPP || SUMMARIES_ADMIN_WHATSAPP.includes('000000')){ showToast('لسه محطتش رقم الواتساب في الكود (SUMMARIES_ADMIN_WHATSAPP)','error'); return; }
 
-  try{
-    showLoad('بنرفع الملف...');
-    const base64=await fileToBase64(sumSelectedFile);
-    const payload={ action:'upload', name, phone, year, subject, lesson, fileName:sumSelectedFile.name, mimeType:sumSelectedFile.type||'application/octet-stream', fileData:base64 };
-    await submitSummaryWithoutCors(payload);
-    const data={success:true};
-    if(data&&data.success){
-      showToast('اتبعت! هيظهر بعد ما الأدمن يوافق عليه ✅');
-      document.getElementById('sum-name').value='';
-      document.getElementById('sum-phone').value='';
-      document.getElementById('sum-subject').value='';
-      document.getElementById('sum-lesson').value='';
-      document.getElementById('sum-file-input').value='';
-      document.getElementById('sum-file-label').textContent='اضغط أو اسحب الملف هنا';
-      sumSelectedFile=null;
-    }else{ showToast('حصلت مشكلة وقت الإرسال، حاول تاني','error'); }
-  }catch(err){ console.error(err); showToast('حصلت مشكلة وقت الإرسال، حاول تاني','error'); }
-  finally{ hideLoad(); }
+  const msg = `ملخص جديد لمراجعته:\nالاسم: ${name}\nالموبايل: ${phone}\nالمرحلة: ${year}\nنوع الدراسة: ${track}\nالمادة: ${subject}\nالدرس/الملخص: ${lesson}\n\n(هبعت الملف في نفس المحادثة دلوقتي)`;
+  const waUrl = `https://wa.me/${SUMMARIES_ADMIN_WHATSAPP}?text=${encodeURIComponent(msg)}`;
+  window.open(waUrl, '_blank');
+  showToast('افتحلك واتساب، ابعت الرسالة وارفق الملف 📎');
+  closeSummaryAddModal();
 }
 
-function wireSummaryUpload(){
-  const drop=document.getElementById('sum-drop'); const input=document.getElementById('sum-file-input'); const label=document.getElementById('sum-file-label');
-  function handleSumFile(file){ sumSelectedFile=file; if(label) label.textContent=file.name; }
-  if(drop&&input){
-    drop.addEventListener('click',()=>input.click());
-    drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('dragover');});
-    drop.addEventListener('dragleave',()=>drop.classList.remove('dragover'));
-    drop.addEventListener('drop',e=>{ e.preventDefault(); drop.classList.remove('dragover'); if(e.dataTransfer.files[0]){ input.files=e.dataTransfer.files; handleSumFile(e.dataTransfer.files[0]); } });
-    input.addEventListener('change',()=>{ if(input.files[0]) handleSumFile(input.files[0]); });
+function openSummaryAddModal(){
+  const m=document.getElementById('summary-add-modal'); if(!m) return;
+  m.classList.remove('hidden'); m.classList.add('flex');
+}
+function closeSummaryAddModal(){
+  const m=document.getElementById('summary-add-modal'); if(!m) return;
+  m.classList.add('hidden'); m.classList.remove('flex');
+}
+
+// ---------- معاينة الملف داخل الموقع: جوجل درايف (iframe) أو PDF مباشر (pdf.js) ----------
+let sumPreviewPdfDoc = null, sumPreviewPageNum = 1;
+
+function sumToDriveEmbedUrl(url){
+  // بيقبل أي شكل لينك جوجل درايف (عادي أو /view أو /preview) ويحوله لصيغة embed القابلة للعرض في iframe
+  const m = url.match(/[-\w]{20,}/);
+  return m ? `https://drive.google.com/file/d/${m[0]}/preview` : url;
+}
+
+async function openSummaryPreview(it){
+  const modal=document.getElementById('summary-preview-modal'); if(!modal) return;
+  const canvas=document.getElementById('summary-preview-canvas');
+  const iframe=document.getElementById('summary-preview-iframe');
+  const nav=document.getElementById('summary-preview-nav');
+  const loadingEl=document.getElementById('summary-preview-loading');
+  modal.classList.remove('hidden'); modal.classList.add('flex');
+  document.getElementById('summary-preview-title').textContent = it.lesson || it.subject || 'معاينة';
+  document.getElementById('summary-preview-download').href = it.url || it.driveUrl || '#';
+  document.getElementById('summary-preview-page').textContent = '-- / --';
+  sumPreviewPdfDoc = null; sumPreviewPageNum = 1;
+
+  if(it.driveUrl){
+    // معاينة عبر جوجل درايف: iframe بس، من غير fetch، فمفيهاش مشكلة CORS خالص
+    canvas.classList.add('hidden'); nav.classList.add('hidden');
+    iframe.classList.remove('hidden');
+    loadingEl.classList.remove('hidden');
+    iframe.onload = () => loadingEl.classList.add('hidden');
+    iframe.src = sumToDriveEmbedUrl(it.driveUrl);
+    return;
   }
-  const btn=document.getElementById('sum-submit-btn'); if(btn) btn.addEventListener('click', submitSummary);
+
+  iframe.classList.add('hidden'); iframe.src='about:blank';
+  canvas.classList.remove('hidden'); nav.classList.remove('hidden');
+  loadingEl.classList.remove('hidden');
+  try{
+    const res = await fetch(it.url, { cache:'no-store' });
+    if(!res.ok) throw new Error('bad status '+res.status);
+    const buf = await res.arrayBuffer();
+    sumPreviewPdfDoc = await pdfjsLib.getDocument({ data: buf }).promise;
+    await sumRenderPreviewPage();
+  }catch(err){
+    console.error(err);
+    showToast('اتعذرت معاينة الملف من هنا (على الأغلب مشكلة CORS)، ضيف رابط جوجل درايف من لوحة التحكم أو جرب تحمّله','error');
+    closeSummaryPreview();
+  }finally{
+    loadingEl.classList.add('hidden');
+  }
+}
+
+async function sumRenderPreviewPage(){
+  if(!sumPreviewPdfDoc) return;
+  const page = await sumPreviewPdfDoc.getPage(sumPreviewPageNum);
+  const canvas = document.getElementById('summary-preview-canvas');
+  const bodyEl = document.getElementById('summary-preview-body');
+  const baseVp = page.getViewport({ scale: 1 });
+  const scale = Math.min((bodyEl.clientWidth-20)/baseVp.width, (bodyEl.clientHeight-20)/baseVp.height, 2);
+  const vp = page.getViewport({ scale: scale>0?scale:1 });
+  canvas.width = vp.width; canvas.height = vp.height;
+  await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+  document.getElementById('summary-preview-page').textContent = sumPreviewPageNum + ' / ' + sumPreviewPdfDoc.numPages;
+}
+
+function closeSummaryPreview(){
+  const modal=document.getElementById('summary-preview-modal'); if(!modal) return;
+  modal.classList.add('hidden'); modal.classList.remove('flex');
+  sumPreviewPdfDoc = null;
+  const iframe=document.getElementById('summary-preview-iframe');
+  if(iframe) iframe.src='about:blank';
 }
 
 function wireSummaries(){
-  renderSummaryYearTabs();
+  sumInitFirebase();
+  renderSummaryTrackTabs();
   populateSummaryYearSelect();
-  wireSummaryUpload();
+  sumPopulateYearFilterSelect();
   fetchApprovedSummaries();
+  const btn=document.getElementById('sum-submit-btn'); if(btn) btn.addEventListener('click', submitSummary);
+
+  const yearSelect=document.getElementById('summaries-year-select');
+  if(yearSelect){
+    yearSelect.addEventListener('change', ()=>{
+      sumCurrentYear = yearSelect.value || 'الكل';
+      renderSummariesList();
+    });
+  }
+
+  const rateSkip=document.getElementById('summary-rate-skip'); if(rateSkip) rateSkip.addEventListener('click', sumCloseRateModal);
+  const rateModal=document.getElementById('summary-rate-modal');
+  if(rateModal) rateModal.addEventListener('click', (e)=>{ if(e.target===rateModal) sumCloseRateModal(); });
+
+  const openBtn=document.getElementById('summaries-open-add-btn'); if(openBtn) openBtn.addEventListener('click', openSummaryAddModal);
+  const closeBtn=document.getElementById('summary-add-close-btn'); if(closeBtn) closeBtn.addEventListener('click', closeSummaryAddModal);
+  const addModal=document.getElementById('summary-add-modal');
+  if(addModal) addModal.addEventListener('click', (e)=>{ if(e.target===addModal) closeSummaryAddModal(); });
+
+  const searchInput=document.getElementById('summaries-search');
+  if(searchInput) searchInput.addEventListener('input', ()=>{ sumSearchQuery=searchInput.value; renderSummariesList(); });
+
+  const pClose=document.getElementById('summary-preview-close-btn'); if(pClose) pClose.addEventListener('click', closeSummaryPreview);
+  const pModal=document.getElementById('summary-preview-modal');
+  if(pModal) pModal.addEventListener('click', (e)=>{ if(e.target===pModal) closeSummaryPreview(); });
+  const pPrev=document.getElementById('summary-preview-prev'); if(pPrev) pPrev.addEventListener('click', ()=>{ if(sumPreviewPdfDoc && sumPreviewPageNum>1){ sumPreviewPageNum--; sumRenderPreviewPage(); } });
+  const pNext=document.getElementById('summary-preview-next'); if(pNext) pNext.addEventListener('click', ()=>{ if(sumPreviewPdfDoc && sumPreviewPageNum<sumPreviewPdfDoc.numPages){ sumPreviewPageNum++; sumRenderPreviewPage(); } });
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wireSummaries);else wireSummaries();
+
+// ================== مقارنة نسختين PDF (Compare) ==================
+let cmpFileA = null, cmpFileB = null;
+function cmpUpdateRunBtn(){ const btn=document.getElementById('cmp-run-btn'); if(btn) btn.disabled = !(cmpFileA && cmpFileB); }
+document.getElementById('cmp-file-a').onchange = (e) => {
+  if(!e.target.files.length) return; cmpFileA = e.target.files[0];
+  document.getElementById('cmp-file-a-label').textContent = cmpFileA.name; cmpUpdateRunBtn();
+};
+document.getElementById('cmp-file-b').onchange = (e) => {
+  if(!e.target.files.length) return; cmpFileB = e.target.files[0];
+  document.getElementById('cmp-file-b-label').textContent = cmpFileB.name; cmpUpdateRunBtn();
+};
+
+async function cmpRenderPageToCanvas(pdf, pageNum, scale){
+  if(pageNum > pdf.numPages) return null;
+  const page = await pdf.getPage(pageNum);
+  const vp = page.getViewport({ scale });
+  const canvas = document.createElement('canvas');
+  canvas.width = vp.width; canvas.height = vp.height;
+  const ctx = canvas.getContext('2d');
+  await page.render({ canvasContext: ctx, viewport: vp }).promise;
+  return canvas;
+}
+
+function cmpDiffCanvases(canvasA, canvasB){
+  const w = Math.max(canvasA ? canvasA.width : 0, canvasB ? canvasB.width : 0);
+  const h = Math.max(canvasA ? canvasA.height : 0, canvasB ? canvasB.height : 0);
+  const out = document.createElement('canvas'); out.width = w; out.height = h;
+  const outCtx = out.getContext('2d');
+  outCtx.fillStyle = '#ffffff'; outCtx.fillRect(0,0,w,h);
+  if (canvasA) outCtx.drawImage(canvasA, 0, 0);
+  outCtx.fillStyle = 'rgba(255,255,255,0.55)'; outCtx.fillRect(0,0,w,h);
+
+  const getData = (c) => { if(!c) return null; return c.getContext('2d').getImageData(0,0,c.width,c.height); };
+  const dataA = getData(canvasA), dataB = getData(canvasB);
+  const outImg = outCtx.getImageData(0,0,w,h);
+  let diffCount = 0;
+  for (let y = 0; y < h; y++){
+    for (let x = 0; x < w; x++){
+      const outIdx = (y*w+x)*4;
+      const getPixel = (data, cw, ch) => {
+        if(!data || x>=cw || y>=ch) return [255,255,255];
+        const idx=(y*cw+x)*4;
+        return [data.data[idx], data.data[idx+1], data.data[idx+2]];
+      };
+      const [ar,ag,ab] = getPixel(dataA, canvasA?canvasA.width:0, canvasA?canvasA.height:0);
+      const [br,bg,bb] = getPixel(dataB, canvasB?canvasB.width:0, canvasB?canvasB.height:0);
+      const delta = Math.abs(ar-br)+Math.abs(ag-bg)+Math.abs(ab-bb);
+      if (delta > 45){
+        outImg.data[outIdx]=239; outImg.data[outIdx+1]=68; outImg.data[outIdx+2]=68; outImg.data[outIdx+3]=255;
+        diffCount++;
+      }
+    }
+  }
+  outCtx.putImageData(outImg,0,0);
+  return { canvas: out, diffCount, totalPixels: w*h };
+}
+
+document.getElementById('cmp-run-btn').onclick = async () => {
+  if(!cmpFileA || !cmpFileB) return;
+  const resultsEl = document.getElementById('cmp-results'); resultsEl.innerHTML='';
+  const summaryEl = document.getElementById('cmp-summary'); summaryEl.classList.add('hidden');
+  showLoad('بنقارن الملفين...');
+  try{
+    const pdfA = await pdfjsLib.getDocument(new Uint8Array(await cmpFileA.arrayBuffer())).promise;
+    const pdfB = await pdfjsLib.getDocument(new Uint8Array(await cmpFileB.arrayBuffer())).promise;
+    const maxPages = Math.min(60, Math.max(pdfA.numPages, pdfB.numPages));
+    const scale = 1.1;
+    let pagesWithDiff = 0;
+
+    for (let i=1; i<=maxPages; i++){
+      await updateProgress(Math.round((i/maxPages)*100), `صفحة ${i}`);
+      const canvasA = await cmpRenderPageToCanvas(pdfA, i, scale);
+      const canvasB = await cmpRenderPageToCanvas(pdfB, i, scale);
+      const { canvas, diffCount, totalPixels } = cmpDiffCanvases(canvasA, canvasB);
+      const diffPercent = totalPixels ? ((diffCount/totalPixels)*100) : 0;
+      if (diffPercent > 0.3) pagesWithDiff++;
+
+      const wrap = document.createElement('div');
+      wrap.className = 'border rounded-xl p-3 dark:border-slate-600';
+      const label = diffPercent > 0.3
+        ? `<span class="text-red-600 font-bold text-xs"><i class="fa-solid fa-triangle-exclamation"></i> فيه اختلاف (${diffPercent.toFixed(1)}%)</span>`
+        : `<span class="text-green-600 font-bold text-xs"><i class="fa-solid fa-circle-check"></i> متطابقة</span>`;
+      wrap.innerHTML = `<div class="flex items-center justify-between mb-2"><p class="font-bold text-sm">صفحة ${i}</p>${label}</div>`;
+      canvas.className = 'w-full rounded-lg border';
+      wrap.appendChild(canvas);
+      resultsEl.appendChild(wrap);
+    }
+
+    summaryEl.textContent = maxPages > 0
+      ? `${pagesWithDiff} صفحة فيها اختلاف من أصل ${maxPages}${(pdfA.numPages!==pdfB.numPages)?' (عدد الصفحات مختلف بين الملفين برضو)':''}`
+      : '';
+    summaryEl.className = 'text-center text-sm font-bold mb-4 ' + (pagesWithDiff>0 ? 'text-red-600' : 'text-green-600');
+    summaryEl.classList.remove('hidden');
+    showToast('اكتملت المقارنة');
+  }catch(err){
+    console.error(err);
+    showToast('حصل خطأ أثناء المقارنة','error');
+  }
+  hideLoad();
+};
+
+// ================== توقيع إلكتروني (E-Sign) ==================
+let esignPdfBytes = null, esignPdf = null, esignCurrentPage = 1, esignScale = 1;
+let esignSigDataUrl = null, esignSigMode = 'draw', esignPlaced = false;
+let esignPos = { x: 0.5, y: 0.85 }, esignSizePx = 150;
+let esignDragging = false, esignDragOffset = { x: 0, y: 0 };
+
+document.getElementById('esign-file').onchange = async (e) => {
+  if(!e.target.files.length) return;
+  showLoad('بنفتح الملف...');
+  try{
+    esignPdfBytes = await e.target.files[0].arrayBuffer();
+    esignPdf = await pdfjsLib.getDocument(new Uint8Array(esignPdfBytes.slice(0))).promise;
+    esignCurrentPage = 1;
+    document.getElementById('esign-upload-ui').classList.add('hidden');
+    document.getElementById('esign-workspace').classList.remove('hidden');
+    await esignRenderPage();
+  }catch(err){ console.error(err); showToast('خطأ في فتح الملف','error'); }
+  hideLoad();
+};
+
+async function esignRenderPage(){
+  const page = await esignPdf.getPage(esignCurrentPage);
+  const vp = page.getViewport({ scale: 1.3 });
+  esignScale = 1.3;
+  const canvas = document.getElementById('esign-page-canvas');
+  canvas.width = vp.width; canvas.height = vp.height;
+  const ctx = canvas.getContext('2d');
+  await page.render({ canvasContext: ctx, viewport: vp }).promise;
+  document.getElementById('esign-page-indicator').textContent = `صفحة ${esignCurrentPage} / ${esignPdf.numPages}`;
+  esignUpdateSigPreview();
+}
+document.getElementById('esign-prev-page').onclick = () => { if(esignCurrentPage>1){ esignCurrentPage--; esignRenderPage(); } };
+document.getElementById('esign-next-page').onclick = () => { if(esignPdf && esignCurrentPage<esignPdf.numPages){ esignCurrentPage++; esignRenderPage(); } };
+
+function switchEsignMode(mode){
+  esignSigMode = mode;
+  document.getElementById('esign-mode-draw').className = mode==='draw' ? 'flex-1 px-2 py-1 rounded bg-white dark:bg-slate-800 font-bold text-xs shadow-sm' : 'flex-1 px-2 py-1 rounded text-gray-500 font-bold text-xs';
+  document.getElementById('esign-mode-type').className = mode==='type' ? 'flex-1 px-2 py-1 rounded bg-white dark:bg-slate-800 font-bold text-xs shadow-sm' : 'flex-1 px-2 py-1 rounded text-gray-500 font-bold text-xs';
+  document.getElementById('esign-draw-ui').classList.toggle('hidden', mode!=='draw');
+  document.getElementById('esign-type-ui').classList.toggle('hidden', mode!=='type');
+}
+
+(function wireEsignCanvas(){
+  const canvas = document.getElementById('esign-sig-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  function resize(){ const rect = canvas.getBoundingClientRect(); canvas.width = rect.width; canvas.height = 140; ctx.lineWidth=2.5; ctx.lineCap='round'; ctx.strokeStyle='#0f172a'; }
+  resize();
+  let drawing = false, lastX=0, lastY=0;
+  function pos(e){ const rect=canvas.getBoundingClientRect(); const cx=(e.touches?e.touches[0].clientX:e.clientX)-rect.left; const cy=(e.touches?e.touches[0].clientY:e.clientY)-rect.top; return {x:cx,y:cy}; }
+  function start(e){ e.preventDefault(); drawing=true; const p=pos(e); lastX=p.x; lastY=p.y; }
+  function move(e){ if(!drawing) return; e.preventDefault(); const p=pos(e); ctx.beginPath(); ctx.moveTo(lastX,lastY); ctx.lineTo(p.x,p.y); ctx.stroke(); lastX=p.x; lastY=p.y; }
+  function end(){ drawing=false; }
+  canvas.addEventListener('mousedown', start); canvas.addEventListener('mousemove', move); window.addEventListener('mouseup', end);
+  canvas.addEventListener('touchstart', start, {passive:false}); canvas.addEventListener('touchmove', move, {passive:false}); canvas.addEventListener('touchend', end);
+  document.getElementById('esign-clear-sig').onclick = () => ctx.clearRect(0,0,canvas.width,canvas.height);
+})();
+
+document.getElementById('esign-place-btn').onclick = () => {
+  if (esignSigMode === 'draw'){
+    const canvas = document.getElementById('esign-sig-canvas');
+    esignSigDataUrl = canvas.toDataURL('image/png');
+    const preview = document.getElementById('esign-sig-preview');
+    preview.innerHTML = `<img src="${esignSigDataUrl}" class="w-full h-full object-contain pointer-events-none">`;
+  } else {
+    const text = document.getElementById('esign-type-text').value.trim() || 'توقيع';
+    const font = document.getElementById('esign-type-font').value;
+    const tmp = document.createElement('canvas'); tmp.width=500; tmp.height=150;
+    const tctx = tmp.getContext('2d');
+    tctx.font = `48px ${font}`; tctx.fillStyle = '#0f172a'; tctx.textBaseline='middle';
+    tctx.fillText(text, 10, 75);
+    esignSigDataUrl = tmp.toDataURL('image/png');
+    const preview = document.getElementById('esign-sig-preview');
+    preview.innerHTML = `<img src="${esignSigDataUrl}" class="w-full h-full object-contain pointer-events-none">`;
+  }
+  esignPlaced = true;
+  document.getElementById('esign-size-box').style.display = 'block';
+  esignUpdateSigPreview();
+};
+
+function esignUpdateSigPreview(){
+  const preview = document.getElementById('esign-sig-preview');
+  const canvas = document.getElementById('esign-page-canvas');
+  if (!esignPlaced || !canvas.width){ preview.classList.add('hidden'); return; }
+  preview.classList.remove('hidden');
+  const w = esignSizePx, h = esignSizePx * 0.5;
+  preview.style.width = w + 'px'; preview.style.height = h + 'px';
+  preview.style.left = (esignPos.x * canvas.width - w/2) + 'px';
+  preview.style.top = (esignPos.y * canvas.height - h/2) + 'px';
+}
+document.getElementById('esign-sig-size').oninput = (e) => { esignSizePx = parseInt(e.target.value); esignUpdateSigPreview(); };
+
+(function wireEsignDrag(){
+  const preview = document.getElementById('esign-sig-preview');
+  const stage = document.getElementById('esign-page-stage');
+  function pos(e){ const rect=stage.getBoundingClientRect(); const cx=(e.touches?e.touches[0].clientX:e.clientX)-rect.left; const cy=(e.touches?e.touches[0].clientY:e.clientY)-rect.top; return {x:cx,y:cy}; }
+  function start(e){ esignDragging = true; e.preventDefault(); }
+  function move(e){
+    if(!esignDragging) return; e.preventDefault();
+    const canvas = document.getElementById('esign-page-canvas');
+    const p = pos(e);
+    esignPos.x = Math.min(1, Math.max(0, p.x / canvas.width));
+    esignPos.y = Math.min(1, Math.max(0, p.y / canvas.height));
+    esignUpdateSigPreview();
+  }
+  function end(){ esignDragging = false; }
+  preview.addEventListener('mousedown', start); window.addEventListener('mousemove', move); window.addEventListener('mouseup', end);
+  preview.addEventListener('touchstart', start, {passive:false}); window.addEventListener('touchmove', move, {passive:false}); window.addEventListener('touchend', end);
+})();
+
+document.getElementById('esign-download-btn').onclick = async () => {
+  if(!esignPdfBytes){ showToast('محتاج ترفع ملف الأول','error'); return; }
+  if(!esignPlaced || !esignSigDataUrl){ showToast('ضيف التوقيع الأول','error'); return; }
+  showLoad('بنحفظ الملف الموقّع...');
+  try{
+    const { PDFDocument } = PDFLib;
+    const pdfDoc = await PDFDocument.load(esignPdfBytes);
+    const pages = pdfDoc.getPages();
+    const pageIndex = Math.min(esignCurrentPage - 1, pages.length - 1);
+    const page = pages[pageIndex];
+    const pngImage = await pdfDoc.embedPng(esignSigDataUrl);
+    const { width: pw, height: ph } = page.getSize();
+    const sigW = (esignSizePx / esignScale) * (pw / (document.getElementById('esign-page-canvas').width / esignScale));
+    const drawW = esignSizePx / (document.getElementById('esign-page-canvas').width) * pw;
+    const drawH = drawW * 0.5;
+    const drawX = esignPos.x * pw - drawW/2;
+    const drawY = ph - (esignPos.y * ph) - drawH/2;
+    page.drawImage(pngImage, { x: drawX, y: drawY, width: drawW, height: drawH });
+    const bytes = await pdfDoc.save();
+    const blob = new Blob([bytes], { type: 'application/pdf' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'Signed.pdf'; a.click();
+    showToast('اتحفظ الملف الموقّع');
+  }catch(err){ console.error(err); showToast('حصل خطأ أثناء الحفظ','error'); }
+  hideLoad();
+};
+
+// ================== مكتبتي (Personal Library - IndexedDB) ==================
+let libDB = null, libCurrentFilter = 'الكل';
+function libOpenDB(){
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open('eto-library-db', 1);
+    req.onupgradeneeded = () => { const db = req.result; if(!db.objectStoreNames.contains('files')) db.createObjectStore('files', { keyPath: 'id' }); };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+function libGetAll(){
+  return new Promise((resolve, reject) => {
+    const tx = libDB.transaction('files', 'readonly'); const store = tx.objectStore('files');
+    const req = store.getAll(); req.onsuccess = () => resolve(req.result); req.onerror = () => reject(req.error);
+  });
+}
+function libPut(item){
+  return new Promise((resolve, reject) => {
+    const tx = libDB.transaction('files', 'readwrite'); tx.objectStore('files').put(item);
+    tx.oncomplete = () => resolve(); tx.onerror = () => reject(tx.error);
+  });
+}
+function libDelete(id){
+  return new Promise((resolve, reject) => {
+    const tx = libDB.transaction('files', 'readwrite'); tx.objectStore('files').delete(id);
+    tx.oncomplete = () => resolve(); tx.onerror = () => reject(tx.error);
+  });
+}
+
+let libPendingFile = null;
+async function libHandleFiles(files){
+  for (const file of files){
+    libPendingFile = file;
+    document.getElementById('lib-tag-subject').value = '';
+    document.getElementById('lib-tag-term').value = '';
+    document.getElementById('lib-tag-modal').classList.remove('hidden');
+    document.getElementById('lib-tag-modal').classList.add('flex');
+    await new Promise(resolve => {
+      document.getElementById('lib-tag-save').onclick = async () => {
+        const subject = document.getElementById('lib-tag-subject').value.trim() || 'عام';
+        const term = document.getElementById('lib-tag-term').value.trim() || 'بدون تصنيف';
+        const item = { id: 'f_' + Date.now() + '_' + Math.random().toString(36).slice(2), name: file.name, subject, term, size: file.size, date: new Date().toISOString(), blob: file };
+        await libPut(item);
+        document.getElementById('lib-tag-modal').classList.add('hidden');
+        document.getElementById('lib-tag-modal').classList.remove('flex');
+        resolve();
+      };
+      document.getElementById('lib-tag-cancel').onclick = () => {
+        document.getElementById('lib-tag-modal').classList.add('hidden');
+        document.getElementById('lib-tag-modal').classList.remove('flex');
+        resolve();
+      };
+    });
+  }
+  await libRender();
+}
+
+async function libRender(){
+  const items = await libGetAll();
+  const grid = document.getElementById('lib-grid'); const empty = document.getElementById('lib-empty');
+  const tabsWrap = document.getElementById('lib-filter-tabs');
+  const subjects = ['الكل', ...new Set(items.map(i => i.subject))];
+  tabsWrap.innerHTML = '';
+  subjects.forEach(s => {
+    const btn = document.createElement('button');
+    btn.textContent = s;
+    btn.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition ' + (s===libCurrentFilter ? 'bg-lime-600 text-white border-lime-600' : 'bg-white text-gray-600 border-gray-200 dark:bg-slate-800 dark:text-gray-300 dark:border-slate-600');
+    btn.onclick = () => { libCurrentFilter = s; libRender(); };
+    tabsWrap.appendChild(btn);
+  });
+
+  const filtered = libCurrentFilter==='الكل' ? items : items.filter(i => i.subject === libCurrentFilter);
+  grid.innerHTML = '';
+  empty.classList.toggle('hidden', filtered.length > 0);
+  filtered.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'p-4 bg-gray-50 dark:bg-slate-800/50 border dark:border-slate-600 rounded-xl';
+    const sizeKb = (item.size/1024).toFixed(0);
+    card.innerHTML = `
+      <div class="flex items-start gap-3 mb-3">
+        <div class="w-10 h-10 bg-lime-100 text-lime-600 rounded-lg flex items-center justify-center shrink-0"><i class="fa-solid fa-file"></i></div>
+        <div class="min-w-0">
+          <p class="font-bold text-sm text-gray-800 dark:text-gray-100 truncate">${escapeHtml(item.name)}</p>
+          <p class="text-xs text-gray-500">${escapeHtml(item.subject)} • ${escapeHtml(item.term)} • ${sizeKb} KB</p>
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <button data-act="dl" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold py-2 rounded-lg"><i class="fa-solid fa-download"></i> تحميل</button>
+        <button data-act="del" class="bg-red-50 text-red-600 text-xs font-bold py-2 px-3 rounded-lg hover:bg-red-100"><i class="fa-solid fa-trash"></i></button>
+      </div>
+    `;
+    card.querySelector('[data-act="dl"]').onclick = () => {
+      const a = document.createElement('a'); a.href = URL.createObjectURL(item.blob); a.download = item.name; a.click();
+    };
+    card.querySelector('[data-act="del"]').onclick = async () => { await libDelete(item.id); libRender(); };
+    grid.appendChild(card);
+  });
+}
+
+async function wireLibrary(){
+  libDB = await libOpenDB();
+  const dz = document.getElementById('lib-drop-zone'); const input = document.getElementById('lib-file-input');
+  dz.addEventListener('click', () => input.click());
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+  dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('dragover'); if(e.dataTransfer.files.length) libHandleFiles(Array.from(e.dataTransfer.files)); });
+  input.addEventListener('change', () => { if(input.files.length) libHandleFiles(Array.from(input.files)); input.value=''; });
+  await libRender();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wireLibrary);else wireLibrary();
+
+// ================== PDF إلى PowerPoint ==================
+document.getElementById('pdf-to-ppt-file').onchange = async (e) => {
+  if(!e.target.files.length) return;
+  showLoad('بنحول لـ PowerPoint...');
+  try{
+    const pdf = await pdfjsLib.getDocument(new Uint8Array(await e.target.files[0].arrayBuffer())).promise;
+    const pptx = new PptxGenJS();
+    pptx.defineLayout({ name: 'A4', width: 10, height: 7.5 });
+    pptx.layout = 'A4';
+    for (let i = 1; i <= pdf.numPages; i++){
+      await updateProgress(Math.round((i/pdf.numPages)*100), `صفحة ${i}`);
+      const page = await pdf.getPage(i);
+      const vp = page.getViewport({ scale: 2 });
+      const canvas = document.createElement('canvas'); canvas.width = vp.width; canvas.height = vp.height;
+      await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+      const imgData = canvas.toDataURL('image/jpeg', 0.9);
+      const slide = pptx.addSlide();
+      const ratio = vp.height / vp.width;
+      const slideW = 10, slideH = 10 * ratio;
+      slide.addImage({ data: imgData, x: 0, y: 0, w: slideW, h: Math.min(slideH, 7.5) });
+    }
+    await pptx.writeFile({ fileName: 'Presentation.pptx' });
+    showToast('اتحمل ملف الـ PowerPoint');
+  }catch(err){ console.error(err); showToast('حصل خطأ أثناء التحويل','error'); }
+  hideLoad();
+};
 
 </script>
 </body>
