@@ -4527,7 +4527,7 @@ const SUMMARY_GROUPS = SUMMARY_YEARS.flatMap(year => [
   {year, track:'لغات'}
 ]);
 let sumCurrentGroup={year:'الكل',track:'الكل'}, sumSearchQuery='', sumAllApproved=[], sumRatingsCache={}, sumFirebaseDB=null;
-let examCurrentGroup={year:'الكل',track:'الكل'}, examSearchQuery='', examAllApproved=[];
+let examCurrentGroup={year:'الكل',track:'الكل'}, examSearchQuery='', examAllApproved=[], examRatingsCache={};
 function escapeHtml(str){const d=document.createElement('div');d.textContent=str??'';return d.innerHTML;}
 function isPdfUrl(url){return /\.pdf(\?|#|$)/i.test(url||'');}
 function sumFormatDate(iso){if(!iso)return '';try{const d=new Date(iso);if(isNaN(d))return '';return d.toLocaleDateString('ar-EG',{year:'numeric',month:'long',day:'numeric'});}catch(e){return '';}}
