@@ -2857,7 +2857,7 @@
                 reader.readAsDataURL(file);
             }
         }, 500);
-        let cPdf = null, cPage = 1, cTheme = 'original', cCustom = {bg:'#fff', text:'#000'}, cZoom = 1.0;
+        let cPdf = null, cPage = 1, cTheme = 'original', cCustom = {bg:'#fff', text:'#000'}, cZoom = 1.0, cPageThemes = {};
         const cCan = document.getElementById('cleaner-canvas'), cCtx = cCan.getContext('2d', { willReadFrequently: true });
         const oCan = document.createElement('canvas'), oCtx = oCan.getContext('2d', { willReadFrequently: true });
         let highlights = {};
