@@ -107,10 +107,26 @@
         root.setAttribute('aria-hidden','true');
         root.dataset.mode = 'idle';
         root.style.position = 'fixed';
+        root.style.bottom = '0px';
+        root.style.top = 'auto';
         root.style.zIndex = String(ROBOT_CONFIG.zIndex);
         root.style.overflow = 'visible';
         root.style.pointerEvents = 'none';
+        root.style.height = `${getSize()}px`;
+        const ground = document.createElement('div');
 
+        ground.id = 'eto-robot-ground';
+        ground.style.position = 'fixed';
+        ground.style.left = '0';
+        ground.style.right = '0';
+        ground.style.bottom = '0';
+        ground.style.height = '4px';
+        ground.style.background = 'linear-gradient(90deg,transparent,#94a3b8,transparent)';
+        ground.style.opacity = '0.28';
+        ground.style.pointerEvents = 'none';
+        ground.style.zIndex = String(ROBOT_CONFIG.zIndex - 1);
+
+        document.body.appendChild(ground);
         const sprite = document.createElement('div');
 
         sprite.id = 'eto-robot-sprite';
@@ -121,14 +137,9 @@
             event.preventDefault();
             event.stopPropagation();
 
-            hide();
+            window.location.href =
+                './Robot/robot-chat.html';
 
-            if(
-                window.EtoRobotUI &&
-                typeof window.EtoRobotUI.openChat === 'function'
-            ){
-                window.EtoRobotUI.openChat();
-            }
         });
 
         sprite.style.setProperty(
@@ -588,13 +599,11 @@
         setFrame(0);
 
         state.idleUntil =
-            isMobile()
-                ? Infinity
-                : performance.now()
-                    + randomBetween(
-                        ROBOT_CONFIG.idleMin,
-                        ROBOT_CONFIG.idleMax
-                    );
+            performance.now()
+                + randomBetween(
+                    ROBOT_CONFIG.idleMin,
+                    ROBOT_CONFIG.idleMax
+                );
 
         emitModeChange();
     }
@@ -660,8 +669,6 @@
         }else{
 
             if(
-                !isMobile()
-                &&
                 timestamp >=
                 state.idleUntil
             ){
@@ -778,10 +785,12 @@
             () => {
 
                 updatePosition();
-
                 setFrame(
                     state.frame
                 );
+
+                state.root.style.height =
+                    `${getSize()}px`;
 
             },
             {passive:true}
