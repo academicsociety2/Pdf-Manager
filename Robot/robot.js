@@ -106,8 +106,8 @@
         root.id = 'eto-robot-root';
         root.setAttribute('aria-hidden','true');
         root.dataset.mode = 'idle';
-        root.style.position = 'fixed';
-        root.style.bottom = '0px';
+        root.style.position = 'absolute';
+        root.style.bottom = '-14px';
         root.style.top = 'auto';
         root.style.zIndex = String(ROBOT_CONFIG.zIndex);
         root.style.overflow = 'visible';
@@ -116,29 +116,95 @@
         const ground = document.createElement('div');
 
         ground.id = 'eto-robot-ground';
-        ground.style.position = 'fixed';
+        ground.style.position = 'relative';
         ground.style.left = '0';
         ground.style.right = '0';
-        ground.style.bottom = '0';
-        ground.style.height = '4px';
-        ground.style.background = 'linear-gradient(90deg,transparent,#94a3b8,transparent)';
-        ground.style.opacity = '0.28';
+        ground.style.bottom = 'auto';
+        ground.style.height = '10px';
+        ground.style.borderRadius = '18px 18px 0 0';
+        ground.style.background =
+            'linear-gradient(180deg,rgba(148,163,184,.20),rgba(100,116,139,.08))';
+        ground.style.borderTop =
+            '2px solid rgba(100,116,139,.42)';
+        ground.style.boxShadow =
+            '0 -6px 20px rgba(100,116,139,.12), inset 0 1px 0 rgba(255,255,255,.35)';
         ground.style.pointerEvents = 'none';
-        ground.style.zIndex = String(ROBOT_CONFIG.zIndex - 1);
+        ground.style.zIndex = String(ROBOT_CONFIG.zIndex - 2);
 
-        document.body.appendChild(ground);
+        const pathLine = document.createElement('div');
+
+        pathLine.style.position = 'absolute';
+        pathLine.style.left = '0';
+        pathLine.style.right = '0';
+        pathLine.style.top = '2px';
+        pathLine.style.height = '6px';
+        pathLine.style.borderRadius = '999px';
+        pathLine.style.background =
+            'linear-gradient(90deg,#1d4ed8,#2563eb,#1d4ed8)';
+        pathLine.style.opacity = '0.9';
+
+        ground.appendChild(pathLine);
+
+        const footer =
+            document.querySelector('body > footer');
+
+        if(footer){
+            footer.parentNode.insertBefore(
+                ground,
+                footer
+            );
+        }else{
+            document.body.appendChild(ground);
+        }
         const sprite = document.createElement('div');
 
         sprite.id = 'eto-robot-sprite';
         sprite.style.pointerEvents = 'auto';
+        sprite.style.cursor = 'pointer';
+        sprite.style.transition =
+            'filter .2s ease, transform .2s ease';
 
+        sprite.addEventListener('mouseenter', function(){
+
+            sprite.style.filter =
+                'drop-shadow(0 0 10px rgba(37,99,235,.85)) drop-shadow(0 8px 12px rgba(15,23,42,.25))';
+
+            sprite.style.transform =
+                state.direction > 0
+                    ? 'scaleX(-1) scale(1.08)'
+                    : 'scaleX(1) scale(1.08)';
+
+            if(state.thought){
+
+                state.thought.firstChild.textContent =
+                    'عايز/ه حاجة؟ ';
+
+                state.thought.classList.add('show');
+
+                updateThoughtPosition();
+
+            }
+
+        });
+
+        sprite.addEventListener('mouseleave', function(){
+
+            sprite.style.filter = '';
+
+            updateDirection();
+
+            if(state.thought){
+                state.thought.classList.remove('show');
+            }
+
+        });
         sprite.addEventListener('click', function(event){
 
             event.preventDefault();
             event.stopPropagation();
 
             window.location.href =
-                './Robot/robot-chat.html';
+                './robot-chat.html';
 
         });
 
@@ -148,9 +214,8 @@
         );
 
         sprite.style.transformOrigin = 'center center';
-
         root.appendChild(sprite);
-        document.body.appendChild(root);
+        ground.appendChild(root);
 
         state.root = root;
         state.sprite = sprite;
@@ -500,8 +565,8 @@
 
         state.sprite.style.transform =
             state.direction > 0
-                ? 'scaleX(-1)'
-                : 'scaleX(1)';
+                ? 'scaleX(-1) scale(1)'
+                : 'scaleX(1) scale(1)';
     }
 
     function updatePosition(){
