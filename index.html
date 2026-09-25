@@ -90,6 +90,37 @@
             darkMode: 'class',
         }
     </script>
+
+<style id="eto-page-update-system">
+        .page-update-wrap{max-width:1152px;margin:0 auto;padding:0 16px 18px}
+        .page-update-card{position:relative;overflow:hidden;border:1px solid #bfdbfe;border-radius:22px;background:linear-gradient(135deg,#eff6ff 0%,#ffffff 58%,#eef2ff 100%);box-shadow:0 14px 35px rgba(37,99,235,.10);padding:18px 19px;animation:pageUpdateIn .45s cubic-bezier(.16,1,.3,1) both}
+        .page-update-card:before{content:"";position:absolute;width:180px;height:180px;border-radius:999px;left:-85px;bottom:-105px;background:rgba(37,99,235,.08);pointer-events:none}
+        .page-update-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;position:relative;z-index:1}
+        .page-update-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:999px;background:#2563eb;color:#fff;font-size:9px;font-weight:900}
+        .page-update-date{font-size:9px;font-weight:900;color:#64748b;white-space:nowrap}
+        .page-update-card h3{margin:10px 0 5px;color:#0f172a;font-size:17px;font-weight:900}
+        .page-update-card p{margin:0;color:#475569;font-size:10.5px;line-height:1.8;font-weight:700;max-width:820px}
+        .page-update-features{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;position:relative;z-index:1}
+        .page-update-feature{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:10px;background:rgba(255,255,255,.85);border:1px solid #dbeafe;color:#334155;font-size:9px;font-weight:900}
+        .page-update-close{flex:none;width:34px;height:34px;border:1px solid #dbeafe;border-radius:10px;background:rgba(255,255,255,.82);color:#64748b;cursor:pointer;transition:.2s}
+        .page-update-close:hover{background:#fff;color:#2563eb;transform:translateY(-1px)}
+        .dark .page-update-card{background:linear-gradient(135deg,#0f1d36 0%,#0f172a 58%,#111827 100%);border-color:#1e3a8a}
+        .dark .page-update-card h3{color:#f8fafc}
+        .dark .page-update-card p{color:#cbd5e1}
+        .dark .page-update-date{color:#94a3b8}
+        .dark .page-update-feature{background:rgba(15,23,42,.82);border-color:#1e3a8a;color:#dbeafe}
+        .dark .page-update-close{background:#0f172a;border-color:#334155;color:#cbd5e1}
+        @keyframes pageUpdateIn{from{opacity:0;transform:translateY(-8px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+        @media(max-width:640px){
+            .page-update-wrap{padding:0 10px 14px}
+            .page-update-card{padding:15px;border-radius:18px}
+            .page-update-top{gap:8px}
+            .page-update-date{font-size:8px}
+            .page-update-card h3{font-size:15px}
+            .page-update-card p{font-size:9.5px}
+            .page-update-feature{font-size:8.5px}
+        }
+</style>
     <style id="eto-student-extra-pages">
         .student-special-shell{max-width:1400px;margin:0 auto;padding:0 0 35px}
         .student-special-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
@@ -603,11 +634,11 @@
     .home-category-card:before{content:"";position:absolute;inset:auto -20% -55% auto;width:170px;height:170px;border-radius:999px;opacity:.14;pointer-events:none;transition:transform .25s ease}
     .dark .home-category-card{background:rgba(15,23,42,.76)!important;border-color:#334155!important}
      .home-category-card:hover{transform:translate3d(0,-7px,0) scale(1.012)!important;box-shadow:0 22px 38px rgba(15,23,42,.13)!important;border-color:rgba(96,165,250,.40)!important}
-    .home-category-teacher:before{background:#f43f5e}.home-category-student:before{background:#2563eb}.home-category-extra:before{background:#7c3aed}
+    .home-category-teacher:before{background:#f43f5e}.home-category-student:before{background:#2563eb}.home-category-extra:before{background:#7c3aed}.home-category-assistant:before{background:#059669}
     .home-category-card:hover:before{transform:scale(1.18)}
     .home-category-icon{flex:0 0 56px;width:56px;height:56px;display:flex;align-items:center;justify-content:center;border-radius:17px;font-size:22px;box-shadow:inset 0 0 0 1px rgba(15,23,42,.05)}
-    .home-category-teacher .home-category-icon{background:#fff1f2;color:#e11d48}.home-category-student .home-category-icon{background:#eff6ff;color:#2563eb}.home-category-extra .home-category-icon{background:#f5f3ff;color:#7c3aed}
-    .dark .home-category-teacher .home-category-icon{background:rgba(225,29,72,.13)}.dark .home-category-student .home-category-icon{background:rgba(37,99,235,.13)}.dark .home-category-extra .home-category-icon{background:rgba(124,58,237,.13)}
+    .home-category-teacher .home-category-icon{background:#fff1f2;color:#e11d48}.home-category-student .home-category-icon{background:#eff6ff;color:#2563eb}.home-category-extra .home-category-icon{background:#f5f3ff;color:#7c3aed}.home-category-assistant .home-category-icon{background:#ecfdf5;color:#059669}
+    .dark .home-category-teacher .home-category-icon{background:rgba(225,29,72,.13)}.dark .home-category-student .home-category-icon{background:rgba(37,99,235,.13)}.dark .home-category-extra .home-category-icon{background:rgba(124,58,237,.13)}.dark .home-category-assistant .home-category-icon{background:rgba(5,150,105,.13)}
     .home-category-content{min-width:0;position:relative;z-index:1}
     .home-category-label{display:block;font-size:9px;font-weight:900;color:#94a3b8;margin-bottom:4px}.home-category-card h3{margin:0 0 6px;color:#0f172a;font-size:20px;font-weight:900;letter-spacing:-.02em}.dark .home-category-card h3{color:#f8fafc}
     .home-category-card p{margin:0;color:#64748b;font-size:11px;line-height:1.8;max-width:330px}.dark .home-category-card p{color:#94a3b8}
@@ -718,7 +749,384 @@
             bottom:-170px;
             background:rgba(255,255,255,.08);
         }
+        #page-translate{
+            position:relative;
+        }
 
+        #page-translate .translate-input-card,
+        #page-translate .translate-result-card,
+        #page-translate .translate-egy-card{
+            position:relative;
+            overflow:hidden;
+            isolation:isolate;
+        }
+
+        #page-translate .translate-input-card:before,
+        #page-translate .translate-result-card:before,
+        #page-translate .translate-egy-card:before{
+            content:"";
+            position:absolute;
+            width:180px;
+            height:180px;
+            border-radius:999px;
+            pointer-events:none;
+            opacity:.45;
+            filter:blur(2px);
+            transition:
+                transform .45s cubic-bezier(.16,1,.3,1),
+                opacity .3s ease;
+        }
+
+        #page-translate .translate-input-card:before{
+            right:-90px;
+            top:-90px;
+            background:radial-gradient(
+                circle,
+                rgba(139,92,246,.18),
+                transparent 68%
+            );
+        }
+
+        #page-translate .translate-result-card:before{
+            left:-90px;
+            bottom:-90px;
+            background:radial-gradient(
+                circle,
+                rgba(59,130,246,.17),
+                transparent 68%
+            );
+        }
+
+        #page-translate .translate-egy-card:before{
+            right:-90px;
+            bottom:-90px;
+            background:radial-gradient(
+                circle,
+                rgba(16,185,129,.18),
+                transparent 68%
+            );
+        }
+
+        #page-translate .translate-input-card:hover:before,
+        #page-translate .translate-result-card:hover:before,
+        #page-translate .translate-egy-card:hover:before{
+            transform:scale(1.35);
+            opacity:.75;
+        }
+
+        #page-translate #translate-input{
+            position:relative;
+            z-index:2;
+            min-height:165px;
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(248,250,252,.96),
+                    rgba(255,255,255,.96)
+                );
+            box-shadow:
+                inset 0 0 0 1px rgba(148,163,184,.08),
+                0 10px 28px rgba(15,23,42,.035);
+            transition:
+                border-color .25s ease,
+                box-shadow .25s ease,
+                transform .25s ease;
+        }
+
+        .dark #page-translate #translate-input{
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(15,23,42,.98),
+                    rgba(2,6,23,.98)
+                );
+        }
+
+        #page-translate #translate-input:focus{
+            transform:translateY(-2px);
+            border-color:#8b5cf6;
+            box-shadow:
+                0 0 0 4px rgba(139,92,246,.10),
+                0 18px 38px rgba(76,29,149,.10);
+        }
+
+        #page-translate select{
+            font-family:inherit;
+            cursor:pointer;
+            transition:
+                transform .2s ease,
+                border-color .2s ease,
+                box-shadow .2s ease;
+        }
+
+        #page-translate select:hover{
+            transform:translateY(-1px);
+            border-color:#a78bfa;
+        }
+
+        #page-translate select:focus{
+            border-color:#8b5cf6;
+            box-shadow:
+                0 0 0 4px rgba(139,92,246,.09);
+            outline:none;
+        }
+
+        #page-translate #translate-btn{
+            position:relative;
+            overflow:hidden;
+            isolation:isolate;
+            transform:translateZ(0);
+            box-shadow:
+                0 12px 26px rgba(124,58,237,.20);
+            transition:
+                transform .25s cubic-bezier(.16,1,.3,1),
+                box-shadow .25s ease,
+                filter .25s ease;
+        }
+
+        #page-translate #translate-btn:before{
+            content:"";
+            position:absolute;
+            inset:-2px;
+            background:
+                linear-gradient(
+                    110deg,
+                    transparent 25%,
+                    rgba(255,255,255,.28) 45%,
+                    transparent 65%
+                );
+            transform:translateX(-120%);
+            transition:transform .65s ease;
+            z-index:-1;
+        }
+
+        #page-translate #translate-btn:hover{
+            transform:translateY(-3px);
+            box-shadow:
+                0 18px 34px rgba(124,58,237,.28);
+            filter:brightness(1.05);
+        }
+
+        #page-translate #translate-btn:hover:before{
+            transform:translateX(120%);
+        }
+
+        #page-translate #translate-btn:active{
+            transform:translateY(-1px) scale(.985);
+        }
+
+        #page-translate #translate-btn:disabled{
+            cursor:wait;
+            opacity:.88;
+            transform:none;
+        }
+
+        #page-translate #translate-result,
+        #page-translate #translate-egy-result{
+            position:relative;
+            z-index:2;
+            overflow:auto;
+            white-space:pre-wrap;
+            word-break:break-word;
+        }
+
+        #page-translate #translate-result{
+            min-height:210px;
+            background:
+                radial-gradient(
+                    circle at 90% 10%,
+                    rgba(59,130,246,.07),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    145deg,
+                    #f8fbff,
+                    #f1f5ff
+                );
+            box-shadow:
+                inset 0 0 0 1px rgba(59,130,246,.035);
+        }
+
+        .dark #page-translate #translate-result{
+            background:
+                radial-gradient(
+                    circle at 90% 10%,
+                    rgba(59,130,246,.10),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    145deg,
+                    #0f172a,
+                    #111827
+                );
+        }
+
+        #page-translate #translate-egy-result{
+            min-height:92px;
+            background:
+                radial-gradient(
+                    circle at 10% 90%,
+                    rgba(16,185,129,.08),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    145deg,
+                    #f0fdf4,
+                    #eff6ff
+                );
+        }
+
+        .dark #page-translate #translate-egy-result{
+            background:
+                radial-gradient(
+                    circle at 10% 90%,
+                    rgba(16,185,129,.10),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    145deg,
+                    #0b1f18,
+                    #0f172a
+                );
+        }
+
+        #page-translate .translate-loading{
+            position:relative;
+            overflow:hidden;
+            color:transparent !important;
+        }
+
+        #page-translate .translate-loading:before{
+            content:"";
+            position:absolute;
+            inset:18px;
+            border-radius:16px;
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(148,163,184,.08) 0%,
+                    rgba(148,163,184,.16) 50%,
+                    rgba(148,163,184,.08) 100%
+                );
+            background-size:220% 100%;
+            animation:
+                etoTranslateSkeleton 1.15s ease-in-out infinite;
+        }
+
+        #page-translate .translate-loading:after{
+            content:"";
+            position:absolute;
+            width:46%;
+            height:2px;
+            top:50%;
+            left:27%;
+            border-radius:99px;
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(124,58,237,.70),
+                    transparent
+                );
+            filter:blur(.2px);
+            animation:
+                etoTranslateScan 1.05s ease-in-out infinite;
+        }
+
+        @keyframes etoTranslateSkeleton{
+            0%{
+                background-position:120% 0;
+            }
+            100%{
+                background-position:-120% 0;
+            }
+        }
+
+        @keyframes etoTranslateScan{
+            0%,
+            100%{
+                transform:translateY(-28px);
+                opacity:.15;
+            }
+            50%{
+                transform:translateY(28px);
+                opacity:1;
+            }
+        }
+
+        #page-translate .translate-result-pop{
+            animation:
+                etoTranslateResult .48s
+                cubic-bezier(.16,1,.3,1) both;
+        }
+
+        @keyframes etoTranslateResult{
+            0%{
+                opacity:0;
+                transform:
+                    translateY(14px)
+                    scale(.975)
+                ;
+                filter:blur(6px);
+            }
+            65%{
+                opacity:1;
+                transform:
+                    translateY(-2px)
+                    scale(1.005)
+                ;
+                filter:blur(0);
+            }
+            100%{
+                opacity:1;
+                transform:
+                    translateY(0)
+                    scale(1)
+                ;
+                filter:blur(0);
+            }
+        }
+
+        #page-translate .fa-language{
+            animation:
+                translateIconFloat 3s
+                ease-in-out infinite;
+        }
+
+        @keyframes translateIconFloat{
+            0%,
+            100%{
+                transform:translateY(0) rotate(0deg);
+            }
+            50%{
+                transform:translateY(-3px) rotate(-3deg);
+            }
+        }
+
+        @media(max-width:640px){
+
+            #page-translate #translate-input{
+                min-height:210px;
+            }
+
+            #page-translate #translate-result{
+                min-height:170px;
+            }
+
+            #page-translate #translate-egy-result{
+                min-height:125px;
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce){
+
+            #page-translate *,
+            #page-translate *:before,
+            #page-translate *:after{
+                animation:none !important;
+                transition:none !important;
+            }
+        }
         .materials-hero:after{
             content:"";
             position:absolute;
@@ -1126,6 +1534,8 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="./Robot/robot.css">
+    <script src="./Robot/robot.js" defer></script>
 </head>
 <body class="min-h-screen flex flex-col text-slate-800 dark:text-slate-100 transition-colors duration-300">
     <style>button,input,select{touch-action:manipulation}</style>
@@ -1144,6 +1554,8 @@
                      <button onclick="navigate('student-tools')" class="nav-link px-4 py-5">أدوات الطالب</button>
                      <button onclick="navigate('materials')" class="nav-link px-4 py-5">المواد</button>
                      <button onclick="navigate('extra-tools')" class="nav-link px-4 py-5">أدوات إضافية</button>
+                     <button onclick="navigate('assistant')" class="nav-link px-4 py-5">مساعد الموقع</button>
+                     <button onclick="window.location.href='updates.html'" class="nav-link px-4 py-5">التحديثات</button>
                 </div>
                     <div class="flex items-center gap-2 sm:gap-3">
                         <button id="global-search-btn" onclick="openGlobalSearch()" class="w-10 h-10 rounded-xl bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-gray-300 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-slate-700 transition flex items-center justify-center" title="بحث شامل">
@@ -1227,7 +1639,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="max-w-6xl mx-auto px-4 pb-14 grid grid-cols-1 md:grid-cols-3 gap-6 home-tools-grid">
+                <div class="max-w-6xl mx-auto px-4 pb-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 home-tools-grid">
                     <div class="tool-card home-category-card home-category-teacher cursor-pointer" onclick="navigate('teacher-tools')">
                         <div class="home-category-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
                         <div class="home-category-content">
@@ -1253,6 +1665,15 @@
                             <h3>أدوات إضافية</h3>
                             <p>دمج وتعديل وتحويل واستخراج وحماية وتوقيع وباقي أدوات الملفات.</p>
                             <span class="home-category-link">استعرض الأدوات <i class="fa-solid fa-arrow-left"></i></span>
+                        </div>
+                    </div>
+                    <div class="tool-card home-category-card home-category-assistant cursor-pointer" onclick="navigate('assistant')">
+                        <div class="home-category-icon"><i class="fa-solid fa-robot"></i></div>
+                        <div class="home-category-content">
+                            <span class="home-category-label">محتاج مساعدة؟</span>
+                            <h3>مساعد الموقع</h3>
+                            <p>اعرف مين الروبوت اللي بيمشي فوق الصفحة، وإزاي تسأله عن أي أداة.</p>
+                            <span class="home-category-link">اتعرف عليه <i class="fa-solid fa-arrow-left"></i></span>
                         </div>
                     </div>
                 </div>
@@ -1321,10 +1742,10 @@
                                     <h3 class="text-lg font-bold mb-2">ملف الإجابات</h3>
                                     <p class="text-gray-500 text-xs">حدد الإجابة الصح ودرجة كل سؤال، وطلّع ملف JSON للامتحان الأونلاين وPDF للنسخة الورقية.</p>
                                 </div>
-                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('exam-maker')">
-                                    <div class="w-12 h-12 bg-sky-100 text-sky-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-clipboard-check"></i></div>
-                                    <h3 class="text-lg font-bold mb-2">إنشاء امتحان أونلاين</h3>
-                                    <p class="text-gray-500 text-xs">ارفع الأسئلة والإجابات، حدد وقت الامتحان، وانشره بلينك تبعته للطلاب.</p>
+                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('student-exams')">
+                                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-users-viewfinder"></i></div>
+                                    <h3 class="text-lg font-bold mb-2">نتائج الامتحانات</h3>
+                                    <p class="text-gray-500 text-xs">شوف نتائج الطلاب، الدرجات، ونِسَب النجاح وتفاصيل الأسئلة الغلط في الامتحانات اللي نشرتها.</p>
                                 </div>
                 <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('cleaner')">
                                     <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-palette"></i></div>
@@ -1401,6 +1822,11 @@
                                     <h3 class="text-lg font-bold mb-2">احسبلي كام %</h3>
                                     <p class="text-gray-500 text-xs">دخل درجتك والمجموع الكلي واعرف نسبتك المئوية في ثانية.</p>
                                 </div>
+                <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('translate')">
+                                    <div class="w-12 h-12 bg-violet-100 text-violet-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-language"></i></div>
+                                    <h3 class="text-lg font-bold mb-2">ترجملي</h3>
+                                    <p class="text-gray-500 text-xs">اكتب أي كلمة أو نص، وخليه يترجم لك تلقائيًا مع صياغة عربية مصرية بسيطة.</p>
+                                </div>
                 <div class="tool-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 cursor-pointer" onclick="navigate('library')">
                                     <div class="w-12 h-12 bg-lime-100 text-lime-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-box-archive"></i></div>
                                     <h3 class="text-lg font-bold mb-2">مكتبتي</h3>
@@ -1421,6 +1847,172 @@
                     <i class="fa-solid fa-magnifying-glass text-4xl mb-3 opacity-50"></i>
                     <p class="font-bold">مفيش أداة مطابقة للبحث</p>
                 </div>
+            </div>
+        </section>
+        <section id="page-translate" class="page-section hidden p-4 max-w-7xl mx-auto tool-category-page">
+            <div class="max-w-5xl mx-auto">
+
+                <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-700 via-indigo-600 to-blue-600 text-white p-5 md:p-6 mb-4 shadow-2xl">
+                    <div class="absolute -left-20 -bottom-24 w-64 h-64 rounded-full bg-white/10"></div>
+                    <div class="absolute -right-16 -top-20 w-56 h-56 rounded-full bg-cyan-300/10"></div>
+
+                    <div class="relative z-10">
+                        <div class="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-white/10 border border-white/15 text-xs font-black">
+                            <i class="fa-solid fa-language"></i>
+                            ETO.EDU • TRANSLATE
+                        </div>
+
+                        <h2 class="text-2xl md:text-3xl font-black mt-3 mb-1">
+                            ترجملي
+                        </h2>
+
+                        <p class="text-white/80 text-xs md:text-sm font-bold leading-6 max-w-2xl">
+                            اكتب كلمة أو جملة أو نص كامل، واختار اللغة اللي عايز تترجم لها.
+                            وبعدها هتلاقي الترجمة ومعاها صياغة عربية مصرية أبسط.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-5">
+
+                    <div class="translate-input-card bg-white dark:bg-slate-800 rounded-3xl border border-gray-200 dark:border-slate-700 shadow-xl p-4 md:p-5">
+
+                        <div class="flex items-center justify-between gap-3 mb-4">
+                            <div>
+                                <span class="text-[10px] font-black text-violet-600 dark:text-violet-400">
+                                    النص الأصلي
+                                </span>
+                                <h3 class="text-lg font-black text-slate-800 dark:text-white">
+                                    اكتب اللي عايز تترجمه
+                                </h3>
+                            </div>
+
+                            <button
+                                type="button"
+                                id="translate-clear-btn"
+                                class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 hover:text-violet-600 transition">
+                                <i class="fa-solid fa-eraser"></i>
+                            </button>
+                        </div>
+
+                        <textarea
+                            id="translate-input"
+                            rows="7"
+                            class="w-full resize-none rounded-2xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white p-4 outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 transition"
+                            placeholder="مثال: I have an important exam tomorrow..."
+                        ></textarea>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
+
+                            <div>
+                                <label class="block text-xs font-black text-slate-600 dark:text-slate-300 mb-2">
+                                    من اللغة
+                                </label>
+
+                                <select
+                                    id="translate-source"
+                                    class="w-full h-11 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-white px-3 outline-none">
+                                    <option value="auto">اكتشاف تلقائي</option>
+                                    <option value="en">English</option>
+                                    <option value="ar">العربية</option>
+                                    <option value="fr">Français</option>
+                                    <option value="de">Deutsch</option>
+                                    <option value="es">Español</option>
+                                    <option value="tr">Türkçe</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-black text-slate-600 dark:text-slate-300 mb-2">
+                                    ترجم إلى
+                                </label>
+
+                                <select
+                                    id="translate-target"
+                                    class="w-full h-11 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-white px-3 outline-none">
+                                    <option value="ar">العربية</option>
+                                    <option value="en">English</option>
+                                    <option value="fr">Français</option>
+                                    <option value="de">Deutsch</option>
+                                    <option value="es">Español</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            id="translate-btn"
+                            class="w-full mt-3 h-11 h-12 rounded-2xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-black shadow-lg shadow-violet-600/20 transition">
+                            <i class="fa-solid fa-wand-magic-sparkles ml-2"></i>
+                            ترجم دلوقتي
+                        </button>
+
+                    </div>
+
+                    <div class="space-y-5">
+
+                        <div class="translate-result-card bg-white dark:bg-slate-800 rounded-3xl border border-gray-200 dark:border-slate-700 shadow-xl p-4 md:p-5">
+
+                            <div class="flex items-center justify-between gap-3 mb-4">
+                                <div>
+                                    <span class="text-[10px] font-black text-blue-600 dark:text-blue-400">
+                                        Google Translation
+                                    </span>
+                                    <h3 class="text-lg font-black text-slate-800 dark:text-white">
+                                        الترجمة
+                                    </h3>
+                                </div>
+
+                                <button
+                                    type="button"
+                                    id="translate-copy-btn"
+                                    class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 transition">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+                            </div>
+
+                            <div
+                                id="translate-result"
+                                class="min-h-[125px] rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-4 text-sm leading-8 font-bold text-slate-700 dark:text-slate-200">
+                                الترجمة هتظهر هنا.
+                            </div>
+
+                        </div>
+
+                        <div class="translate-egy-card bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-950/20 dark:to-blue-950/20 rounded-3xl border border-emerald-100 dark:border-emerald-900/40 shadow-lg p-4 md:p-5">
+
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-11 h-11 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-lg">
+                                    <i class="fa-solid fa-comment-dots"></i>
+                                </div>
+
+                                <div>
+                                    <span class="text-[10px] font-black text-emerald-600 dark:text-emerald-400">
+                                        بالمصري
+                                    </span>
+                                    <h3 class="text-lg font-black text-slate-800 dark:text-white">
+                                        نفس المعنى بطريقة أسهل
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <div
+                                id="translate-egy-result"
+                                class="min-h-[92px] rounded-2xl bg-white/80 dark:bg-slate-900/60 border border-emerald-100 dark:border-emerald-900/40 p-4 text-sm leading-8 font-bold text-slate-700 dark:text-slate-200">
+                                الصياغة المصرية هتظهر هنا بعد الترجمة.
+                            </div>
+
+                            <p class="text-[9px] text-slate-500 dark:text-slate-400 font-bold mt-2 leading-5">
+                                ملاحظة: الصياغة المصرية هنا إعادة صياغة مبسطة للنص العربي، مش ترجمة حرفية.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
         </section>
         <section id="page-materials" class="page-section hidden p-4 max-w-7xl mx-auto tool-category-page">
@@ -3861,6 +4453,8 @@ Rules:
         <p>Dev By <a href="https://engmohammedsaad.github.io/Eto.io/" target="_blank" class="text-blue-600 dark:text-blue-400 font-extrabold underline hover:text-blue-800 dark:hover:text-blue-300 transition-colors">Mohammed Eto</a> &copy; 2026. جميع الحقوق محفوظة.</p>
     </footer>
 
+    <script src="./updates.js?v=2026-09-25-1"></script>
+
     <script>
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast'), msg = document.getElementById('toast-msg'), icon = document.getElementById('toast-icon');
@@ -3997,6 +4591,7 @@ Rules:
             pomodoro: ['Data/Img/ادوات الطالب/تايمر.png'],
             library: ['Data/Img/ادوات الطالب/مكتبتي.png'],
             percentage: ['Data/Img/ادوات الطالب/student-tools.jpg'],
+            translate: ['Data/Img/ادوات الطالب/translate.png'],
             editor: ['Data/Img/أدوات اضافيه/تعديل وقص.png'],
             protect: ['Data/Img/أدوات اضافيه/حماية ملف.jpg'],
             merge: ['Data/Img/أدوات اضافيه/دمج الملفات.png'],
@@ -4063,11 +4658,48 @@ Rules:
 
         applyToolCardImages();
 
+        window.EtoUpdatesReady = window.EtoUpdatesReady || Promise.resolve(window.EtoUpdates || null);
+
         let currentPageId = 'home';
         let navigationStarted = false;
         let navigationStack = ['home'];
 
+        function openAssistantChat() {
+            let overlay = document.getElementById('eto-direct-chat');
+
+            if (overlay) {
+                overlay.style.display = 'flex';
+                window.dispatchEvent(new CustomEvent('eto-robot-chat-open'));
+                return;
+            }
+
+            overlay = document.createElement('div');
+            overlay.id = 'eto-direct-chat';
+            overlay.style.cssText = 'position:fixed;inset:0;z-index:2147483000;background:rgba(248,250,252,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;';
+
+            const frame = document.createElement('iframe');
+            frame.src = './Robot/robot-chat.html';
+            frame.title = 'مساعد Eto.Edu';
+            frame.style.cssText = 'width:100%;height:100%;border:0;background:#fff;box-shadow:0 0 0 1px rgba(15,23,42,.06);';
+
+            overlay.appendChild(frame);
+            document.body.appendChild(overlay);
+            window.dispatchEvent(new CustomEvent('eto-robot-chat-open'));
+        }
+
+        window.addEventListener('message', function(event) {
+            if (event.data === 'eto-robot-close-chat') {
+                const overlay = document.getElementById('eto-direct-chat');
+                if (overlay) overlay.style.display = 'none';
+            }
+        });
+
         function navigate(pageId, addHistory = true) {
+            if (pageId === 'assistant') {
+                openAssistantChat();
+                return;
+            }
+
             const target = document.getElementById('page-' + pageId);
             if (!target) return;
 
@@ -4089,11 +4721,13 @@ Rules:
 
             currentPageId = pageId;
             navigationStarted = pageId !== 'home';
+            if (window.EtoUpdates && typeof window.EtoUpdates.renderForPage === 'function') {
+                window.EtoUpdates.renderForPage(pageId);
+            }
 
             if (location.hash.slice(1) !== pageId) {
                 history.replaceState({ page: pageId }, '', pageId === 'home' ? location.pathname + location.search : '#' + pageId);
             }
-
             if (pageId === 'schedule' && typeof fitScheduleZoom === 'function') {
                 requestAnimationFrame(fitScheduleZoom);
             }
@@ -8731,8 +9365,8 @@ function teacherImage(name){
     document.getElementById('teacher-export-json-btn')?.addEventListener('click', teacherExportQuestionsJson);
 })();
 </script>
+<script src="./Trns_Data/Data.js"></script>
 <script>
-/* ===== إنشاء الامتحان الأونلاين ونشره على Firebase ===== */
 (function () {
     const EM_ID_CHARS = 'abcdefghjkmnpqrstuvwxyz23456789';
     let emQuestions = null;
@@ -9314,6 +9948,9 @@ function teacherImage(name){
             showLoad('جاري تحميل بيانات الامتحان...');
 
             const fb = await emLoadFirebase();
+            if (!fb.auth.currentUser) {
+                await fb.auth.signInAnonymously();
+            }
             const snap = await fb.db.ref('exams/' + examId).once('value');
             const exam = snap.val();
 
@@ -9504,8 +10141,19 @@ function teacherImage(name){
 
             if (!user || user.isAnonymous) {
                 loadingEl.classList.add('hidden');
-                authBox.textContent = 'سجّل دخولك بجوجل عشان تشوف الامتحانات اللي نشرتها.';
+                authBox.innerHTML = `
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-3">
+                        <span>سجّل دخولك بجوجل عشان تشوف الامتحانات اللي نشرتها.</span>
+                        <button type="button" id="student-exams-login-btn" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-xl font-black transition">
+                            <i class="fa-brands fa-google ml-2"></i>تسجيل الدخول بجوجل
+                        </button>
+                    </div>
+                `;
                 authBox.classList.remove('hidden');
+                $('student-exams-login-btn').onclick = async () => {
+                    await emLogin();
+                    await studentExamsLoad();
+                };
                 emptyEl.classList.add('hidden');
                 return;
             }
@@ -9779,12 +10427,195 @@ function teacherImage(name){
         }
 
         if (pageId === 'student-exams') {
+            emInitAuth();
             studentExamsLoad();
         }
     };
 
     emStudentInit();
 })();
+    const GOOGLE_TRANSLATE_URL =
+        'https://translate.googleapis.com/translate_a/single';
+
+    function etoEgyptianizeArabic(text){
+
+        if(!text){
+            return '';
+        }
+
+        if(
+            window.EtoEgyptianTranslationData &&
+            typeof window.EtoEgyptianTranslationData.egyptianize === 'function'
+        ){
+
+            return window.EtoEgyptianTranslationData.egyptianize(
+                String(text).trim()
+            );
+
+        }
+
+        return String(text).trim();
+    }
+
+    async function etoTranslateText(){
+
+        const input = document.getElementById('translate-input');
+        const source = document.getElementById('translate-source');
+        const target = document.getElementById('translate-target');
+        const result = document.getElementById('translate-result');
+        const egyptian = document.getElementById('translate-egy-result');
+        const button = document.getElementById('translate-btn');
+
+        if(!input || !result || !egyptian || !button) return;
+
+        const text = input.value.trim();
+
+        if(!text){
+
+            result.textContent = 'اكتب كلمة أو نص الأول.';
+
+            egyptian.textContent =
+                'اكتب اللي عايز تترجمه وأنا هظبطهولك.';
+
+            return;
+        }
+
+        button.disabled = true;
+
+        button.innerHTML =
+            '<i class="fa-solid fa-spinner fa-spin ml-2"></i> جاري الترجمة...';
+
+        result.classList.add('translate-loading');
+        egyptian.classList.add('translate-loading');
+
+        result.textContent = '';
+        egyptian.textContent = '';
+
+        try{
+
+            const sourceLanguage =
+                source.value || 'auto';
+
+            const targetLanguage =
+                target.value || 'en';
+
+            const url =
+                GOOGLE_TRANSLATE_URL +
+                '?client=gtx' +
+                '&sl=' + encodeURIComponent(sourceLanguage) +
+                '&tl=' + encodeURIComponent(targetLanguage) +
+                '&dt=t' +
+                '&q=' + encodeURIComponent(text);
+
+            const response =
+                await fetch(url);
+
+            if(!response.ok){
+                throw new Error(
+                    'Translation request failed'
+                );
+            }
+
+            const data =
+                await response.json();
+
+            const translated =
+                Array.isArray(data?.[0])
+                    ? data[0]
+                        .map(item => item?.[0] || '')
+                        .join('')
+                    : '';
+
+            if(!translated){
+                throw new Error(
+                    'Empty translation'
+                );
+            }
+
+            result.classList.remove(
+                'translate-loading'
+            );
+
+            egyptian.classList.remove(
+                'translate-loading'
+            );
+
+            result.classList.remove(
+                'translate-result-pop'
+            );
+
+            egyptian.classList.remove(
+                'translate-result-pop'
+            );
+
+            void result.offsetWidth;
+            void egyptian.offsetWidth;
+
+            result.classList.add(
+                'translate-result-pop'
+            );
+
+            egyptian.classList.add(
+                'translate-result-pop'
+            );
+
+            result.textContent =
+                translated;
+
+            if(targetLanguage === 'ar'){
+
+                egyptian.textContent =
+                    etoEgyptianizeArabic(
+                        translated
+                    );
+
+            }else{
+
+                egyptian.textContent =
+                    'اختار الترجمة للعربي عشان أقدر أطلعلك المعنى بالمصري.';
+            }
+
+        }catch(error){
+
+            console.error(
+                '[Eto Translate]',
+                error
+            );
+
+            result.classList.remove(
+                'translate-loading'
+            );
+
+            egyptian.classList.remove(
+                'translate-loading'
+            );
+
+            result.textContent =
+                'حصلت مشكلة في الترجمة، جرّب تاني.';
+
+            egyptian.textContent =
+                'ممكن تكون الخدمة مش متاحة دلوقتي، جرّب بعد شوية.';
+
+        }finally{
+
+            button.disabled = false;
+
+            button.innerHTML =
+                '<i class="fa-solid fa-wand-magic-sparkles ml-2"></i> ترجم دلوقتي';
+        }
+    }
+
+    const translateButton =
+        document.getElementById('translate-btn');
+
+    if(translateButton){
+
+        translateButton.addEventListener(
+            'click',
+            etoTranslateText
+        );
+
+    }
 </script>
 
 </body>
