@@ -106,8 +106,8 @@
         root.id = 'eto-robot-root';
         root.setAttribute('aria-hidden','true');
         root.dataset.mode = 'idle';
-        root.style.position = 'absolute';
-        root.style.bottom = '-14px';
+        root.style.setProperty('position','absolute','important');
+        root.style.setProperty('bottom','-14px','important');
         root.style.top = 'auto';
         root.style.zIndex = String(ROBOT_CONFIG.zIndex);
         root.style.overflow = 'visible';
@@ -116,7 +116,7 @@
         const ground = document.createElement('div');
 
         ground.id = 'eto-robot-ground';
-        ground.style.position = 'relative';
+        ground.style.setProperty('position','relative','important');
         ground.style.left = '0';
         ground.style.right = '0';
         ground.style.bottom = 'auto';
@@ -204,7 +204,7 @@
             event.stopPropagation();
 
             window.location.href =
-                './robot-chat.html';
+                './Robot/robot-chat.html';
 
         });
 
