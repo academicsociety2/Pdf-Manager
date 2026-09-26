@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Eto.Edu | منصة أدوات الطالب والمعلم وملفات PDF</title>
+    <title>ETO | التعليم • الألعاب • الأدوات</title>
     <link rel="stylesheet" href="dark.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2563eb">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Eto.Edu">
+    <meta name="apple-mobile-web-app-title" content="Eto">
     <meta name="description" content="Eto.Edu منصة بتجمع أدوات الطالب والمعلم في مكان واحد، من التعامل مع ملفات PDF والصور والقوالب، لحد الشيتات والأسئلة والملخصات والامتحانات وتنظيم المذاكرة. اشتغل على ملفاتك ونظم مذاكرتك بسهولة من المتصفح، سواء من الكمبيوتر أو الموبايل.">
     <meta name="keywords" content="Eto.Edu, أدوات الطالب, أدوات المعلم, PDF, ملفات PDF, أدوات PDF, شيتات, أسئلة, امتحانات, ملخصات, قوالب, تنظيم المذاكرة, أدوات تعليمية, إدارة الملفات">
     <meta name="author" content="ETO">
@@ -688,6 +688,477 @@
         .home-hero .home-badge{animation:heroTextIn .65s cubic-bezier(.16,1,.3,1) both,premiumFloat 4s .8s ease-in-out infinite}
         @keyframes heroTextIn{from{opacity:0;transform:translateY(18px);filter:blur(6px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
         @media(prefers-reduced-motion:reduce){.home-badge,.home-category-icon,.home-hero h1,.home-hero p{animation:none!important}}
+    </style>
+    <style id="eto-portal-style">
+        .eto-portal{
+            position:relative;
+            min-height:calc(100vh - 76px);
+            overflow:hidden;
+            background:
+                radial-gradient(circle at 8% 8%,rgba(37,99,235,.08),transparent 23%),
+                radial-gradient(circle at 92% 85%,rgba(124,58,237,.07),transparent 25%),
+                linear-gradient(180deg,#ffffff 0%,#f8fbff 58%,#f5f7ff 100%);
+            color:#0f172a;
+            padding:34px 22px 28px;
+        }
+
+        .eto-portal-bg{
+            position:absolute;
+            border-radius:999px;
+            pointer-events:none;
+            z-index:0;
+        }
+
+        .eto-portal-bg-one{
+            width:300px;
+            height:300px;
+            top:-190px;
+            right:-100px;
+            background:rgba(96,165,250,.10);
+        }
+
+        .eto-portal-bg-two{
+            width:260px;
+            height:260px;
+            bottom:-170px;
+            left:-90px;
+            background:rgba(167,139,250,.08);
+        }
+
+        .eto-portal-grid{
+            position:absolute;
+            inset:0;
+            background-image:
+                linear-gradient(rgba(15,23,42,.025) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(15,23,42,.025) 1px,transparent 1px);
+            background-size:36px 36px;
+            mask-image:linear-gradient(to bottom,#000,transparent 95%);
+            -webkit-mask-image:linear-gradient(to bottom,#000,transparent 95%);
+            pointer-events:none;
+            z-index:0;
+        }
+
+        .eto-portal-hero{
+            position:relative;
+            z-index:2;
+            width:min(950px,100%);
+            margin:0 auto;
+            text-align:center;
+        }
+
+        .eto-portal-badge{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            padding:7px 12px;
+            border:1px solid #dbeafe;
+            background:#ffffff;
+            border-radius:999px;
+            font-size:9px;
+            font-weight:900;
+            letter-spacing:.08em;
+            color:#2563eb;
+            box-shadow:0 5px 18px rgba(37,99,235,.07);
+        }
+
+        .eto-portal-badge-dot{
+            width:7px;
+            height:7px;
+            border-radius:50%;
+            background:#2563eb;
+            box-shadow:0 0 0 5px rgba(37,99,235,.08);
+        }
+
+        .eto-portal-hero h1{
+            margin:16px 0 0;
+            font-size:clamp(3.2rem,8vw,6.2rem);
+            line-height:.95;
+            font-weight:900;
+            letter-spacing:-.07em;
+            color:#0f172a;
+        }
+
+        .eto-portal-title{
+            margin:10px 0 7px;
+            font-size:clamp(1.4rem,3vw,2.2rem);
+            line-height:1.25;
+            font-weight:900;
+            letter-spacing:-.035em;
+            color:#1d4ed8;
+        }
+
+        .eto-portal-hero p{
+            max-width:650px;
+            margin:0 auto;
+            color:#64748b;
+            font-size:12px;
+            line-height:1.9;
+            font-weight:700;
+        }
+
+        .eto-portal-actions{
+            display:flex;
+            justify-content:center;
+            gap:9px;
+            flex-wrap:wrap;
+            margin-top:19px;
+        }
+
+        .eto-portal-main-btn{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            gap:9px;
+            min-width:185px;
+            padding:11px 15px;
+            border:1px solid #dbeafe;
+            border-radius:13px;
+            background:#2563eb;
+            color:#fff;
+            font-size:10px;
+            font-weight:900;
+            cursor:pointer;
+            box-shadow:0 8px 20px rgba(37,99,235,.14);
+            transition:transform .2s ease,box-shadow .2s ease,background .2s ease;
+        }
+
+        .eto-portal-main-btn:hover{
+            transform:translateY(-2px);
+            box-shadow:0 12px 24px rgba(37,99,235,.18);
+            background:#1d4ed8;
+        }
+
+        .eto-portal-main-btn.eto-portal-games-btn{
+            background:#7c3aed;
+            border-color:#ede9fe;
+            box-shadow:0 8px 20px rgba(124,58,237,.13);
+        }
+
+        .eto-portal-main-btn.eto-portal-games-btn:hover{
+            background:#6d28d9;
+        }
+
+        .eto-portal-modules{
+            position:relative;
+            z-index:2;
+            width:min(1220px,100%);
+            margin:34px auto 0;
+            display:grid;
+            grid-template-columns:repeat(4,minmax(0,1fr));
+            gap:14px;
+        }
+
+        .eto-module{
+            position:relative;
+            min-width:0;
+            overflow:hidden;
+            border:1px solid #e2e8f0;
+            border-radius:21px;
+            background:#ffffff;
+            box-shadow:0 7px 22px rgba(15,23,42,.055);
+            cursor:pointer;
+            contain:content;
+            animation:etoCardIn .5s cubic-bezier(.16,1,.3,1) both;
+            transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
+        }
+
+        .eto-module:nth-child(1){animation-delay:.02s}
+        .eto-module:nth-child(2){animation-delay:.09s}
+        .eto-module:nth-child(3){animation-delay:.16s}
+        .eto-module:nth-child(4){animation-delay:.23s}
+
+        .eto-module:hover{
+            transform:translateY(-6px);
+            border-color:#bfdbfe;
+            box-shadow:0 17px 34px rgba(15,23,42,.10);
+        }
+
+        .eto-module-image{
+            position:relative;
+            height:170px;
+            overflow:hidden;
+            background:#eef4fb;
+        }
+
+        .eto-module-image img{
+            display:block;
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            object-position:center;
+            opacity:0;
+            transition:opacity .45s ease,transform .45s ease;
+        }
+
+        .eto-module-image img[src]{
+            opacity:1;
+        }
+
+        .eto-module:hover .eto-module-image img{
+            transform:scale(1.035);
+        }
+
+        .eto-module-image-overlay{
+            position:absolute;
+            inset:0;
+            background:linear-gradient(
+                180deg,
+                rgba(15,23,42,0) 35%,
+                rgba(15,23,42,.48) 100%
+            );
+            pointer-events:none;
+        }
+
+        .eto-module-number{
+            position:absolute;
+            top:12px;
+            left:12px;
+            z-index:2;
+            padding:5px 8px;
+            border-radius:8px;
+            background:rgba(255,255,255,.9);
+            color:#334155;
+            font-size:8px;
+            font-weight:900;
+            box-shadow:0 4px 10px rgba(15,23,42,.08);
+        }
+
+        .eto-module-icon{
+            position:absolute;
+            right:13px;
+            bottom:12px;
+            z-index:2;
+            width:45px;
+            height:45px;
+            border-radius:14px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:rgba(255,255,255,.92);
+            font-size:18px;
+            box-shadow:0 7px 16px rgba(15,23,42,.12);
+        }
+
+        .eto-module-edu .eto-module-icon{color:#2563eb}
+        .eto-module-games .eto-module-icon{color:#7c3aed}
+        .eto-module-tools .eto-module-icon{color:#059669}
+        .eto-module-future .eto-module-icon{color:#d97706}
+
+        .eto-module-content{
+            padding:15px 16px 13px;
+        }
+
+        .eto-module-label{
+            display:block;
+            margin-bottom:3px;
+            color:#94a3b8;
+            font-size:8px;
+            font-weight:900;
+            letter-spacing:.08em;
+        }
+
+        .eto-module h2{
+            margin:0 0 5px;
+            color:#0f172a;
+            font-size:19px;
+            line-height:1.2;
+            font-weight:900;
+            letter-spacing:-.025em;
+        }
+
+        .eto-module p{
+            margin:0;
+            color:#64748b;
+            font-size:10px;
+            line-height:1.75;
+            font-weight:700;
+        }
+
+        .eto-module-footer{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:10px;
+            margin:0 16px;
+            padding:11px 0 14px;
+            border-top:1px solid #eef2f7;
+            color:#334155;
+            font-size:9px;
+            font-weight:900;
+        }
+
+        .eto-module-footer i{
+            color:#2563eb;
+            transition:transform .2s ease;
+        }
+
+        .eto-module:hover .eto-module-footer i{
+            transform:translateX(-3px);
+        }
+
+        .eto-portal-bottom{
+            position:relative;
+            z-index:2;
+            width:min(1220px,100%);
+            margin:17px auto 0;
+            padding-top:11px;
+            border-top:1px solid #e2e8f0;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:10px;
+            color:#94a3b8;
+            font-size:8px;
+            font-weight:900;
+        }
+
+        .eto-portal-bottom span:first-child{
+            color:#2563eb;
+        }
+
+        .dark .eto-portal{
+            background:
+                radial-gradient(circle at 8% 8%,rgba(37,99,235,.11),transparent 23%),
+                radial-gradient(circle at 92% 85%,rgba(124,58,237,.10),transparent 25%),
+                linear-gradient(180deg,#0f172a 0%,#111827 58%,#0b1220 100%);
+            color:#f8fafc;
+        }
+
+        .dark .eto-portal-grid{
+            background-image:
+                linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+        }
+
+        .dark .eto-portal-badge{
+            background:#111827;
+            border-color:#1e3a8a;
+            color:#93c5fd;
+        }
+
+        .dark .eto-portal-hero h1{
+            color:#f8fafc;
+        }
+
+        .dark .eto-portal-title{
+            color:#60a5fa;
+        }
+
+        .dark .eto-portal-hero p{
+            color:#94a3b8;
+        }
+
+        .dark .eto-module{
+            background:#111827;
+            border-color:#334155;
+            box-shadow:0 9px 25px rgba(0,0,0,.20);
+        }
+
+        .dark .eto-module:hover{
+            border-color:#3b82f6;
+            box-shadow:0 17px 34px rgba(0,0,0,.27);
+        }
+
+        .dark .eto-module-number{
+            background:rgba(15,23,42,.9);
+            color:#cbd5e1;
+        }
+
+        .dark .eto-module-icon{
+            background:rgba(15,23,42,.92);
+        }
+
+        .dark .eto-module h2{
+            color:#f8fafc;
+        }
+
+        .dark .eto-module p{
+            color:#94a3b8;
+        }
+
+        .dark .eto-module-footer{
+            border-color:#1e293b;
+            color:#cbd5e1;
+        }
+
+        .dark .eto-portal-bottom{
+            border-color:#1e293b;
+            color:#64748b;
+        }
+
+        @keyframes etoCardIn{
+            from{
+                opacity:0;
+                transform:translateY(16px);
+            }
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
+        }
+
+        @media(max-width:1050px){
+            .eto-portal-modules{
+                grid-template-columns:repeat(2,minmax(0,1fr));
+            }
+        }
+
+        @media(max-width:640px){
+            .eto-portal{
+                padding:27px 10px 20px;
+                min-height:calc(100vh - 68px);
+            }
+
+            .eto-portal-hero h1{
+                font-size:3.7rem;
+            }
+
+            .eto-portal-title{
+                font-size:1.35rem;
+            }
+
+            .eto-portal-hero p{
+                font-size:10px;
+            }
+
+            .eto-portal-main-btn{
+                width:100%;
+            }
+
+            .eto-portal-modules{
+                grid-template-columns:1fr;
+                gap:11px;
+                margin-top:27px;
+            }
+
+            .eto-module-image{
+                height:185px;
+            }
+
+            .eto-module-content{
+                padding:14px;
+            }
+
+            .eto-module-footer{
+                margin:0 14px;
+            }
+
+            .eto-portal-bottom{
+                flex-direction:column;
+                align-items:flex-start;
+                gap:4px;
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce){
+            .eto-module,
+            .eto-module-image img,
+            .eto-portal-main-btn,
+            .eto-module-footer i{
+                animation:none!important;
+                transition:none!important;
+            }
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;700;900&family=Aref+Ruqaa:wght@400;700&family=Reem+Kufi:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -1545,11 +2016,13 @@
     <nav class="bg-white/80 dark:bg-slate-900/75 backdrop-blur-xl shadow-[0_8px_30px_rgba(15,23,42,.08)] sticky top-0 z-50 border-b border-white/60 dark:border-slate-700/60 transition-all duration-300">
         <div class="max-w-screen-2xl mx-auto px-4">
              <div class="flex justify-between items-center min-h-[76px] py-2">
-                 <div class="flex items-center gap-3 text-2xl font-black text-blue-700 cursor-pointer tracking-tight" onclick="navigate('home')">
-                    <img src="Data/icons/icon-512.png" alt="Eto.Edu" class="w-7 h-7 object-contain rounded-lg"> Eto EduCation
+                   <div class="flex items-center gap-3 text-2xl font-black text-blue-700 cursor-pointer tracking-tight" onclick="navigate('portal')">
+                    <img src="Data/icons/icon-512.png" alt="ETO" class="w-8 h-8 object-contain rounded-xl"> ETO
                 </div>
                  <div class="hidden lg:flex space-x-5 space-x-reverse overflow-x-auto text-[15px] font-black flex-grow justify-center px-5">
-                     <button onclick="navigate('home')" class="nav-link active px-4 py-5">الرئيسية</button>
+                  <button onclick="navigate('portal')" class="nav-link active px-4 py-5">الرئيسية</button>
+                     <button onclick="navigate('home')" class="nav-link px-4 py-5">التعليم</button>
+                     <button onclick="window.location.href='Eto_Games/index.html'" class="nav-link px-4 py-5">الألعاب</button>
                      <button onclick="navigate('teacher-tools')" class="nav-link px-4 py-5">أدوات المعلم</button>
                      <button onclick="navigate('student-tools')" class="nav-link px-4 py-5">أدوات الطالب</button>
                      <button onclick="navigate('materials')" class="nav-link px-4 py-5">المواد</button>
@@ -1581,8 +2054,180 @@
     </nav>
 
     <main class="flex-grow w-full relative">
-        
-        <section id="page-home" class="page-section active block">
+
+        <section id="page-portal" class="page-section active block">
+            <div class="eto-portal">
+                <div class="eto-portal-bg eto-portal-bg-one"></div>
+                <div class="eto-portal-bg eto-portal-bg-two"></div>
+                <div class="eto-portal-grid"></div>
+
+                <div class="eto-portal-hero">
+                    <div class="eto-portal-badge">
+                        <span class="eto-portal-badge-dot"></span>
+                        <span>WELCOME TO ETO</span>
+                    </div>
+
+                    <h1>ETO</h1>
+
+                    <div class="eto-portal-title">
+                        كل عالمك الرقمي في مكان واحد
+                    </div>
+
+                    <p>
+                        تعليم، ألعاب، أدوات وخدمات رقمية —
+                        اختار اللي محتاجه وابدأ فورًا.
+                    </p>
+
+                    <div class="eto-portal-actions">
+                        <button onclick="navigate('home')" class="eto-portal-main-btn">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            <span>ابدأ مع Eto.Edu</span>
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </button>
+
+                        <button onclick="window.location.href='Eto_Games/index.html'" class="eto-portal-main-btn eto-portal-games-btn">
+                            <i class="fa-solid fa-gamepad"></i>
+                            <span>ادخل ETO Games</span>
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="eto-portal-modules">
+
+                    <div class="eto-module eto-module-edu" onclick="navigate('home')">
+                        <div class="eto-module-image">
+                            <img
+                                data-src="https://images.unsplash.com/photo-1778489769184-45868633c527?auto=format&fit=crop&fm=jpg&q=60&w=1200&utm_source=chatgpt.com"
+                                alt="Eto.Edu"
+                                loading="lazy"
+                                decoding="async">
+                            <div class="eto-module-image-overlay"></div>
+
+                            <span class="eto-module-number">01</span>
+
+                            <div class="eto-module-icon">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            </div>
+                        </div>
+
+                        <div class="eto-module-content">
+                            <span class="eto-module-label">EDUCATION</span>
+                            <h2>Eto.Edu</h2>
+                            <p>
+                                أدوات الطالب والمعلم، ملفات PDF،
+                                الشيتات، الامتحانات وتنظيم المذاكرة.
+                            </p>
+                        </div>
+
+                        <div class="eto-module-footer">
+                            <span>دخول المنصة</span>
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </div>
+                    </div>
+
+                    <div class="eto-module eto-module-games" onclick="window.location.href='Eto_Games/index.html'">
+                        <div class="eto-module-image">
+                            <img
+                                data-src="https://images.unsplash.com/photo-1689691849957-1ce9f9315e91?auto=format&fit=crop&fm=jpg&q=60&w=1200&utm_source=chatgpt.com"
+                                alt="ETO Games"
+                                loading="lazy"
+                                decoding="async">
+                            <div class="eto-module-image-overlay"></div>
+
+                            <span class="eto-module-number">02</span>
+
+                            <div class="eto-module-icon">
+                                <i class="fa-solid fa-gamepad"></i>
+                            </div>
+                        </div>
+
+                        <div class="eto-module-content">
+                            <span class="eto-module-label">GAMING</span>
+                            <h2>ETO Games</h2>
+                            <p>
+                                Giveaways، Free Games، Loot
+                                وعروض الألعاب من منصات مختلفة.
+                            </p>
+                        </div>
+
+                        <div class="eto-module-footer">
+                            <span>استكشف الألعاب</span>
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </div>
+                    </div>
+
+                    <div class="eto-module eto-module-tools" onclick="navigate('extra-tools')">
+                        <div class="eto-module-image">
+                            <img
+                                data-src="https://images.unsplash.com/photo-1678058315341-f17934861ae0?auto=format&fit=crop&fm=jpg&q=60&w=1200&utm_source=chatgpt.com"
+                                alt="ETO Tools"
+                                loading="lazy"
+                                decoding="async">
+                            <div class="eto-module-image-overlay"></div>
+
+                            <span class="eto-module-number">03</span>
+
+                            <div class="eto-module-icon">
+                                <i class="fa-solid fa-toolbox"></i>
+                            </div>
+                        </div>
+
+                        <div class="eto-module-content">
+                            <span class="eto-module-label">TOOLS</span>
+                            <h2>ETO Tools</h2>
+                            <p>
+                                أدوات سريعة للتحويل، الملفات،
+                                التنظيم والحلول اليومية.
+                            </p>
+                        </div>
+
+                        <div class="eto-module-footer">
+                            <span>استعرض الأدوات</span>
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </div>
+                    </div>
+
+                    <div class="eto-module eto-module-future">
+                        <div class="eto-module-image">
+                            <img
+                                data-src="https://images.unsplash.com/photo-1659078376395-e17f6f850c24?auto=format&fit=crop&fm=jpg&q=60&w=1200&utm_source=chatgpt.com"
+                                alt="More from ETO"
+                                loading="lazy"
+                                decoding="async">
+                            <div class="eto-module-image-overlay"></div>
+
+                            <span class="eto-module-number">04</span>
+
+                            <div class="eto-module-icon">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            </div>
+                        </div>
+
+                        <div class="eto-module-content">
+                            <span class="eto-module-label">MORE FROM ETO</span>
+                            <h2>قريبًا</h2>
+                            <p>
+                                خدمات وأقسام جديدة هتنضم
+                                لعالم ETO قريبًا.
+                            </p>
+                        </div>
+
+                        <div class="eto-module-footer">
+                            <span>Coming Soon</span>
+                            <i class="fa-solid fa-sparkles"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="eto-portal-bottom">
+                    <span><i class="fa-solid fa-bolt"></i> ETO PLATFORM</span>
+                    <span>Education • Gaming • Tools • More</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="page-home" class="page-section hidden block">
             <div class="home-hero relative text-white text-center transition-colors duration-300">
                 <div class="home-hero-bg"></div>
                 <div class="home-hero-glow home-hero-glow-one"></div>
@@ -4660,9 +5305,9 @@ Rules:
 
         window.EtoUpdatesReady = window.EtoUpdatesReady || Promise.resolve(window.EtoUpdates || null);
 
-        let currentPageId = 'home';
+        let currentPageId = 'portal';
         let navigationStarted = false;
-        let navigationStack = ['home'];
+        let navigationStack = ['portal'];
 
         function openAssistantChat() {
             let overlay = document.getElementById('eto-direct-chat');
@@ -4703,7 +5348,9 @@ Rules:
             const target = document.getElementById('page-' + pageId);
             if (!target) return;
 
-            if (addHistory && pageId !== currentPageId) {
+            if (pageId === 'portal') {
+                navigationStack = ['portal'];
+            } else if (addHistory && pageId !== currentPageId) {
                 const last = navigationStack[navigationStack.length - 1];
                 if (last !== currentPageId) navigationStack.push(currentPageId);
             }
@@ -4716,17 +5363,17 @@ Rules:
 
             const backBtn = document.getElementById('back-to-home-btn');
             if (backBtn) {
-                backBtn.classList.toggle('hidden', navigationStack.length <= 1 && pageId === 'home');
+                backBtn.classList.toggle('hidden', navigationStack.length <= 1 && pageId === 'portal');
             }
 
             currentPageId = pageId;
-            navigationStarted = pageId !== 'home';
+            navigationStarted = pageId !== 'portal';
             if (window.EtoUpdates && typeof window.EtoUpdates.renderForPage === 'function') {
                 window.EtoUpdates.renderForPage(pageId);
             }
 
             if (location.hash.slice(1) !== pageId) {
-                history.replaceState({ page: pageId }, '', pageId === 'home' ? location.pathname + location.search : '#' + pageId);
+                history.replaceState({ page: pageId }, '', pageId === 'portal' ? location.pathname + location.search : '#' + pageId);
             }
             if (pageId === 'schedule' && typeof fitScheduleZoom === 'function') {
                 requestAnimationFrame(fitScheduleZoom);
@@ -4739,28 +5386,28 @@ Rules:
                 navigate(previousPage, false);
                 return;
             }
-            if (currentPageId !== 'home') {
-                navigate('home', false);
+            if (currentPageId !== 'portal') {
+                navigate('portal', false);
             }
         }
 
         window.addEventListener('popstate', event => {
-            const pageId = event.state?.page || (location.hash ? location.hash.slice(1) : 'home');
+            const pageId = event.state?.page || (location.hash ? location.hash.slice(1) : 'portal');
             if (!document.getElementById('page-' + pageId)) return;
             currentPageId = pageId;
-            navigationStarted = pageId !== 'home';
-            navigationStack = pageId === 'home' ? ['home'] : ['home'];
+            navigationStarted = pageId !== 'portal';
+            navigationStack = ['portal'];
             navigate(pageId, false);
         });
 
         if (location.hash && document.getElementById('page-' + location.hash.slice(1))) {
             currentPageId = location.hash.slice(1);
-            navigationStarted = currentPageId !== 'home';
-            navigationStack = currentPageId === 'home' ? ['home'] : ['home'];
+            navigationStarted = currentPageId !== 'portal';
+            navigationStack = ['portal'];
             navigate(currentPageId, false);
         } else {
-            history.replaceState({ page: 'home' }, '', location.pathname + location.search);
-            navigate('home', false);
+            history.replaceState({ page: 'portal' }, '', location.pathname + location.search);
+            navigate('portal', false);
         }
         document.getElementById('cleaner-reset-theme').onclick = () => {
             delete cPageThemes[cPage];
@@ -10617,6 +11264,42 @@ function teacherImage(name){
 
     }
 </script>
+    <script>
+        (() => {
+            const images = document.querySelectorAll('.eto-module-image img[data-src]');
+            if (!images.length) return;
+
+            const loadImage = (img) => {
+                const src = img.dataset.src;
+                if (!src) return;
+
+                img.src = src;
+                img.removeAttribute('data-src');
+            };
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries, obs) => {
+                    entries.forEach((entry, index) => {
+                        if (!entry.isIntersecting) return;
+
+                        const img = entry.target;
+
+                        setTimeout(() => {
+                            loadImage(img);
+                        }, index * 70);
+
+                        obs.unobserve(img);
+                    });
+                }, {
+                    rootMargin: '180px 0px'
+                });
+
+                images.forEach(img => observer.observe(img));
+            } else {
+                images.forEach(loadImage);
+            }
+        })();
+    </script>
 
 </body>
 </html>
